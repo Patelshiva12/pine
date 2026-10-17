@@ -1,0 +1,31 @@
+# Local or single-server deployment:  docker compose up -d   ->  http://localhost:8080
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: pines
+      POSTGRES_USER: pines
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-change-me}
+    volumes: [ "pgdata:/var/lib/postgresql/data" ]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pines -d pines"]
+      interval: 5s
+      retries: 20
+  api:
+    build: .
+    restart: unless-stopped
+    depends_on: { db: { condition: service_healthy } }
+    environment:
+      NODE_ENV: production
+      PORT: 8080
+      DATABASE_URL: postgres://pines:${DB_PASSWORD:-change-me}@db:5432/pines
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
+      APP_TZ: Asia/Kolkata
+      UPLOAD_DIR: /app/uploads
+      TRUST_PROXY: "1"
+    ports: [ "8080:8080" ]
+    volumes: [ "uploads:/app/uploads" ]
+volumes:
+  pgdata:
+  uploads:

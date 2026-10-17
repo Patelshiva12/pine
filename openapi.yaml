@@ -1,0 +1,370 @@
+openapi: 3.0.3
+info:
+  title: Pines Exotica Ordering API
+  version: 1.0.0
+  description: |
+    Backend for the Pines Exotica QR menu, Kitchen, Room Service and Admin pages.
+
+    * Base path: `/api/v1`. All bodies are JSON unless stated.
+    * Times are epoch **milliseconds**. Money is rupees as numbers (2 decimals).
+    * Staff authenticate with `POST /auth/login {pin}` and send `Authorization: Bearer <token>`.
+    * Errors: `{"error": {"code": "...", "message": "human readable", "details": [...]}}`
+      with 400 bad_request · 401 unauthorized · 403 forbidden · 404 not_found · 409 conflict · 413 too_large · 429 rate_limited.
+    * Realtime: WebSocket at `/ws` (see README "Realtime").
+servers:
+  - url: /api/v1
+tags:
+  - { name: Public, description: Guest QR menu (no login) }
+  - { name: Auth & staff }
+  - { name: Orders }
+  - { name: Content management, description: Dishes and photos (admin) }
+  - { name: Settings, description: Taxes, service charges, rooms, tables, menu link }
+  - { name: Reports }
+components:
+  securitySchemes:
+    bearer: { type: http, scheme: bearer, bearerFormat: JWT }
+  parameters:
+    OrderId: { name: id, in: path, required: true, schema: { type: string }, example: omgk3x1qabcd }
+    DishId: { name: id, in: path, required: true, schema: { type: string, pattern: '^[a-z0-9][a-z0-9-]{0,79}$' }, example: indian-vegetar-starte-paneer-tikka }
+  responses:
+    Error:
+      description: Error
+      content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code: { type: string, example: conflict }
+            message: { type: string, example: 'Not available right now: Trout Amritsari' }
+            details: {}
+    Dish:
+      type: object
+      properties:
+        id: { type: string, example: indian-vegetar-starte-paneer-tikka }
+        name: { type: string, example: Paneer Tikka }
+        section: { type: string, example: Indian Vegetarian }
+        sub: { type: string, example: Starters, description: optional sub-heading within the section }
+        desc: { type: string }
+        price: { type: number, example: 340 }
+        veg: { type: boolean }
+        egg: { type: boolean, description: 'contains egg (shown with the egg mark when veg=false)' }
+        signature: { type: boolean, description: "chef's signature, featured on the menu" }
+        available: { type: boolean, description: 'false = shown as unavailable, cannot be ordered' }
+        img: { type: string, description: "card photo path/URL; '' = drawn illustration", example: /uploads/indian-vegetar-starte-paneer-tikka-img-k3j2aa.webp }
+        hero: { type: string, description: 'optional large photo for feature pages' }
+        order: { type: integer, description: 'sort position (menu is ordered by this)' }
+        updatedAt: { type: integer }
+    DishInput:
+      type: object
+      required: [name, section, price]
+      additionalProperties: false
+      properties:
+        name: { type: string, maxLength: 120 }
+        section: { type: string, maxLength: 80 }
+        sub: { type: string }
+        desc: { type: string, maxLength: 1000 }
+        price: { type: number, minimum: 0 }
+        veg: { type: boolean, default: true }
+        egg: { type: boolean, default: false }
+        signature: { type: boolean, default: false }
+        available: { type: boolean, default: true }
+        img: { type: string, description: "'' | path/URL | data:image/...;base64 (uploaded, resized to 640px WebP)" }
+        hero: { type: string, description: "'' | path/URL | data:image/...;base64 (resized to 1400px WebP)" }
+        order: { type: integer }
+    Rate:
+      type: object
+      required: [name, rate]
+      properties: { name: { type: string, example: CGST }, rate: { type: number, minimum: 0, maximum: 100, example: 2.5 } }
+    Settings:
+      type: object
+      properties:
+        taxes: { type: array, items: { $ref: '#/components/schemas/Rate' } }
+        charges: { type: array, items: { $ref: '#/components/schemas/Rate' }, description: service charges }
+        menuLink: { type: string, description: 'address printed in the QR codes' }
+        rooms: { type: string, example: '101-106, 201' }
+        tables: { type: string, example: '1-8' }
+    Loc:
+      type: object
+      required: [type, num]
+      properties: { type: { type: string, enum: [room, table] }, num: { type: string, example: '102' } }
+    Priority: { type: string, enum: [urgent, priority, fast, normal, none], description: 'kitchen order: urgent > priority > fast > normal > none, then oldest first' }
+    ItemStatus: { type: string, enum: [queued, preparing, prepared, ready, served, reprepare], description: 'ready = "Serve dish" (waiter called to the pass)' }
+    BillLine:
+      type: object
+      properties: { name: { type: string }, rate: { type: number }, amount: { type: number } }
+    OrderItem:
+      type: object
+      properties:
+        k: { type: string, description: line key, used to change status }
+        id: { type: string, description: dish id }
+        name: { type: string }
+        price: { type: number, description: unit price frozen at order time }
+        qty: { type: integer }
+        veg: { type: boolean }
+        egg: { type: boolean }
+        status: { $ref: '#/components/schemas/ItemStatus' }
+        redo: { type: integer, description: times sent back for re-prepare }
+        t: { type: integer, description: last status change }
+    Order:
+      type: object
+      properties:
+        id: { type: string }
+        code: { type: string, example: K7PQ, description: short code shown to guest and staff }
+        loc: { $ref: '#/components/schemas/Loc' }
+        source: { type: string, enum: [guest, waiter] }
+        priority: { $ref: '#/components/schemas/Priority' }
+        status: { type: string, enum: [open, completed, cancelled], description: 'completed automatically when every dish is served' }
+        note: { type: string }
+        createdAt: { type: integer }
+        updatedAt: { type: integer }
+        completedAt: { type: integer, nullable: true }
+        cancelledAt: { type: integer, nullable: true }
+        items: { type: array, items: { $ref: '#/components/schemas/OrderItem' } }
+        bill:
+          type: object
+          properties:
+            subtotal: { type: number }
+            taxes: { type: array, items: { $ref: '#/components/schemas/BillLine' } }
+            charges: { type: array, items: { $ref: '#/components/schemas/BillLine' } }
+            total: { type: number }
+    NewOrder:
+      type: object
+      required: [loc, items]
+      properties:
+        loc: { $ref: '#/components/schemas/Loc' }
+        items:
+          type: array
+          minItems: 1
+          maxItems: 40
+          items: { type: object, required: [id, qty], properties: { id: { type: string }, qty: { type: integer, minimum: 1, maximum: 50 } } }
+        note: { type: string, maxLength: 300 }
+        priority: { $ref: '#/components/schemas/Priority' }
+    Alert:
+      type: object
+      properties:
+        id: { type: string, example: a42 }
+        kind: { type: string, enum: [new, serve, reprepare, priority, cancel] }
+        orderId: { type: string }
+        code: { type: string }
+        loc: { $ref: '#/components/schemas/Loc' }
+        text: { type: string, example: 'Serve now: 2× Garlic Naan' }
+        at: { type: integer }
+    Staff:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        role: { type: string, enum: [admin, kitchen, service] }
+        active: { type: boolean }
+        lastLogin: { type: integer, nullable: true }
+        createdAt: { type: integer }
+paths:
+  /health:
+    get: { tags: [Public], summary: Liveness + database check, responses: { '200': { description: OK } } }
+
+  /menu:
+    get:
+      tags: [Public]
+      summary: Full menu (sorted)
+      parameters: [ { name: available, in: query, schema: { type: string, enum: ['true'] }, description: only dishes that can be ordered } ]
+      responses: { '200': { description: Dishes, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Dish' } } } } } }
+    post:
+      tags: [Content management]
+      summary: Add a dish (id generated unless given)
+      security: [ { bearer: [] } ]
+      requestBody: { required: true, content: { application/json: { schema: { allOf: [ { $ref: '#/components/schemas/DishInput' }, { type: object, properties: { id: { type: string } } } ] } } } }
+      responses: { '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/Dish' } } } }, '400': { $ref: '#/components/responses/Error' }, '403': { $ref: '#/components/responses/Error' } }
+  /menu/{id}:
+    parameters: [ { $ref: '#/components/parameters/DishId' } ]
+    get: { tags: [Public], summary: One dish, responses: { '200': { description: Dish, content: { application/json: { schema: { $ref: '#/components/schemas/Dish' } } } }, '404': { $ref: '#/components/responses/Error' } } }
+    put:
+      tags: [Content management]
+      summary: Create or replace a dish with this id (what the Admin page uses)
+      security: [ { bearer: [] } ]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/DishInput' } } } }
+      responses: { '200': { description: Saved, content: { application/json: { schema: { $ref: '#/components/schemas/Dish' } } } } }
+    patch:
+      tags: [Content management]
+      summary: Change some fields, e.g. {"available":false} or {"price":380}
+      security: [ { bearer: [] } ]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/DishInput' } } } }
+      responses: { '200': { description: Saved, content: { application/json: { schema: { $ref: '#/components/schemas/Dish' } } } } }
+    delete:
+      tags: [Content management]
+      summary: Delete a dish (past orders keep their copy of name & price)
+      security: [ { bearer: [] } ]
+      responses: { '204': { description: Deleted } }
+  /menu/{id}/photo:
+    parameters: [ { $ref: '#/components/parameters/DishId' }, { name: kind, in: query, schema: { type: string, enum: [img, hero], default: img } } ]
+    post:
+      tags: [Content management]
+      summary: Upload a photo (multipart field "photo"; JPG/PNG/WebP, max 8 MB) — stored as WebP
+      security: [ { bearer: [] } ]
+      requestBody: { required: true, content: { multipart/form-data: { schema: { type: object, properties: { photo: { type: string, format: binary } } } } } }
+      responses: { '200': { description: Dish with new photo URL, content: { application/json: { schema: { $ref: '#/components/schemas/Dish' } } } }, '400': { $ref: '#/components/responses/Error' } }
+    delete:
+      tags: [Content management]
+      summary: Remove the photo (falls back to the drawn illustration)
+      security: [ { bearer: [] } ]
+      responses: { '200': { description: Dish, content: { application/json: { schema: { $ref: '#/components/schemas/Dish' } } } } }
+
+  /settings:
+    get: { tags: [Public], summary: Taxes, service charges, rooms, tables, menu link, responses: { '200': { description: Settings, content: { application/json: { schema: { $ref: '#/components/schemas/Settings' } } } } } }
+    put:
+      tags: [Settings]
+      summary: Update any subset (admin). New rates apply to new orders only; old bills are frozen.
+      security: [ { bearer: [] } ]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/Settings' } } } }
+      responses: { '200': { description: Settings, content: { application/json: { schema: { $ref: '#/components/schemas/Settings' } } } } }
+
+  /auth/login:
+    post:
+      tags: [Auth & staff]
+      summary: Sign in with a staff PIN (10 tries per minute per IP)
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { pin: { type: string, example: '1234' } } } } } }
+      responses:
+        '200': { description: Token, content: { application/json: { schema: { type: object, properties: { token: { type: string }, staff: { $ref: '#/components/schemas/Staff' } } } } } }
+        '401': { $ref: '#/components/responses/Error' }
+  /auth/me:
+    get: { tags: [Auth & staff], security: [ { bearer: [] } ], summary: Who is signed in, responses: { '200': { description: Staff, content: { application/json: { schema: { $ref: '#/components/schemas/Staff' } } } } } }
+  /auth/pin:
+    put:
+      tags: [Auth & staff]
+      summary: Change your own PIN
+      security: [ { bearer: [] } ]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { currentPin: { type: string }, newPin: { type: string } } } } } }
+      responses: { '200': { description: OK }, '401': { $ref: '#/components/responses/Error' }, '409': { $ref: '#/components/responses/Error' } }
+  /staff:
+    get: { tags: [Auth & staff], security: [ { bearer: [] } ], summary: List staff logins (admin), responses: { '200': { description: Staff, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Staff' } } } } } } }
+    post:
+      tags: [Auth & staff]
+      summary: Add a staff login (admin). PINs are 4–6 digits and unique among active staff.
+      security: [ { bearer: [] } ]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [name, role, pin], properties: { name: { type: string }, role: { type: string, enum: [admin, kitchen, service] }, pin: { type: string } } } } } }
+      responses: { '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/Staff' } } } }, '409': { $ref: '#/components/responses/Error' } }
+  /staff/{id}:
+    patch:
+      tags: [Auth & staff]
+      summary: Rename, change role, reset PIN, disable/enable (admin). Disabling takes effect within 30 s.
+      security: [ { bearer: [] } ]
+      parameters: [ { name: id, in: path, required: true, schema: { type: string, format: uuid } } ]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { name: { type: string }, role: { type: string }, pin: { type: string }, active: { type: boolean } } } } } }
+      responses: { '200': { description: Staff, content: { application/json: { schema: { $ref: '#/components/schemas/Staff' } } } }, '400': { description: 'would leave no active admin' } }
+
+  /orders:
+    post:
+      tags: [Orders, Public]
+      summary: Place an order
+      description: |
+        Without a token this is a **guest** order from the QR menu: priority is always `normal`, 6 per minute per IP,
+        and the response includes `guestToken` — keep it on the device to follow the order.
+        With a service/admin token it is a **waiter** order and `priority` is honoured. Kitchen tokens are refused.
+        Prices and the bill are always computed on the server. The room/table must be in the configured list.
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/NewOrder' } } } }
+      responses:
+        '201': { description: Created, content: { application/json: { schema: { allOf: [ { $ref: '#/components/schemas/Order' }, { type: object, properties: { guestToken: { type: string } } } ] } } } }
+        '400': { $ref: '#/components/responses/Error' }
+        '409': { description: 'dish missing or unavailable', content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+        '429': { $ref: '#/components/responses/Error' }
+    get:
+      tags: [Orders]
+      summary: Orders for the boards and history (staff)
+      security: [ { bearer: [] } ]
+      parameters:
+        - { name: status, in: query, schema: { type: string, enum: [open, completed, cancelled, all], default: all } }
+        - { name: date, in: query, schema: { type: string, format: date }, description: one business day in APP_TZ }
+        - { name: from, in: query, schema: { type: string, format: date } }
+        - { name: to, in: query, schema: { type: string, format: date } }
+        - { name: days, in: query, schema: { type: integer }, description: 'last N days (open orders always included)' }
+        - { name: q, in: query, schema: { type: string }, description: order code, room/table number or dish name }
+        - { name: limit, in: query, schema: { type: integer, default: 500, maximum: 2000 } }
+      responses: { '200': { description: Newest first, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Order' } } } } } }
+  /orders/track:
+    get:
+      tags: [Public]
+      summary: Guest device follows its own orders (last 2 days)
+      parameters: [ { name: tokens, in: query, required: true, schema: { type: string }, description: comma-separated guestTokens } ]
+      responses: { '200': { description: Orders, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Order' } } } } } }
+  /orders/export.csv:
+    get:
+      tags: [Reports]
+      summary: Download orders as CSV (same filters as GET /orders; admin)
+      security: [ { bearer: [] } ]
+      responses: { '200': { description: CSV, content: { text/csv: {} } } }
+  /orders/{id}:
+    parameters: [ { $ref: '#/components/parameters/OrderId' } ]
+    get:
+      tags: [Orders]
+      summary: One order (staff token, or the guest's X-Guest-Token header)
+      parameters: [ { name: X-Guest-Token, in: header, schema: { type: string } } ]
+      responses: { '200': { description: Order, content: { application/json: { schema: { $ref: '#/components/schemas/Order' } } } }, '404': { $ref: '#/components/responses/Error' } }
+    patch:
+      tags: [Orders]
+      summary: Set priority — admin any open order; service only before the kitchen starts; kitchen never
+      security: [ { bearer: [] } ]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { priority: { $ref: '#/components/schemas/Priority' } } } } } }
+      responses: { '200': { description: Order, content: { application/json: { schema: { $ref: '#/components/schemas/Order' } } } }, '403': { $ref: '#/components/responses/Error' } }
+  /orders/{id}/items:
+    parameters: [ { $ref: '#/components/parameters/OrderId' } ]
+    patch:
+      tags: [Orders]
+      summary: Change the status of one or more dishes
+      description: |
+        Allowed moves (others are skipped and returned in `skipped`; 409 if none can move):
+
+        | to | kitchen | service | admin |
+        |---|---|---|---|
+        | preparing / prepared / ready | from queued, preparing, prepared, reprepare | – | same as kitchen |
+        | served | – | from ready | from anything |
+        | reprepare | from preparing, prepared, ready, served | from ready, served | as kitchen |
+        | queued | – | – | from preparing, prepared, ready, reprepare |
+
+        `ready` raises a **serve** alert ("Serve dish"), `reprepare` a **reprepare** alert to everyone.
+        When every dish is served the order becomes `completed`; a re-prepare re-opens it.
+      security: [ { bearer: [] } ]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [keys, status], properties: { keys: { type: array, items: { type: string } }, status: { $ref: '#/components/schemas/ItemStatus' } } } } } }
+      responses: { '200': { description: Order (+ skipped keys), content: { application/json: { schema: { $ref: '#/components/schemas/Order' } } } }, '403': { $ref: '#/components/responses/Error' }, '409': { $ref: '#/components/responses/Error' } }
+  /orders/{id}/cancel:
+    parameters: [ { $ref: '#/components/parameters/OrderId' } ]
+    post:
+      tags: [Orders]
+      summary: Cancel an open order (admin)
+      security: [ { bearer: [] } ]
+      requestBody: { content: { application/json: { schema: { type: object, properties: { reason: { type: string } } } } } }
+      responses: { '200': { description: Order, content: { application/json: { schema: { $ref: '#/components/schemas/Order' } } } } }
+  /orders/{id}/complete:
+    parameters: [ { $ref: '#/components/parameters/OrderId' } ]
+    post:
+      tags: [Orders]
+      summary: Mark every dish served and close the order (admin)
+      security: [ { bearer: [] } ]
+      responses: { '200': { description: Order, content: { application/json: { schema: { $ref: '#/components/schemas/Order' } } } } }
+  /orders/{id}/events:
+    parameters: [ { $ref: '#/components/parameters/OrderId' } ]
+    get:
+      tags: [Orders]
+      summary: Audit trail — who changed what and when (staff)
+      security: [ { bearer: [] } ]
+      responses: { '200': { description: Events, content: { application/json: { schema: { type: array, items: { type: object, properties: { action: { type: string }, items: { type: array, items: { type: string } }, from: { type: string }, to: { type: string }, role: { type: string }, by: { type: string }, at: { type: integer } } } } } } } }
+
+  /alerts:
+    get:
+      tags: [Orders]
+      summary: Latest notifications (staff)
+      security: [ { bearer: [] } ]
+      parameters: [ { name: limit, in: query, schema: { type: integer, default: 40, maximum: 200 } }, { name: since, in: query, schema: { type: integer }, description: epoch ms } ]
+      responses: { '200': { description: Newest first, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Alert' } } } } } }
+  /stats/today:
+    get: { tags: [Reports], security: [ { bearer: [] } ], summary: 'Today: received, completed, cancelled, open, billed, avg minutes, top dishes, by hour', responses: { '200': { description: Stats } } }
+  /stats/day/{date}:
+    get: { tags: [Reports], security: [ { bearer: [] } ], summary: Same for any day (admin), parameters: [ { name: date, in: path, required: true, schema: { type: string, format: date } } ], responses: { '200': { description: Stats } } }
+  /stats/range:
+    get:
+      tags: [Reports]
+      security: [ { bearer: [] } ]
+      summary: Daily totals between two dates (admin)
+      parameters: [ { name: from, in: query, required: true, schema: { type: string, format: date } }, { name: to, in: query, required: true, schema: { type: string, format: date } } ]
+      responses: { '200': { description: One row per day } }
