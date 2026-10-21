@@ -85,7 +85,7 @@ const guestHtmlPath = path.join(guestPath, 'index.html');
 const kitchenHtmlPath = path.join(adminPath, 'kitchen.html');
 const serviceHtmlPath = path.join(adminPath, 'service.html');
 
-const adminRoutes = ['kitchen', 'service', 'orders', 'menu', 'guests', 'locations', 'services', 'custom-cooking', 'folio', 'taxes', 'charges', 'qr'];
+const adminRoutes = ['kitchen', 'service', 'orders', 'menu', 'guests', 'locations', 'services', 'custom-cooking', 'custom_cooking', 'folio', 'taxes', 'charges', 'qr'];
 adminRoutes.forEach(r => {
   app.get(`/admin/${r}`, (req, res) => res.sendFile(adminHtmlPath));
 });

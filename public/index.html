@@ -227,12 +227,12 @@ textarea.input{min-height:70px;resize:vertical}
 
 /* sheet / modal */
 .overlay{position:fixed;inset:0;z-index:60;background:rgba(8,14,11,.5);display:flex;align-items:flex-end;justify-content:center}
-.sheet{background:var(--surface);width:100%;max-width:620px;max-height:92%;border-radius:16px 16px 0 0;display:flex;flex-direction:column;box-shadow:var(--shadow);padding-bottom:env(safe-area-inset-bottom,0px)}
+.sheet{background:var(--surface);width:100%;max-width:620px;max-height:92%;border-radius:16px 16px 0 0;display:flex;flex-direction:column;box-shadow:var(--shadow);padding-bottom:env(safe-area-inset-bottom,0px);overflow-x:hidden}
 @media (min-width:720px){.overlay{align-items:center;padding:24px}.sheet{border-radius:16px;max-height:88%}}
 .sheet.wide{max-width:980px}
 .sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line)}
 .sheet-head h3{font-family:var(--f-display);font-weight:400;font-size:24px}
-.sheet-body{padding:16px 18px;overflow-y:auto;display:grid;gap:16px;min-height:0}
+.sheet-body{padding:16px 18px;overflow-y:auto;overflow-x:hidden;display:grid;gap:16px;min-height:0;box-sizing:border-box;max-width:100%}
 .sheet-foot{padding:12px 18px 16px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
 .cart-line{display:grid;grid-template-columns:auto 1fr auto auto auto;align-items:center;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
 .cart-line .nm{min-width:0;font-weight:600}
@@ -288,17 +288,25 @@ textarea.input{min-height:70px;resize:vertical}
 .board{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
 @media (min-width:980px){.board.has-detail{grid-template-columns:minmax(0,1fr) 440px}}
 .filters{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.tbl{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.tr{display:grid;grid-template-columns:70px 96px 110px minmax(0,1fr) 118px 64px;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);position:relative}
-.tr.th{border-top:0;background:var(--surface-2);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-block:8px}
+.tbl{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;width:100%}
+.tbl::-webkit-scrollbar{height:8px}
+.tbl::-webkit-scrollbar-track{background:var(--surface-2);border-radius:4px}
+.tbl::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px}
+.tbl::-webkit-scrollbar-thumb:hover{background:#94A3B8}
+.tr{display:grid;grid-template-columns:145px 140px 110px minmax(240px,1fr) 120px 85px;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);position:relative;min-width:880px}
+.tr.th{border-top:0;background:var(--surface-2);font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-block:11px;border-bottom:1px solid var(--line)}
 .tr.row{cursor:pointer}
 .tr.row:hover{background:var(--surface-2)}
 .tr.row.sel{background:color-mix(in srgb,var(--teak) 10%,var(--surface))}
 .tr.row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--pc,transparent)}
 .tr.row.redo{box-shadow:inset 0 0 0 1.5px var(--danger)}
-.code{font-family:var(--f-mono);font-weight:600;font-size:14px}
+.code{font-family:var(--f-mono);font-weight:600;font-size:14px;white-space:nowrap;letter-spacing:-0.02em}
 .loc{font-weight:700}
 .loc small{display:block;font-weight:500;color:var(--muted);font-size:11.5px}
+.c-code{white-space:nowrap}
+.c-pri{white-space:nowrap}
+.c-st{white-space:nowrap}
+.c-age{white-space:nowrap;text-align:right}
 .items-sum{font-size:13.5px;min-width:0;overflow:hidden;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .prog{display:flex;gap:3px;margin-top:4px}
 .prog i{height:5px;flex:1;border-radius:3px;background:var(--line)}
@@ -319,11 +327,6 @@ textarea.input{min-height:70px;resize:vertical}
 .st.cooking{background:var(--warn-soft);color:var(--warn)}
 .age{font-size:13px;font-variant-numeric:tabular-nums}
 .age.late{color:var(--danger);font-weight:700}
-@media (max-width:760px){
-  .tr.th{display:none}
-  .tr{grid-template-columns:auto 1fr auto;grid-template-areas:"code loc age" "items items items" "pri pri st";row-gap:6px;padding-left:16px}
-  .tr .c-code{grid-area:code}.tr .c-loc{grid-area:loc}.tr .c-age{grid-area:age;text-align:right}.tr .c-items{grid-area:items}.tr .c-pri{grid-area:pri}.tr .c-st{grid-area:st;text-align:right}
-}
 .detail{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;min-width:0}
 @media (min-width:980px){.detail{position:sticky;top:84px;max-height:calc(100vh - 100px)}}
 @media (max-width:979px){.detail-wrap{position:fixed;inset:0;z-index:50;background:rgba(8,14,11,.5);display:flex;align-items:flex-end}.detail-wrap .detail{width:100%;max-height:90%;border-radius:16px 16px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}}
@@ -389,10 +392,8 @@ textarea.input{min-height:70px;resize:vertical}
 .qr-card .qr{width:136px;height:136px}
 .qr-card .qr img,.qr-card .qr canvas{width:136px!important;height:136px!important}
 .qr-card b{font-family:var(--f-display);font-weight:400;font-size:18px}
-.qr-card small{font-size:10.5px;color:#5D6B62;word-break:break-all}
-.hist-row{display:grid;grid-template-columns:64px 70px minmax(0,1fr) 100px 100px;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);cursor:pointer}
+.hist-row{display:grid;grid-template-columns:75px 145px minmax(200px,1fr) 115px 105px;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);cursor:pointer;min-width:680px}
 .hist-row:hover{background:var(--surface-2)}
-@media (max-width:640px){.hist-row{grid-template-columns:auto 1fr auto}.hist-row .h-items{grid-column:1/-1;order:5}.hist-row .h-st{display:none}}
 .hist-detail{padding:4px 14px 14px;border-top:1px dashed var(--line);display:grid;gap:10px;background:var(--surface-2)}
 .gate{min-height:100%;display:grid;place-items:center;padding:40px 16px}
 .gate-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;width:100%;max-width:360px;display:grid;gap:14px;box-shadow:var(--shadow);text-align:center}
@@ -769,7 +770,7 @@ button.g-chip[aria-pressed="true"]{background:#EFE4C6;color:#1B3127}
 .sheet.paper .track-card{border-color:rgba(160,124,56,.4)}
 .sheet.paper .gnote{background:#F3E6CC}
 .sheet.paper .vmark{background:#fff}
-.item-hero{display:grid;justify-items:center;gap:10px;text-align:center}
+.item-hero{display:grid;justify-items:center;gap:10px;text-align:center;width:100%;max-width:100%;box-sizing:border-box}
 .item-hero .art{width:min(240px,70%);aspect-ratio:1}
 .item-hero .art svg,.item-hero .art img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .item-hero h4{font-family:var(--f-goth);font-weight:600!important;font-weight:600;font-size:28px;line-height:1.1;color:#1C2A21}
@@ -833,7 +834,25 @@ const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&
 const inr = n => '₹' + (Math.round(n*100)/100).toLocaleString('en-IN',{minimumFractionDigits: (Math.round(n*100)%100)?2:0, maximumFractionDigits:2});
 const r2 = n => Math.round(n*100)/100;
 const uid = (n=10)=>{const a='abcdefghijkmnpqrstuvwxyz23456789';let s='';const b=crypto.getRandomValues(new Uint8Array(n));for(const x of b)s+=a[x%a.length];return s;};
-const codeGen = ()=>{const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';const b=crypto.getRandomValues(new Uint8Array(4));for(const x of b)s+=a[x%a.length];return s;};
+const codeGen = () => {
+  const d = new Date();
+  const istTime = new Date(d.getTime() + (d.getTimezoneOffset() * 60000) + (5.5 * 3600000));
+  const yyyy = istTime.getFullYear();
+  const mm = String(istTime.getMonth() + 1).padStart(2, '0');
+  const dd = String(istTime.getDate()).padStart(2, '0');
+  const prefix = `${yyyy}${mm}${dd}`;
+  let maxSeq = 0;
+  if (window.S && Array.isArray(window.S.orders)) {
+    for (const ord of window.S.orders) {
+      const c = ord && ord.code ? String(ord.code) : '';
+      if (c.startsWith(prefix + '-')) {
+        const num = parseInt(c.split('-')[1], 10);
+        if (!isNaN(num) && num > maxSeq) maxSeq = num;
+      }
+    }
+  }
+  return `${prefix}-${String(maxSeq + 1).padStart(3, '0')}`;
+};
 const ls = {get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
 const ss = {get(k){try{return sessionStorage.getItem(k);}catch(e){return null;}},set(k,v){try{sessionStorage.setItem(k,v);}catch(e){}}};
 function ago(ts){const m=Math.floor((Date.now()-ts)/60000);if(m<1)return 'just now';if(m<60)return m+' min';const h=Math.floor(m/60);return h+'h '+(m%60)+'m';}
@@ -842,8 +861,15 @@ function clock(ts){return new Date(ts).toLocaleTimeString('en-IN',{hour:'2-digit
 function locLabel(l){
   if(!l || !l.num) return '—';
   const num = String(l.num).trim();
-  const v = l.villa ? String(l.villa).trim() : '';
-  if(l.type === 'villa') return /^villa|^cottage/i.test(num) ? num : 'Villa ' + num;
+  let v = l.villa ? String(l.villa).trim() : '';
+  if (!v && l.type !== 'villa' && window.S && window.S.locations) {
+    const found = window.S.locations.find(x => x.type === l.type && String(x.number).toUpperCase() === num.toUpperCase());
+    if (found && found.parentVilla) v = found.parentVilla;
+  }
+  if(l.type === 'villa') {
+    const vName = /^villa|^cottage/i.test(num) ? num : 'Villa ' + num;
+    return `${vName} (Whole Villa)`;
+  }
   if(l.type === 'table') {
     const tNum = /^table|^t-/i.test(num) ? num : 'Table ' + num;
     return v ? `${v} · ${tNum}` : tNum;
@@ -904,11 +930,21 @@ function makeLiveStore(db){
   };
 }
 
+const DEFAULT_SLABS = [
+  { id: 1, minPax: 1, maxPax: 5, price: 2000, label: '1-5 Persons (₹2,000)', isActive: true },
+  { id: 2, minPax: 6, maxPax: 10, price: 3500, label: '6-10 Persons (₹3,500)', isActive: true },
+  { id: 3, minPax: 11, maxPax: 15, price: 5000, label: '11-15 Persons (₹5,000)', isActive: true },
+  { id: 4, minPax: 16, maxPax: 20, price: 6500, label: '16-20 Persons (₹6,500)', isActive: true },
+  { id: 5, minPax: 21, maxPax: 30, price: 8000, label: '21+ Persons (₹8,000)', isActive: true }
+];
+
 /* ---------------- state ---------------- */
 const S = {
   store:null, mode:'connecting', writable:false, canEdit:false,
   menu: DEFAULT_MENU.slice(), menuLoaded:false,
-  locations: [], services: [], guests: [], customCooking: [],
+  locations: [], services: [], guests: [], customCooking: [], cookingSlabs: [],
+  cartMeta: ls.get('pe_cart_meta', {}),
+  rawChoice: {},
   locVillaSelected: '',
   settings: {...DEFAULT_SETTINGS},
   orders: [], alerts: [],
@@ -1035,10 +1071,10 @@ function sections(){
 
   // 2. Append Extra Services (Spa, Bonfire, BBQ, Live Music) at the very end of the menu
   const activeServices = (S.services && S.services.length) ? S.services.filter(s=>s.available!==false) : [
-    {id:'srv_bonfire',name:'Evening Pine Wood Bonfire',category:'Entertainment',price:1200,priceUnit:'per session',description:'Cozy private bonfire setup with pine cones & starlight seating.',imageUrl:'photos/dham_thali.webp'},
-    {id:'srv_bbq',name:'Private Lawn Live BBQ & Grills',category:'Dining Experience',price:1500,priceUnit:'setup + chef',description:'Live barbecue grill setup at your lawn with skewers & chef service.',imageUrl:'photos/chicken_tikka.webp'},
-    {id:'srv_spa',name:'Himalayan Forest Spa & Massage',category:'Wellness',price:2200,priceUnit:'per person (60 min)',description:'Deep tissue herbal aroma oil therapy by certified wellness masseuse.',imageUrl:'photos/filter_coffee.webp'},
-    {id:'srv_singer',name:'Live Acoustic Singer & Guitarist',category:'Entertainment',price:4500,priceUnit:'evening session',description:'Private live vocal & guitar performance under the Himalayan sky.',imageUrl:'photos/masala_chai.webp'}
+    {id:'srv_bonfire',name:'Evening Pine Wood Bonfire',category:'Entertainment',price:1200,priceUnit:'per session',description:'Cozy private bonfire setup with pine cones & starlight seating.',imageUrl:'photos/bonfire.webp'},
+    {id:'srv_bbq',name:'Private Lawn Live BBQ & Grills',category:'Dining Experience',price:1500,priceUnit:'setup + chef',description:'Live barbecue grill setup at your lawn with skewers & chef service.',imageUrl:'photos/lawn_bbq.webp'},
+    {id:'srv_spa',name:'Himalayan Forest Spa & Massage',category:'Wellness',price:2200,priceUnit:'per person (60 min)',description:'Deep tissue herbal aroma oil therapy by certified wellness masseuse.',imageUrl:'photos/spa_massage.webp'},
+    {id:'srv_singer',name:'Live Acoustic Singer & Guitarist',category:'Entertainment',price:4500,priceUnit:'evening session',description:'Private live vocal & guitar performance under the Himalayan sky.',imageUrl:'photos/acoustic_singer.webp'}
   ];
   if(activeServices.length > 0){
     const srvSec = { name: 'Resort Experiences & Extra Services', subs: [] };
@@ -1053,7 +1089,7 @@ function sections(){
         sub: cat,
         price: s.price,
         desc: (s.description || '') + ' (' + (s.priceUnit || 'per session') + ')',
-        img: s.imageUrl || 'photos/dham_thali.webp',
+        img: s.imageUrl || 'photos/bonfire.webp',
         veg: true,
         available: true,
         isService: true
@@ -1075,6 +1111,7 @@ function attach(store){
   unsubs.push(store.watchColl('locations',{},arr=>{S.locations=arr;render();}));
   unsubs.push(store.watchColl('services',{},arr=>{S.services=arr;render();}));
   unsubs.push(store.watchColl('customCooking',{},arr=>{S.customCooking=arr||[];render();}));
+  unsubs.push(store.watchColl('cookingSlabs',{},arr=>{S.cookingSlabs=arr||[];render();}));
   let first=true;
   unsubs.push(store.watchColl('alerts',{order:['at','desc'],limit:40},arr=>{
     const prev=new Set(S.alerts.map(a=>a.id));
@@ -1453,10 +1490,37 @@ function dishArt(it){
 
 /* =================== GUEST MENU BOOK =================== */
 const G = { mounted:false, pages:[], idx:0, spread:false, dims:null, sig:'', animating:false, itemPage:{}, secPage:{}, secOrder:[] };
+window.G = G;
 const RM = ()=>(typeof window !== 'undefined' && window.matchMedia) ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
-function cartLines(){return Object.entries(S.cart).map(([id,qty])=>{const m=menuById(id);return m&&qty>0?{id,name:m.name,price:+m.price,qty,veg:m.veg,egg:m.egg,available:m.available!==false,isRawMaterial:!!m.isRawMaterial,isService:!!m.isService,cookingCharge:m.cookingCharge||0}:null;}).filter(Boolean);}
+function cartLines(){
+  return Object.entries(S.cart).map(([id,qty])=>{
+    const m=menuById(id);
+    if (!m || qty <= 0) return null;
+    const meta = (S.cartMeta && S.cartMeta[id]) ? S.cartMeta[id] : {};
+    const price = meta.customPrice != null ? meta.customPrice : +m.price;
+    return {
+      id,
+      name: m.name,
+      price: price,
+      qty,
+      veg: m.veg,
+      egg: m.egg,
+      available: m.available!==false,
+      isRawMaterial: !!m.isRawMaterial,
+      isService: !!m.isService,
+      cookingCharge: meta.customPrice != null ? meta.customPrice : (m.cookingCharge || 0),
+      paxSlab: meta.paxSlab || null,
+      paxCount: meta.paxCount || (meta.paxSlab ? meta.paxSlab.maxPax : null),
+      rawMaterialSource: meta.rawMaterialSource || 'guest',
+      rawMaterialNotes: meta.rawMaterialNotes || ''
+    };
+  }).filter(Boolean);
+}
 function cartCount(){return cartLines().reduce((s,l)=>s+l.qty,0);}
-function saveCart(){ls.set('pe_cart',S.cart);}
+function saveCart(){
+  ls.set('pe_cart', S.cart);
+  ls.set('pe_cart_meta', S.cartMeta || {});
+}
 function guestVisible(it){return S.diet==='veg'?!!it.veg:S.diet==='nonveg'?!it.veg:true;}
 function medHTML(it,extra=''){
   const inner = it.img?`<img src="${esc(it.img)}" alt="" decoding="async">`:dishArt(it);
@@ -1465,7 +1529,7 @@ function medHTML(it,extra=''){
 function qctlInner(it){
   if(it.available===false)return `<span class="q-na">Not today</span>`;
   const q=S.cart[it.id]||0;
-  if(!q)return `<button class="q-add" data-act="add" data-id="${esc(it.id)}" aria-label="Add ${esc(it.name)}">+</button>`;
+  if(!q)return `<button class="q-add" data-act="${it.isRawMaterial ? 'open-item' : 'add'}" data-id="${esc(it.id)}" aria-label="Add ${esc(it.name)}">+</button>`;
   return `<span class="q-step"><button data-act="dec" data-id="${esc(it.id)}" aria-label="One less ${esc(it.name)}">−</button><span>${q}</span><button data-act="add" data-id="${esc(it.id)}" aria-label="One more ${esc(it.name)}">+</button></span>`;
 }
 function qctl(it){return `<span class="qctl" data-q="${esc(it.id)}">${qctlInner(it)}</span>`;}
@@ -1742,6 +1806,8 @@ function flipTo(target){
 }
 function curIdx(){return G.animating&&G.dest!=null?(flipQueue!=null?flipQueue:G.dest):G.idx;}
 function gotoPage(p){flipTo(G.spread?spreadOf(p):p);}
+window.gotoPage = gotoPage;
+window.renderBook = renderBook;
 
 /* ---- mount & update ---- */
 function guestShell(){
@@ -1821,20 +1887,82 @@ function itemSheet(){
   const it=menuById(S.sheet.id);if(!it){return '';}
   const page=G.itemPage[it.id];
   const isRaw = !!it.isRawMaterial;
+
+  const slabs = (S.cookingSlabs && S.cookingSlabs.length) ? S.cookingSlabs.filter(s=>s.isActive!==false) : DEFAULT_SLABS;
+  if (!S.rawChoice) S.rawChoice = {};
+  if (!S.rawChoice[it.id]) {
+    S.rawChoice[it.id] = {
+      source: 'guest',
+      slabId: slabs[0] ? slabs[0].id : 1
+    };
+  }
+  const curChoice = S.rawChoice[it.id];
+  const activeSlab = slabs.find(s => s.id === curChoice.slabId) || slabs[0] || { minPax: 1, maxPax: 5, price: 2000, label: '1-5 Persons (₹2,000)' };
+  const currentPrice = isRaw ? activeSlab.price : +it.price;
+
   return `<div class="overlay" data-act="overlay-close"><div class="sheet paper" role="dialog" aria-modal="true" aria-label="${esc(it.name)}">
     <div class="sheet-head"><h3>${esc(it.section)}</h3><button class="icon-btn" data-act="close-sheet" aria-label="Close">✕</button></div>
     <div class="sheet-body"><div class="item-hero"><div class="art">${it.img?`<img src="${esc(it.img)}" alt="${esc(it.name)}">`:dishArt(it)}</div>
       <div style="display:flex;gap:8px;align-items:center">${vmark(it)}<h4>${esc(it.name)}</h4></div>
       ${isRaw ? `<div class="chip" style="background:#FDEBD3;color:#B45309;border-color:#F0A04B;font-size:12px;font-weight:700">🥩 COOK-TO-ORDER &bull; RAW MATERIAL MODEL</div>` : ''}
       ${it.desc?`<p>${esc(it.desc)}</p>`:''}
-      ${isRaw ? `<div style="background:rgba(154,91,42,0.08);border-left:3.5px solid var(--teak);padding:10px 12px;border-radius:6px;font-size:13px;color:var(--ink);display:grid;gap:4px">
-        <b>💡 How this works:</b>
-        <span>Bring your own fresh raw ingredients (local catch trout, mutton, baby food, or farm greens), or request chef to procure. We cook it fresh to your taste.</span>
-        <span><b>What's included:</b> Complete preparation, chef cooking, served with Steamed Rice or Hot Phulkas &amp; Salad.</span>
-      </div>` : ''}
+      ${isRaw ? `
+      <!-- Raw Material Interactive Selector -->
+      <div style="background:var(--surface-2);border:1.5px solid var(--line);border-radius:12px;padding:14px;margin:12px 0;display:grid;gap:14px;width:100%;max-width:100%;box-sizing:border-box;">
+        
+        <!-- Step 1: Raw Material Source Choice -->
+        <div style="width:100%;box-sizing:border-box;">
+          <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">
+            🥦 Step 1: Raw Material Option *
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:8px;width:100%;box-sizing:border-box;">
+            <button type="button" data-act="pick-raw-source" data-item="${esc(it.id)}" data-src="guest" style="padding:10px 12px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;text-align:left;border:2px solid ${curChoice.source==='guest'?'var(--pine)':'var(--line)'};background:${curChoice.source==='guest'?'#EEF6F2':'var(--surface)'};color:${curChoice.source==='guest'?'#1E3F32':'var(--ink)'};box-sizing:border-box;min-width:0;">
+              <div style="font-size:13px;margin-bottom:3px;line-height:1.2;">🥦 I will bring raw material</div>
+              <div style="font-size:11px;font-weight:500;color:${curChoice.source==='guest'?'#2F5D3A':'var(--muted)'};line-height:1.2;">Cooking fee only &bull; Raw cost ₹0</div>
+            </button>
+
+            <button type="button" data-act="pick-raw-source" data-item="${esc(it.id)}" data-src="resort" style="padding:10px 12px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;text-align:left;border:2px solid ${curChoice.source==='resort'?'var(--pine)':'var(--line)'};background:${curChoice.source==='resort'?'#EEF6F2':'var(--surface)'};color:${curChoice.source==='resort'?'#1E3F32':'var(--ink)'};box-sizing:border-box;min-width:0;">
+              <div style="font-size:13px;margin-bottom:3px;line-height:1.2;">🛒 Request Chef to procure</div>
+              <div style="font-size:11px;font-weight:500;color:${curChoice.source==='resort'?'#2F5D3A':'var(--muted)'};line-height:1.2;">Market receipt added on actuals</div>
+            </button>
+          </div>
+          ${curChoice.source==='resort' ? `
+          <div style="margin-top:8px;font-size:11.5px;color:#96572F;background:#FFF9EE;padding:8px 10px;border-radius:6px;border:1px solid #F0A04B;line-height:1.4;box-sizing:border-box;width:100%;">
+            🧾 <b>Procurement on Actuals:</b> Our Chef will purchase fresh local meat/fish/produce from the valley market. The actual receipt bill will be entered by Front Desk and added to your Stay Folio.
+          </div>` : `
+          <div style="margin-top:8px;font-size:11.5px;color:#2F5D3A;background:#EEF6F2;padding:8px 10px;border-radius:6px;border:1px solid #C4D7C8;line-height:1.4;box-sizing:border-box;width:100%;">
+            ✓ Hand over your raw ingredients (river trout, mutton, or greens) to your Villa Host or Kitchen Butler.
+          </div>`}
+        </div>
+
+        <!-- Step 2: Pax / Group Size Slabs (Clean Dropdown Selector) -->
+        <div style="width:100%;box-sizing:border-box;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;">
+            <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;">👥 Step 2: Group Size (Pax Slabs) *</span>
+            <span style="font-size:12px;font-weight:700;color:var(--pine);background:#E8F5E9;padding:3px 10px;border-radius:6px;border:1px solid #C8E6C9;">Cooking: ${inr(activeSlab.price)}</span>
+          </div>
+          <div style="position:relative;width:100%;box-sizing:border-box;">
+            <select class="input" id="raw-slab-select" data-change="pick-raw-slab-select" data-input="pick-raw-slab-select" data-item="${esc(it.id)}" style="width:100%;height:46px;padding:8px 36px 8px 12px;border-radius:8px;font-size:13.5px;font-weight:600;background:var(--surface);border:1.5px solid var(--line);color:var(--ink);cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;box-sizing:border-box;">
+              ${slabs.map(slab => {
+                const isSel = slab.id === curChoice.slabId;
+                return `<option value="${slab.id}" ${isSel ? 'selected' : ''}>
+                  ${esc(slab.label || `${slab.minPax}-${slab.maxPax} Persons`)} &bull; ${inr(slab.price)} Cooking Fee
+                </option>`;
+              }).join('')}
+            </select>
+            <div style="position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted);font-size:11px;">▼</div>
+          </div>
+        </div>
+
+        <!-- What's included note -->
+        <div style="font-size:12px;color:var(--muted);line-height:1.4;border-top:1px dashed var(--line);padding-top:8px;box-sizing:border-box;width:100%;">
+          <b>🍽️ What's included:</b> Fresh custom chef preparation, valley spices, accompanied with Steamed Basmati Rice or Fresh Tandoori Phulkas &amp; Mountain Salad.
+        </div>
+      </div>
+      ` : ''}
       ${it.signature?'<span class="sig-tag">HOUSE SIGNATURE</span>':''}
-      <div class="pr">${inr(+it.price)} <small style="font-size:12px;color:var(--muted);font-weight:400">${isRaw ? '(Resort Cooking & Service Fee)' : ''}</small></div>
-      ${it.available===false?'<span class="q-na">Not available today</span>':(S.cart[it.id]?`<span class="qctl" data-q="${esc(it.id)}">${qctlInner(it)}</span>`:`<button class="q-add" data-act="add" data-id="${esc(it.id)}" style="min-width:140px;height:40px;border-radius:8px;">${isRaw?'Add Cooking Request':'Add to order'}</button>`)}
+      <div class="pr">${inr(currentPrice)} <small style="font-size:12px;color:var(--muted);font-weight:400">${isRaw ? `(${esc(activeSlab.label || activeSlab.minPax+'-'+activeSlab.maxPax+' Pax')} Cooking Fee)` : ''}</small></div>
+      ${it.available===false?'<span class="q-na">Not available today</span>':(S.cart[it.id]?`<span class="qctl" data-q="${esc(it.id)}">${qctlInner(it)}</span>`:`<button class="q-add" data-act="${isRaw?'add-raw-request':'add'}" data-id="${esc(it.id)}" style="min-width:160px;height:42px;border-radius:8px;font-weight:700;">${isRaw?`Add Cooking Request · ${inr(currentPrice)}`:'Add to order'}</button>`)}
       ${!it.img?'<span class="cap" style="font-size:12px">Illustration</span>':''}
     </div></div>
     <div class="sheet-foot">${page!=null?`<button class="btn" data-act="find" data-p="${page}">Show on menu page ${page}</button>`:''}<button class="btn primary" data-act="close-sheet">Done</button></div></div></div>`;
@@ -1858,17 +1986,60 @@ function getLocationOptions(type, villaNum){
   let list = (S.locations || []).filter(l => l.type === type && l.isActive !== false);
   if(type !== 'villa' && villaNum){
     const vTrim = String(villaNum).trim().toUpperCase();
-    const filtered = list.filter(l => String(l.parentVilla || '').trim().toUpperCase() === vTrim);
-    if(filtered.length > 0) return filtered;
+    return list.filter(l => String(l.parentVilla || '').trim().toUpperCase() === vTrim);
   }
   return list;
+}
+
+function getHostForLocation(loc){
+  if (!loc) return null;
+  const locType = (loc.type || 'villa').toLowerCase();
+  const locNum = String(loc.num || '').trim().toUpperCase();
+  let villaNum = (loc.villa || '').trim();
+
+  if (locType === 'villa') {
+    villaNum = locNum;
+  } else if (!villaNum) {
+    const found = (S.locations || []).find(l => l.type === locType && String(l.number).toUpperCase() === locNum);
+    if (found && found.parentVilla) villaNum = found.parentVilla;
+  }
+
+  const villa = (S.locations || []).find(l => l.type === 'villa' && String(l.number).toUpperCase() === (villaNum || 'VILLA 1').toUpperCase());
+  if (villa && villa.assignedStaffName) {
+    return {
+      villaName: villa.number || 'Villa',
+      name: villa.assignedStaffName,
+      phone: villa.assignedStaffPhone || '9816012345',
+      role: villa.assignedStaffRole || 'Villa Butler & Host'
+    };
+  }
+
+  const fallback = (S.locations || []).find(l => l.type === 'villa' && l.assignedStaffName);
+  if (fallback) {
+    return {
+      villaName: fallback.number || 'Villa',
+      name: fallback.assignedStaffName,
+      phone: fallback.assignedStaffPhone || '9816012345',
+      role: fallback.assignedStaffRole || 'Villa Butler & Host'
+    };
+  }
+
+  return {
+    villaName: 'Pines Exotica',
+    name: 'Front Desk & Guest Services',
+    phone: '9816012345',
+    role: 'Resort Services'
+  };
 }
 
 function updateCartValidation(){
   const btn = document.getElementById('cart-submit-btn');
   const warn = document.getElementById('cart-validation-warn');
-  const curType = (S.loc?.type || 'villa');
-  const locOk = !!(S.loc && String(S.loc.num || '').trim());
+  const allVillas = getLocationOptions('villa');
+  const defaultVilla = (S.loc && S.loc.villa) || (S.loc && S.loc.type === 'villa' ? S.loc.num : '') || (allVillas[0] ? allVillas[0].number : 'Villa 1');
+  const curVilla = S.locVillaSelected || defaultVilla;
+  const curType = (S.loc && S.loc.type) || S.locDestType || 'room';
+  const locOk = (curType === 'villa') ? !!(S.loc && S.loc.num) : !!(S.loc && S.loc.type === curType && S.loc.num && (!S.loc.villa || S.loc.villa === curVilla));
   const nameOk = !!(S.guestName && S.guestName.trim().length >= 2);
   const phoneClean = (S.guestPhone || '').replace(/\D/g, '');
   const phoneOk = phoneClean.length === 10;
@@ -1882,14 +2053,14 @@ function updateCartValidation(){
     let label = `Review & place order · ${inr(b.total)}`;
     if (!nameOk) label = 'Enter guest name';
     else if (!phoneOk) label = 'Enter 10-digit phone';
-    else if (!locOk) label = `Choose ${curType.toUpperCase()}`;
+    else if (!locOk) label = curType === 'room' ? `Choose Room (${curVilla})` : (curType === 'table' ? `Choose Table (${curVilla})` : `Choose Villa`);
     btn.textContent = label;
   }
   if(warn){
     let msg = '';
     if (!nameOk) msg = '⚠️ Please enter full name.';
     else if (!phoneOk) msg = '⚠️ Please enter 10-digit mobile number.';
-    else if (!locOk) msg = `⚠️ Please select your ${curType.toUpperCase()} from the dropdown.`;
+    else if (!locOk) msg = `⚠️ Please select your ${curType === 'room' ? 'Room' : (curType === 'table' ? 'Table' : 'Villa')} in ${curVilla}.`;
     warn.textContent = msg;
     warn.style.display = msg ? 'block' : 'none';
   }
@@ -1989,17 +2160,86 @@ function guestSheet(){
   if(st.kind==='search') return searchSheet();
   const lines=cartLines(); const b=computeBill(lines,S.settings);
   const canSend = S.mode==='live'&&S.writable;
-  const curType = (S.loc?.type || 'villa');
-  const locOpts = getLocationOptions(curType);
-  const locOk = !!(S.loc && String(S.loc.num || '').trim());
+  const allVillas = getLocationOptions('villa');
+  const defaultVilla = (S.loc && S.loc.villa) || (S.loc && S.loc.type === 'villa' ? S.loc.num : '') || (allVillas[0] ? allVillas[0].number : 'Villa 1');
+  const curVilla = S.locVillaSelected || defaultVilla;
+  const curType = (S.loc && S.loc.type) || S.locDestType || 'room';
+  const locOpts = (curType === 'villa') ? allVillas : getLocationOptions(curType, curVilla);
+  const locOk = (curType === 'villa') ? !!(S.loc && S.loc.num) : !!(S.loc && S.loc.type === curType && S.loc.num && (!S.loc.villa || S.loc.villa === curVilla));
   const nameOk = !!(S.guestName && S.guestName.trim().length >= 2);
   const phoneClean = (S.guestPhone || '').replace(/\D/g, '');
   const phoneOk = phoneClean.length === 10;
+  if(st.step==='confirm'){
+    const cnt = cartCount();
+    return `<div class="overlay" data-act="confirm-add-more" style="display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,0.65);backdrop-filter:blur(3px);z-index:9999;">
+      <div class="sheet paper" role="dialog" aria-modal="true" aria-label="Anything else for your meal?" style="background:#FAF6ED;max-width:440px;width:100%;border-radius:20px;border:1.5px solid #D5C7B2;box-shadow:0 24px 48px rgba(0,0,0,0.35);padding:0;overflow:hidden;margin:auto;">
+        
+        <!-- Modal Head with Close -->
+        <div style="display:flex;justify-content:flex-end;padding:14px 16px 0;">
+          <button class="icon-btn" data-act="confirm-add-more" aria-label="Close" style="width:34px;height:34px;border-radius:8px;border:1px solid #D5C7B2;background:transparent;color:#1E3F32;cursor:pointer;font-size:16px;display:grid;place-items:center;">✕</button>
+        </div>
+
+        <!-- Center Content -->
+        <div style="padding:0 24px 18px;text-align:center;">
+          <div style="width:56px;height:56px;border-radius:50%;background:#E8F0EA;color:#1E3F32;display:inline-flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:12px;border:1px solid #C4D7C8;">🍽️</div>
+          <h3 style="font-family:var(--f-goth),Georgia,serif;font-size:24px;font-weight:700;color:#1E3F32;margin:0 0 10px;letter-spacing:-0.4px;">Anything else for your meal?</h3>
+          <p style="font-size:14px;color:#5E5343;margin:0 auto 16px;line-height:1.5;">
+            You have <b>${cnt} item${cnt>1?'s':''}</b> in cart (<b>${inr(b.total)}</b>).<br>
+            Would you like to add Breads, Beverages, or Desserts?
+          </p>
+
+          <!-- Delivery Destination Info Box -->
+          <div style="background:#F2EDE2;padding:12px 14px;border-radius:10px;border:1px solid #DFD5C3;font-size:13px;text-align:left;display:grid;gap:5px;">
+            <div style="display:flex;justify-content:space-between;">
+              <span style="color:#7D715F;font-weight:500;">Deliver to:</span>
+              <b style="color:#1E3F32;">${esc(locLabel(S.loc))}</b>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="color:#7D715F;font-weight:500;">Guest:</span>
+              <b style="color:#1E3F32;">${esc(S.guestName)} (${esc(S.guestPhone)})</b>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="padding:0 24px 24px;display:grid;gap:10px;">
+          <!-- Button 2: Solid Green (Continue & Place Order) -->
+          <button type="button" class="btn primary" data-act="confirm-place-order" style="width:100%;background:#1E3F32;color:#FFFFFF;border:none;padding:14px 18px;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 8px rgba(30,63,50,0.25);">
+            <span>✓</span> <span>Continue &amp; Place Order · ${inr(b.total)}</span>
+          </button>
+
+          <!-- Button 1: Outline (Add More Items) -->
+          <button type="button" class="btn" data-act="confirm-add-more" style="width:100%;background:transparent;color:#1E3F32;border:1.8px solid #1E3F32;padding:12px 18px;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+            <span>➕</span> <span>Add More Items</span>
+          </button>
+        </div>
+
+      </div>
+    </div>`;
+  }
   let body='',foot='';
   if(st.step==='done'){
+    const host = getHostForLocation(st.loc || S.loc);
     body=`<div class="done-box"><div class="eyebrow">Order placed</div><div class="ticket-code">#${esc(st.code)}</div>
       <p>Thank you, <b>${esc(st.guestName || S.guestName || 'Guest')}</b>! Your order for <b>${esc(locLabel(st.loc))}</b> has reached the kitchen.</p>
-      <p class="muted">Total ${inr(st.total)}. You can follow each dish under “My orders”.</p></div>`;
+      <p class="muted">Total ${inr(st.total)}. You can follow each dish under “My orders”.</p></div>
+      ${host ? `
+      <div style="background:#FAF6ED;border:1.5px solid #D5C7B2;border-radius:12px;padding:14px 16px;margin-top:14px;text-align:left;box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#1E3F32;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🛎️</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:11px;font-weight:700;color:#96572F;text-transform:uppercase;letter-spacing:0.5px;">YOUR ASSIGNED ${esc(host.villaName).toUpperCase()} HOST</div>
+            <div style="font-size:15px;font-weight:800;color:#1E3F32;margin-top:2px;">
+              ${esc(host.name)} <span style="font-weight:500;font-size:12px;color:#7D715F;">· ${esc(host.role)}</span>
+            </div>
+            <div style="margin-top:6px;font-size:13.5px;font-weight:700;color:#1E3F32;">
+              <a href="tel:${esc(host.phone)}" style="color:#1E3F32;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+                <span>📞</span> Direct Phone: <span style="color:#96572F;font-family:monospace;font-size:14px;letter-spacing:0.5px;">+91 ${esc(host.phone.replace(/(\d{5})(\d{5})/,'$1 $2'))}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>` : ''}`;
     foot=`<button class="btn" data-act="close-sheet">Back to menu</button><button class="btn primary" data-act="open-track">Track my order</button>`;
   } else if(st.step==='ticket'){
     body=`<div class="done-box"><div class="eyebrow">Show this to your waiter</div><div class="ticket-code">#${esc(st.code)}</div>
@@ -2020,11 +2260,11 @@ function guestSheet(){
     let btnLabel = `Review & place order · ${inr(b.total)}`;
     if (!nameOk) btnLabel = 'Enter guest name';
     else if (!phoneOk) btnLabel = 'Enter 10-digit phone';
-    else if (!locOk) btnLabel = `Choose ${curType.toUpperCase()}`;
+    else if (!locOk) btnLabel = curType === 'room' ? `Choose Room (${curVilla})` : (curType === 'table' ? `Choose Table (${curVilla})` : `Choose Villa`);
 
     body=`<div>${lines.map(l=>`<div class="cart-line">
         <span>${vmark(l)}</span>
-        <span class="nm">${esc(l.name)}<small style="display:block;margin-top:2px;">${inr(l.price)} each ${l.isRawMaterial ? '• <span style="color:#B45309;font-weight:700">🥩 Cooking Fee (Your Raw Material)</span>' : (l.isService ? '• <span style="color:var(--pine);font-weight:700">✨ Experience</span>' : '')}</small></span>
+        <span class="nm">${esc(l.name)}<small style="display:block;margin-top:2px;">${inr(l.price)} each ${l.isRawMaterial ? `• <span style="color:#B45309;font-weight:700">🥩 ${l.paxSlab ? esc(l.paxSlab.label) : (l.paxCount ? l.paxCount + ' Pax' : 'Cooking Fee')} (${l.rawMaterialSource === 'resort' ? 'Chef Procures on Actuals' : 'Guest Brings Raw Material'})</span>` : (l.isService ? '• <span style="color:var(--pine);font-weight:700">✨ Experience</span>' : '')}</small></span>
         <span class="stepper"><button data-act="dec" data-id="${esc(l.id)}" aria-label="One less ${esc(l.name)}">−</button><span>${l.qty}</span><button data-act="add" data-id="${esc(l.id)}" aria-label="One more ${esc(l.name)}">+</button></span>
         <span class="num" style="min-width:64px;text-align:right;font-weight:600">${inr(l.price*l.qty)}</span>
         <button class="x-btn" data-act="remove" data-id="${esc(l.id)}" aria-label="Remove ${esc(l.name)} from order" title="Remove">×</button>
@@ -2062,25 +2302,56 @@ function guestSheet(){
         <span class="chip" style="background:#2F5D3A;color:#fff;font-size:11px;font-weight:700;padding:4px 8px;border-radius:6px;">✓ Scanned</span>
       </div>
       ` : `
-      <!-- Delivery Location Selector (Villa / Room / Table) -->
-      <div class="loc-row" style="background:var(--surface-2);padding:14px;border-radius:10px;border:1px solid var(--line);margin-bottom:12px;display:grid;gap:10px;">
-        <div class="field" style="flex:none">
-          <label style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;">📍 Deliver To</label>
-          <div class="seg" role="group" aria-label="Villa, Room, or Table" style="width:100%;display:flex;">
-            <button data-act="loc-type" data-v="villa" aria-pressed="${curType==='villa'}" style="flex:1;cursor:pointer;font-weight:700;padding:8px 4px;">🏡 Villa</button>
-            <button data-act="loc-type" data-v="room" aria-pressed="${curType==='room'}" style="flex:1;cursor:pointer;font-weight:700;padding:8px 4px;">🛏️ Room</button>
-            <button data-act="loc-type" data-v="table" aria-pressed="${curType==='table'}" style="flex:1;cursor:pointer;font-weight:700;padding:8px 4px;">🍽️ Table</button>
+      <!-- Delivery Location Selector (2-Step Villa-First Hierarchy) -->
+      <div class="loc-row" style="background:var(--surface-2);padding:14px;border-radius:12px;border:1.5px solid var(--line);margin-bottom:14px;display:grid;gap:12px;">
+        <!-- Step 1: Choose Villa -->
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <label style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;">📍 Step 1: Choose Your Villa *</label>
+            <span style="font-size:11px;font-weight:700;color:var(--pine);background:#E8F5E9;padding:2px 8px;border-radius:6px;">🏡 ${esc(curVilla)}</span>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            ${allVillas.map(v => {
+              const isSel = String(curVilla).trim().toUpperCase() === String(v.number).trim().toUpperCase();
+              return `<button type="button" data-act="cart-pick-villa" data-v="${esc(v.number)}" style="flex:1;min-width:120px;padding:9px 12px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;border:2px solid ${isSel ? 'var(--pine)' : 'var(--line)'};background:${isSel ? 'var(--pine)' : 'var(--surface)'};color:${isSel ? '#fff' : 'var(--ink)'};transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;">
+                <span>🏡</span> <span>${esc(v.name || v.number)}</span>
+              </button>`;
+            }).join('')}
           </div>
         </div>
-        <div class="field">
-          <label for="g-locnum" style="font-size:11.5px;font-weight:600;color:var(--muted);text-transform:uppercase;">Select ${curType.toUpperCase()} *</label>
-          <select class="input" id="g-locnum" data-input="cart-loc-select" data-change="cart-loc-select" style="font-weight:700;background:var(--surface);border:1.5px solid var(--pine);padding:8px 12px;height:42px;width:100%;cursor:pointer;">
-            <option value="">${locOpts.length ? `-- Choose ${curType.toUpperCase()} --` : `-- No ${curType === 'villa' ? 'Villas' : (curType === 'room' ? 'Rooms' : 'Tables')} Configured --`}</option>
-            ${locOpts.map(l=>`<option value="${esc(l.number)}" ${String(S.loc?.num).trim().toUpperCase()===String(l.number).trim().toUpperCase()?'selected':''}>${esc(l.name||(curType.toUpperCase()+' '+l.number))}</option>`).join('')}
-          </select>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
-          ${locOpts.length ? locOpts.slice(0, 8).map(l=>`<button data-act="cart-quick-loc" data-v="${esc(l.number)}" class="chip" style="font-size:12px;padding:4px 10px;cursor:pointer;border-radius:6px;${String(S.loc?.num).trim().toUpperCase()===String(l.number).trim().toUpperCase()?'background:var(--pine);color:#fff;border-color:var(--pine);font-weight:700;':'background:var(--surface);'}">${esc(l.number)}</button>`).join('') : `<span style="font-size:12px;color:var(--muted);font-style:italic;">No ${curType}s configured in Admin</span>`}
+
+        <!-- Step 2: Where inside this Villa? -->
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">
+            📍 Step 2: Where in ${esc(curVilla)}? *
+          </div>
+          <div class="seg" role="group" aria-label="Room or Table" style="width:100%;display:flex;margin-bottom:10px;">
+            <button type="button" data-act="cart-loc-type" data-v="room" aria-pressed="${curType==='room'}" style="flex:1;cursor:pointer;font-weight:700;padding:8px 4px;font-size:12.5px;">🛏️ Rooms (${esc(curVilla)})</button>
+            <button type="button" data-act="cart-loc-type" data-v="table" aria-pressed="${curType==='table'}" style="flex:1;cursor:pointer;font-weight:700;padding:8px 4px;font-size:12.5px;">🍽️ Dining Tables</button>
+            <button type="button" data-act="cart-loc-type" data-v="villa" aria-pressed="${curType==='villa'}" style="flex:1;cursor:pointer;font-weight:700;padding:8px 4px;font-size:12.5px;">🏡 Entire Villa</button>
+          </div>
+
+          ${curType !== 'villa' ? `
+          <!-- Dropdown & Quick Select for Rooms or Tables of Selected Villa -->
+          <div style="display:grid;gap:8px;">
+            <select class="input" id="g-locnum" data-input="cart-loc-select" data-change="cart-loc-select" style="font-weight:700;background:var(--surface);border:1.5px solid var(--pine);padding:8px 12px;height:42px;width:100%;cursor:pointer;border-radius:8px;font-size:13.5px;">
+              <option value="">-- Choose ${curType === 'room' ? 'Room' : 'Table'} in ${esc(curVilla)} --</option>
+              ${locOpts.map(l => `<option value="${esc(l.number)}" ${String(S.loc?.num).trim().toUpperCase()===String(l.number).trim().toUpperCase() && S.loc?.type===curType ? 'selected' : ''}>${esc(l.name || (curType.toUpperCase() + ' ' + l.number))}</option>`).join('')}
+            </select>
+
+            <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+              <span style="font-size:11.5px;color:var(--muted);font-weight:600;">Quick pick:</span>
+              ${locOpts.length ? locOpts.map(l => {
+                const isNumSel = String(S.loc?.num).trim().toUpperCase() === String(l.number).trim().toUpperCase() && S.loc?.type === curType;
+                return `<button type="button" data-act="cart-quick-loc" data-v="${esc(l.number)}" data-villa="${esc(curVilla)}" class="chip" style="font-size:12.5px;padding:5px 12px;cursor:pointer;border-radius:6px;font-weight:700;${isNumSel ? 'background:var(--teak);color:#fff;border-color:var(--teak);box-shadow:0 1px 3px rgba(0,0,0,0.15);' : 'background:var(--surface);border:1px solid var(--line);color:var(--ink);'}">${esc(l.number)}</button>`;
+              }).join('') : `<span style="font-size:12px;color:var(--muted);font-style:italic;">No ${curType === 'room' ? 'rooms' : 'tables'} mapped under ${esc(curVilla)}</span>`}
+            </div>
+          </div>
+          ` : `
+          <div style="background:#FAF7F0;border:1px solid #D5C7B2;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#4A4031;">
+            Deliver to the central living / common patio area of <b>${esc(curVilla)}</b>.
+          </div>
+          `}
         </div>
       </div>
       `}
@@ -2088,15 +2359,13 @@ function guestSheet(){
       <div class="field"><label for="g-note">Cooking notes (optional)</label><textarea class="input" id="g-note" data-input="cartNote" placeholder="Less spicy, no onion, extra chutney…">${esc(S.cartNote)}</textarea></div>
 
       <div id="cart-validation-warn" style="font-size:12px;color:#B45309;background:#FFF9EE;padding:8px 12px;border-radius:6px;display:${(!nameOk||!phoneOk||!locOk)?'block':'none'};">
-        ${!nameOk?'⚠️ Please enter full name.':(!phoneOk?'⚠️ Please enter 10-digit mobile number.':(!locOk?`⚠️ Please select your ${curType.toUpperCase()} from the dropdown.`:''))}
+        ${!nameOk?'⚠️ Please enter full name.':(!phoneOk?'⚠️ Please enter 10-digit mobile number.':(!locOk?`⚠️ Please select your ${curType === 'room' ? 'Room' : (curType === 'table' ? 'Table' : 'Villa')} in ${curVilla}.`:''))}
       </div>
 
       ${billHTML(b)}
-      ${st.step==='confirm'?`<div class="confirm-box" role="alert"><b>Please verify your order</b><span>Guest: <b>${esc(S.guestName)}</b> (${esc(S.guestPhone)})<br>Deliver to: <b>${esc(locLabel(S.loc))}</b><br>${cartCount()} item${cartCount()>1?'s':''} · total <b>${inr(b.total)}</b>. Once placed, the kitchen starts preparing it.</span></div>`:''}
       ${S.mode==='connecting'?`<div class="notice">Connecting to the kitchen…</div>`:''}`;
 
-    if(st.step==='confirm') foot=`<button class="btn" data-act="cart-back">Edit order</button><button class="btn primary" data-act="place">${canSend?'Yes, place order':'Yes, create waiter ticket'}</button>`;
-    else foot=`<button class="btn" data-act="close-sheet">Add more</button><button class="btn primary" id="cart-submit-btn" data-act="cart-confirm" ${blocked?'disabled':''}>${btnLabel}</button>`;
+    foot=`<button class="btn" data-act="close-sheet">Add more</button><button class="btn primary" id="cart-submit-btn" data-act="cart-confirm" ${blocked?'disabled':''}>${btnLabel}</button>`;
   }
   const title = st.step==='done'?'Thank you':st.step==='ticket'?'Waiter ticket':'Your order';
   return `<div class="overlay" data-act="overlay-close"><div class="sheet paper" role="dialog" aria-modal="true" aria-label="${title}">
@@ -2153,6 +2422,27 @@ function trackSheet(){
     </div>
   `).join('');
 
+  const hostLoc = (mine[0] && mine[0].loc) ? mine[0].loc : S.loc;
+  const host = getHostForLocation(hostLoc);
+  const hostBannerHtml = host ? `
+    <div style="background:#FAF6ED;border:1.5px solid #D5C7B2;border-radius:12px;padding:14px 16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:38px;height:38px;border-radius:50%;background:#1E3F32;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🛎️</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:11px;font-weight:700;color:#96572F;text-transform:uppercase;letter-spacing:0.5px;">YOUR ASSIGNED ${esc(host.villaName).toUpperCase()} HOST</div>
+          <div style="font-size:15px;font-weight:800;color:#1E3F32;margin-top:2px;">
+            ${esc(host.name)} <span style="font-weight:500;font-size:12px;color:#7D715F;">· ${esc(host.role)}</span>
+          </div>
+          <div style="margin-top:6px;font-size:13.5px;font-weight:700;color:#1E3F32;">
+            <a href="tel:${esc(host.phone)}" style="color:#1E3F32;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+              <span>📞</span> Direct Phone: <span style="color:#96572F;font-family:monospace;font-size:14px;letter-spacing:0.5px;">+91 ${esc(host.phone.replace(/(\d{5})(\d{5})/,'$1 $2'))}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  ` : '';
+
   return `<div class="overlay" data-act="overlay-close">
     <div class="sheet paper" role="dialog" aria-modal="true" aria-label="My orders" style="background:#FAF6ED;max-width:560px;border-radius:16px 16px 0 0;">
       <div class="sheet-head" style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px 14px;border-bottom:1px solid rgba(213,199,178,0.45);background:transparent;">
@@ -2160,6 +2450,7 @@ function trackSheet(){
         <button class="icon-btn" data-act="close-sheet" aria-label="Close" style="width:36px;height:36px;border-radius:8px;border:1px solid #D5C7B2;background:transparent;color:#1E3F32;font-size:16px;display:grid;place-items:center;cursor:pointer;">✕</button>
       </div>
       <div class="sheet-body" style="padding:20px 22px 10px;background:#FAF6ED;">
+        ${hostBannerHtml}
         ${cardsHtml}
       </div>
       <div class="sheet-foot" style="display:flex;justify-content:flex-end;padding:14px 22px 18px;border-top:none;background:transparent;">
@@ -2171,7 +2462,12 @@ function trackSheet(){
 async function placeOrder(){
   const lines=cartLines(); if(!lines.length)return;
   const bill=computeBill(lines,S.settings);
-  const loc={type:S.loc?.type||'villa',num:String(S.loc?.num||'').trim()};
+  const curVilla = (S.loc && S.loc.villa) || S.locVillaSelected || 'Villa 1';
+  const loc = {
+    type: S.loc?.type || 'villa',
+    num: String(S.loc?.num || '').trim(),
+    villa: (S.loc?.type === 'villa') ? String(S.loc?.num || '').trim() : curVilla
+  };
   const guestName = (S.guestName || '').trim();
   const guestPhone = (S.guestPhone || '').replace(/\D/g, '').slice(0, 10);
   if(!guestName || guestName.length < 2){
@@ -2196,6 +2492,11 @@ async function placeOrder(){
   const hasSrv = lines.some(l => l.isService);
   const orderType = hasRaw ? 'raw_material' : (hasSrv ? 'extra_service' : 'alacarte');
   const cookingCharge = lines.reduce((s,l)=> s + (l.isRawMaterial ? l.price*l.qty : 0), 0);
+  const rawItem = lines.find(l => l.isRawMaterial);
+  const paxCount = rawItem && rawItem.paxCount ? rawItem.paxCount : null;
+  const rawMaterialSource = rawItem && rawItem.rawMaterialSource ? rawItem.rawMaterialSource : 'guest';
+  const rawMaterialNotes = rawItem && rawItem.rawMaterialNotes ? rawItem.rawMaterialNotes : (rawMaterialSource === 'resort' ? 'Chef to procure fresh from local market on actuals' : 'Guest bringing raw ingredients');
+
   const order={
     code,
     loc,
@@ -2210,6 +2511,9 @@ async function placeOrder(){
     orderType,
     rawMaterialCost: 0,
     cookingCharge,
+    paxCount,
+    rawMaterialSource,
+    rawMaterialNotes,
     items:lines.map(l=>({
       k:uid(6),
       id:l.id,
@@ -2221,7 +2525,10 @@ async function placeOrder(){
       redo:0,
       isRawMaterial: !!l.isRawMaterial,
       isService: !!l.isService,
-      cookingCharge: l.cookingCharge || 0
+      cookingCharge: l.cookingCharge || 0,
+      paxSlab: l.paxSlab || null,
+      paxCount: l.paxCount || null,
+      rawMaterialSource: l.rawMaterialSource || null
     })),
     bill
   };
@@ -2229,7 +2536,7 @@ async function placeOrder(){
   if(!ok)return;
   pushAlert({kind:'new',orderId:id,code,loc,text:`New ${hasRaw?'cook-to-order ':''}order by ${guestName}: ${lines.length} dish${lines.length>1?'es':''}`});
   S.myOrders=[id,...S.myOrders].slice(0,10);ls.set('pe_my_orders',S.myOrders);
-  S.cart={};saveCart();S.cartNote='';
+  S.cart={}; S.cartMeta={}; saveCart(); S.cartNote='';
   S.sheet={kind:'cart',step:'done',code,loc,guestName,guestPhone,total:bill.total};render();
 }
 
@@ -2707,8 +3014,57 @@ document.addEventListener('click',async e=>{
   if(a.startsWith('overlay-close')||a==='detail-bg'){ if(e.target!==t)return; }
   switch(a){
     case 'add': S.cart[id]=(S.cart[id]||0)+1; saveCart(); break;
-    case 'dec': S.cart[id]=Math.max(0,(S.cart[id]||0)-1); if(!S.cart[id])delete S.cart[id]; saveCart(); if(S.sheet&&S.sheet.step==='confirm')S.sheet.step='review'; break;
-    case 'remove': delete S.cart[id]; saveCart(); if(S.sheet)S.sheet.step='review'; break;
+    case 'dec': {
+      S.cart[id]=Math.max(0,(S.cart[id]||0)-1);
+      if(!S.cart[id]){ delete S.cart[id]; if(S.cartMeta) delete S.cartMeta[id]; }
+      saveCart();
+      if(S.sheet&&S.sheet.step==='confirm')S.sheet.step='review';
+      break;
+    }
+    case 'remove': {
+      delete S.cart[id];
+      if(S.cartMeta) delete S.cartMeta[id];
+      saveCart();
+      if(S.sheet)S.sheet.step='review';
+      break;
+    }
+    case 'pick-raw-source': {
+      const itId = t.dataset.item;
+      const src = t.dataset.src;
+      if (!S.rawChoice) S.rawChoice = {};
+      if (!S.rawChoice[itId]) S.rawChoice[itId] = { source: 'guest', slabId: (S.cookingSlabs?.[0]?.id || 1) };
+      S.rawChoice[itId].source = src;
+      render();
+      return;
+    }
+    case 'pick-raw-slab': {
+      const itId = t.dataset.item;
+      const slabId = parseInt(t.dataset.slab, 10);
+      if (!S.rawChoice) S.rawChoice = {};
+      if (!S.rawChoice[itId]) S.rawChoice[itId] = { source: 'guest', slabId };
+      S.rawChoice[itId].slabId = slabId;
+      render();
+      return;
+    }
+    case 'add-raw-request': {
+      const itemId = t.dataset.id || id;
+      const slabs = (S.cookingSlabs && S.cookingSlabs.length) ? S.cookingSlabs.filter(s=>s.isActive!==false) : DEFAULT_SLABS;
+      const choice = (S.rawChoice && S.rawChoice[itemId]) || { source: 'guest', slabId: slabs[0]?.id || 1 };
+      const slab = slabs.find(s => s.id === choice.slabId) || slabs[0];
+      S.cart[itemId] = 1;
+      if (!S.cartMeta) S.cartMeta = {};
+      S.cartMeta[itemId] = {
+        paxSlab: slab,
+        paxCount: slab ? slab.maxPax : 5,
+        rawMaterialSource: choice.source,
+        customPrice: slab ? slab.price : 2000
+      };
+      saveCart();
+      S.sheet = null;
+      toast('Added to Order', (slab ? slab.label : 'Custom Cooking Request') + ' · ' + inr(slab ? slab.price : 2000), 'new');
+      render();
+      return;
+    }
     case 'clear-search': S.q=''; S.diet='all'; break;
     case 'flip-next': flipTo(curIdx()+1); return;
     case 'flip-prev': flipTo(curIdx()-1); return;
@@ -2794,12 +3150,82 @@ document.addEventListener('click',async e=>{
       render();
       return;
     }
-    case 'open-cart': S.sheet={kind:'cart',step:'review'}; if(!S.loc)S.loc={type:'table',num:''}; break;
+    case 'open-cart': {
+      S.sheet = { kind: 'cart', step: 'review' };
+      const allV = getLocationOptions('villa');
+      const defV = (S.loc && S.loc.villa) || (S.loc && S.loc.type === 'villa' ? S.loc.num : '') || (allV[0] ? allV[0].number : 'Villa 1');
+      if (!S.locVillaSelected) S.locVillaSelected = defV;
+      if (!S.locDestType) S.locDestType = (S.loc && S.loc.type) || 'room';
+      break;
+    }
     case 'open-track': S.sheet={kind:'track'}; break;
     case 'close-sheet': case 'overlay-close': S.sheet=null; break;
-    case 'cart-confirm': S.sheet.step='confirm'; break;
+    case 'cart-confirm': {
+      const phoneClean = (S.guestPhone || '').replace(/\D/g, '');
+      if (!S.guestName || S.guestName.trim().length < 2) {
+        toast('Name required', 'Please enter your full name', 'reprepare');
+        return;
+      }
+      if (phoneClean.length !== 10) {
+        toast('Phone required', 'Please enter 10-digit mobile number', 'reprepare');
+        return;
+      }
+      if (!S.loc || !S.loc.num) {
+        const curType = S.locDestType || (S.loc && S.loc.type) || 'room';
+        toast('Location required', `Please select your ${curType.toUpperCase()}`, 'reprepare');
+        return;
+      }
+      S.sheet.step = 'confirm';
+      break;
+    }
+    case 'confirm-add-more': {
+      S.sheet = null;
+      toast('Cart Saved', 'Add more dishes from the menu anytime!', 'serve');
+      break;
+    }
+    case 'confirm-place-order':
+    case 'place': {
+      t.disabled = true;
+      await placeOrder();
+      return;
+    }
     case 'cart-back': S.sheet.step='review'; break;
-    case 'place': t.disabled=true; await placeOrder(); return;
+    case 'cart-pick-villa': {
+      const selV = t.dataset.v;
+      S.locVillaSelected = selV;
+      const curT = S.locDestType || (S.loc && S.loc.type) || 'room';
+      if (curT === 'villa') {
+        setGuestLocation('villa', selV, selV);
+      } else {
+        setGuestLocation(curT, '', selV);
+      }
+      updateCartValidation();
+      render();
+      break;
+    }
+    case 'cart-loc-type': {
+      const newType = t.dataset.v;
+      S.locDestType = newType;
+      const curVilla = S.locVillaSelected || (S.loc && S.loc.villa) || 'Villa 1';
+      if (newType === 'villa') {
+        setGuestLocation('villa', curVilla, curVilla);
+      } else {
+        const opts = getLocationOptions(newType, curVilla);
+        const match = opts.find(l => String(l.number).toUpperCase() === String(S.loc?.num || '').toUpperCase());
+        setGuestLocation(newType, match ? match.number : '', curVilla);
+      }
+      updateCartValidation();
+      render();
+      break;
+    }
+    case 'cart-quick-loc': {
+      const curVilla = t.dataset.villa || S.locVillaSelected || (S.loc && S.loc.villa) || 'Villa 1';
+      const curType = S.locDestType || (S.loc && S.loc.type) || 'room';
+      setGuestLocation(curType, t.dataset.v, curVilla);
+      updateCartValidation();
+      render();
+      break;
+    }
     case 'loc-type': {
       const newType = t.dataset.v;
       if (!S.loc || S.loc.type !== newType) {
@@ -2808,10 +3234,6 @@ document.addEventListener('click',async e=>{
       render();
       break;
     }
-    case 'cart-quick-loc':
-      setGuestLocation(S.loc?.type || 'villa', t.dataset.v);
-      updateCartValidation();
-      break;
     case 'go': if(t.dataset.to==='guest')go('guest');else go(t.dataset.to); return;
     case 'pin': if(S.pin.length<4){S.pin+=t.dataset.v;S.pinErr=false;} if(S.pin.length===4){ if(S.pin===String(S.settings.pin||'1234')){S.staffUnlocked=true;ss.set('pe_staff','1');} else S.pinErr=true; S.pin=''; } break;
     case 'pin-clear': S.pin=''; break;
@@ -2908,8 +3330,21 @@ document.addEventListener('input',e=>{
   else if(k==='cartNote'){S.cartNote=t.value;}
   else if(k==='cart-guest-name'){S.guestName=t.value;ls.set('pe_guest_name',S.guestName);updateCartValidation();}
   else if(k==='cart-guest-phone'){const cl=t.value.replace(/\D/g,'').slice(0,10);t.value=cl;S.guestPhone=cl;ls.set('pe_guest_phone',S.guestPhone);updateCartValidation();}
-  else if(k==='cart-loc-select'){setGuestLocation(S.loc?.type||'villa', t.value);updateCartValidation();}
+  else if(k==='cart-loc-select'){
+    const curVilla = S.locVillaSelected || (S.loc && S.loc.villa) || 'Villa 1';
+    const curType = S.locDestType || (S.loc && S.loc.type) || 'room';
+    setGuestLocation(curType, t.value, curVilla);
+    updateCartValidation();
+  }
   else if(k==='sheet-loc-select'){if(!S.loc)S.loc={type:'villa',num:''};S.loc.num=t.value;render();}
+  else if(k==='pick-raw-slab-select'){
+    const itId = t.dataset.item;
+    const slabId = parseInt(t.value, 10);
+    if (!S.rawChoice) S.rawChoice = {};
+    if (!S.rawChoice[itId]) S.rawChoice[itId] = { source: 'guest', slabId };
+    S.rawChoice[itId].slabId = slabId;
+    render();
+  }
   else if(k==='sheet-locnum'){if(!S.loc)S.loc={type:'villa',num:''};S.loc.num=t.value.replace(/[^A-Za-z0-9-]/g,'').slice(0,8);}
   else if(k==='locnum'){const num=t.value.replace(/[^A-Za-z0-9-]/g,'').slice(0,8); setGuestLocation(S.loc?.type||'table', num); render(); }
   else if(k==='cq'){S.composer.q=t.value;render();}
@@ -2922,8 +3357,22 @@ document.addEventListener('input',e=>{
 });
 document.addEventListener('change',async e=>{
   const t=e.target;const k=t.dataset.change;if(!k)return;
-  if(k==='cart-loc-select'){setGuestLocation(S.loc?.type||'villa', t.value);updateCartValidation();}
+  if(k==='cart-loc-select'){
+    const curVilla = S.locVillaSelected || (S.loc && S.loc.villa) || 'Villa 1';
+    const curType = S.locDestType || (S.loc && S.loc.type) || 'room';
+    setGuestLocation(curType, t.value, curVilla);
+    updateCartValidation();
+  }
   else if(k==='sheet-loc-select'){if(!S.loc)S.loc={type:'villa',num:''};S.loc.num=t.value;render();}
+  else if(k==='pick-raw-slab-select'){
+    const itId = t.dataset.item;
+    const slabId = parseInt(t.value, 10);
+    if (!S.rawChoice) S.rawChoice = {};
+    if (!S.rawChoice[itId]) S.rawChoice[itId] = { source: 'guest', slabId };
+    S.rawChoice[itId].slabId = slabId;
+    render();
+    return;
+  }
   if(k==='priority'){const o=S.orders.find(x=>x.id===t.dataset.order);if(o&&o.priority!==t.value){await write(()=>S.store.update('orders/'+o.id,{priority:t.value,updatedAt:Date.now()}));await pushAlert({kind:'priority',orderId:o.id,code:o.code,loc:o.loc,text:'Priority set to '+PRI_BY[t.value].l});}}
   else if(k==='cpri'){S.composer.priority=t.value;S.composer.confirm=false;}
   else if(k==='hdate'){S.histDate=t.value||dayKey(Date.now());S.histOpen=null;}

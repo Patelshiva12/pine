@@ -9,6 +9,9 @@ function mapLoc(r) {
     name: r.name,
     number: r.number,
     parentVilla: r.parent_villa || '',
+    assignedStaffName: r.assigned_staff_name || '',
+    assignedStaffPhone: r.assigned_staff_phone || '',
+    assignedStaffRole: r.assigned_staff_role || 'Villa Butler',
     isActive: r.is_active,
     displayOrder: r.display_order,
     createdAt: r.created_at
@@ -67,7 +70,7 @@ router.get('/', async (req, res) => {
 // POST add location (Villa / Room / Table)
 router.post('/', async (req, res) => {
   try {
-    const { type, name, number, displayOrder, parentVilla } = req.body;
+    const { type, name, number, displayOrder, parentVilla, assignedStaffName, assignedStaffPhone, assignedStaffRole } = req.body;
     if (!type || !name || !number) {
       return res.status(400).json({ error: 'Type (villa/room/table), Name and Number are required' });
     }
@@ -76,12 +79,15 @@ router.post('/', async (req, res) => {
     const cleanNumber = String(number).trim().toUpperCase();
     const cleanName = String(name).trim();
     const cleanParent = parentVilla ? String(parentVilla).trim() : '';
+    const cleanStaffName = assignedStaffName ? String(assignedStaffName).trim() : '';
+    const cleanStaffPhone = assignedStaffPhone ? String(assignedStaffPhone).trim() : '';
+    const cleanStaffRole = assignedStaffRole ? String(assignedStaffRole).trim() : 'Villa Butler';
     const order = parseInt(displayOrder, 10) || 50;
 
     await db.query(
-      `INSERT INTO dining_locations (id, type, name, number, parent_villa, is_active, display_order)
-       VALUES ($1, $2, $3, $4, $5, true, $6)`,
-      [id, type.toLowerCase(), cleanName, cleanNumber, cleanParent, order]
+      `INSERT INTO dining_locations (id, type, name, number, parent_villa, assigned_staff_name, assigned_staff_phone, assigned_staff_role, is_active, display_order)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, true, $9)`,
+      [id, type.toLowerCase(), cleanName, cleanNumber, cleanParent, cleanStaffName, cleanStaffPhone, cleanStaffRole, order]
     );
 
     const created = {
@@ -90,6 +96,9 @@ router.post('/', async (req, res) => {
       name: cleanName,
       number: cleanNumber,
       parentVilla: cleanParent,
+      assignedStaffName: cleanStaffName,
+      assignedStaffPhone: cleanStaffPhone,
+      assignedStaffRole: cleanStaffRole,
       isActive: true,
       displayOrder: order
     };
@@ -106,7 +115,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { type, name, number, isActive, displayOrder, parentVilla } = req.body;
+    const { type, name, number, isActive, displayOrder, parentVilla, assignedStaffName, assignedStaffPhone, assignedStaffRole } = req.body;
 
     const result = await db.query(
       `UPDATE dining_locations SET
@@ -115,10 +124,24 @@ router.put('/:id', async (req, res) => {
          number = COALESCE($3, number),
          is_active = COALESCE($4, is_active),
          display_order = COALESCE($5, display_order),
-         parent_villa = COALESCE($6, parent_villa)
-       WHERE id = $7
+         parent_villa = COALESCE($6, parent_villa),
+         assigned_staff_name = COALESCE($7, assigned_staff_name),
+         assigned_staff_phone = COALESCE($8, assigned_staff_phone),
+         assigned_staff_role = COALESCE($9, assigned_staff_role)
+       WHERE id = $10
        RETURNING *`,
-      [type ? type.toLowerCase() : null, name, number, isActive, displayOrder, parentVilla, id]
+      [
+        type ? type.toLowerCase() : null,
+        name,
+        number,
+        isActive,
+        displayOrder,
+        parentVilla,
+        assignedStaffName !== undefined ? assignedStaffName : null,
+        assignedStaffPhone !== undefined ? assignedStaffPhone : null,
+        assignedStaffRole !== undefined ? assignedStaffRole : null,
+        id
+      ]
     );
 
     if (result.rowCount === 0) return res.status(404).json({ error: 'Location not found' });

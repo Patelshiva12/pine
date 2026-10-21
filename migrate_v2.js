@@ -37,11 +37,29 @@ async function migrateV2() {
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
     ALTER TABLE dining_locations ADD COLUMN IF NOT EXISTS parent_villa VARCHAR(100) DEFAULT '';
+    ALTER TABLE dining_locations ADD COLUMN IF NOT EXISTS assigned_staff_name VARCHAR(100) DEFAULT '';
+    ALTER TABLE dining_locations ADD COLUMN IF NOT EXISTS assigned_staff_phone VARCHAR(20) DEFAULT '';
+    ALTER TABLE dining_locations ADD COLUMN IF NOT EXISTS assigned_staff_role VARCHAR(100) DEFAULT 'Villa Butler';
     CREATE INDEX IF NOT EXISTS idx_locations_type ON dining_locations(type);
     CREATE INDEX IF NOT EXISTS idx_locations_active ON dining_locations(is_active);
     CREATE INDEX IF NOT EXISTS idx_locations_parent_villa ON dining_locations(parent_villa);
   `);
-  console.log('[Migration] Table `dining_locations` verified with parent_villa.');
+
+  // Default seed staff for Villa 1 & Villa 2 if not set
+  await db.query(`
+    UPDATE dining_locations 
+    SET assigned_staff_name = 'Ramesh Sharma', 
+        assigned_staff_phone = '9816012345', 
+        assigned_staff_role = 'Villa Butler & Host'
+    WHERE type = 'villa' AND (number = 'Villa 1' OR number = '1') AND (assigned_staff_name IS NULL OR assigned_staff_name = '');
+
+    UPDATE dining_locations 
+    SET assigned_staff_name = 'Kalyan Singh', 
+        assigned_staff_phone = '9816098765', 
+        assigned_staff_role = 'Villa Butler & Host'
+    WHERE type = 'villa' AND (number = 'Villa 2' OR number = '2') AND (assigned_staff_name IS NULL OR assigned_staff_name = '');
+  `);
+  console.log('[Migration] Table `dining_locations` verified with parent_villa & assigned_staff.');
 
   // 2b. Create Custom Cooking & Raw Material Items Table
   await db.query(`

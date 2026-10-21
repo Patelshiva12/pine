@@ -253,17 +253,25 @@ textarea.input{min-height:70px;resize:vertical}
 .board{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
 @media (min-width:980px){.board.has-detail{grid-template-columns:minmax(0,1fr) 440px}}
 .filters{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.tbl{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.tr{display:grid;grid-template-columns:70px 96px 110px minmax(0,1fr) 118px 64px;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);position:relative}
-.tr.th{border-top:0;background:var(--surface-2);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-block:8px}
+.tbl{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;width:100%}
+.tbl::-webkit-scrollbar{height:8px}
+.tbl::-webkit-scrollbar-track{background:var(--surface-2);border-radius:4px}
+.tbl::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px}
+.tbl::-webkit-scrollbar-thumb:hover{background:#94A3B8}
+.tr{display:grid;grid-template-columns:145px 140px 110px minmax(240px,1fr) 120px 85px;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);position:relative;min-width:880px}
+.tr.th{border-top:0;background:var(--surface-2);font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-block:11px;border-bottom:1px solid var(--line)}
 .tr.row{cursor:pointer}
 .tr.row:hover{background:var(--surface-2)}
 .tr.row.sel{background:color-mix(in srgb,var(--teak) 10%,var(--surface))}
 .tr.row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--pc,transparent)}
 .tr.row.redo{box-shadow:inset 0 0 0 1.5px var(--danger)}
-.code{font-family:var(--f-mono);font-weight:600;font-size:14px}
+.code{font-family:var(--f-mono);font-weight:600;font-size:14px;white-space:nowrap;letter-spacing:-0.02em}
 .loc{font-weight:700}
 .loc small{display:block;font-weight:500;color:var(--muted);font-size:11.5px}
+.c-code{white-space:nowrap}
+.c-pri{white-space:nowrap}
+.c-st{white-space:nowrap}
+.c-age{white-space:nowrap;text-align:right}
 .items-sum{font-size:13.5px;min-width:0;overflow:hidden;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .prog{display:flex;gap:3px;margin-top:4px}
 .prog i{height:5px;flex:1;border-radius:3px;background:var(--line)}
@@ -284,11 +292,6 @@ textarea.input{min-height:70px;resize:vertical}
 .st.cooking{background:var(--warn-soft);color:var(--warn)}
 .age{font-size:13px;font-variant-numeric:tabular-nums}
 .age.late{color:var(--danger);font-weight:700}
-@media (max-width:760px){
-  .tr.th{display:none}
-  .tr{grid-template-columns:auto 1fr auto;grid-template-areas:"code loc age" "items items items" "pri pri st";row-gap:6px;padding-left:16px}
-  .tr .c-code{grid-area:code}.tr .c-loc{grid-area:loc}.tr .c-age{grid-area:age;text-align:right}.tr .c-items{grid-area:items}.tr .c-pri{grid-area:pri}.tr .c-st{grid-area:st;text-align:right}
-}
 .detail{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;min-width:0}
 @media (min-width:980px){.detail{position:sticky;top:84px;max-height:calc(100vh - 100px)}}
 @media (max-width:979px){.detail-wrap{position:fixed;inset:0;z-index:50;background:rgba(8,14,11,.5);display:flex;align-items:flex-end}.detail-wrap .detail{width:100%;max-height:90%;border-radius:16px 16px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}}
@@ -623,7 +626,25 @@ const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&
 const inr = n => '₹' + (Math.round(n*100)/100).toLocaleString('en-IN',{minimumFractionDigits: (Math.round(n*100)%100)?2:0, maximumFractionDigits:2});
 const r2 = n => Math.round(n*100)/100;
 const uid = (n=10)=>{const a='abcdefghijkmnpqrstuvwxyz23456789';let s='';const b=crypto.getRandomValues(new Uint8Array(n));for(const x of b)s+=a[x%a.length];return s;};
-const codeGen = ()=>{const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';const b=crypto.getRandomValues(new Uint8Array(4));for(const x of b)s+=a[x%a.length];return s;};
+const codeGen = () => {
+  const d = new Date();
+  const istTime = new Date(d.getTime() + (d.getTimezoneOffset() * 60000) + (5.5 * 3600000));
+  const yyyy = istTime.getFullYear();
+  const mm = String(istTime.getMonth() + 1).padStart(2, '0');
+  const dd = String(istTime.getDate()).padStart(2, '0');
+  const prefix = `${yyyy}${mm}${dd}`;
+  let maxSeq = 0;
+  if (window.S && Array.isArray(window.S.orders)) {
+    for (const ord of window.S.orders) {
+      const c = ord && ord.code ? String(ord.code) : '';
+      if (c.startsWith(prefix + '-')) {
+        const num = parseInt(c.split('-')[1], 10);
+        if (!isNaN(num) && num > maxSeq) maxSeq = num;
+      }
+    }
+  }
+  return `${prefix}-${String(maxSeq + 1).padStart(3, '0')}`;
+};
 const ls = {get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
 const ss = {get(k){try{return sessionStorage.getItem(k);}catch(e){return null;}},set(k,v){try{sessionStorage.setItem(k,v);}catch(e){}}};
 function ago(ts){const m=Math.floor((Date.now()-ts)/60000);if(m<1)return 'just now';if(m<60)return m+' min';const h=Math.floor(m/60);return h+'h '+(m%60)+'m';}

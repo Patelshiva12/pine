@@ -254,17 +254,25 @@ textarea.input{min-height:70px;resize:vertical}
 .board{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
 @media (min-width:980px){.board.has-detail{grid-template-columns:minmax(0,1fr) 440px}}
 .filters{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.tbl{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.tr{display:grid;grid-template-columns:70px 96px 110px minmax(0,1fr) 118px 64px;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);position:relative}
+.tbl{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;width:100%}
+.tbl::-webkit-scrollbar{height:8px}
+.tbl::-webkit-scrollbar-track{background:var(--surface-2);border-radius:4px}
+.tbl::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px}
+.tbl::-webkit-scrollbar-thumb:hover{background:#94A3B8}
+.tr{display:grid;grid-template-columns:145px 140px 110px minmax(240px,1fr) 120px 85px;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);position:relative;min-width:880px}
 .tr.th{border-top:0;background:#F4F6F4;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#385044;padding-block:11px;border-bottom:1px solid var(--line)}
 .tr.row{cursor:pointer}
 .tr.row:hover{background:var(--surface-2)}
 .tr.row.sel{background:color-mix(in srgb,var(--teak) 10%,var(--surface))}
 .tr.row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--pc,transparent)}
 .tr.row.redo{box-shadow:inset 0 0 0 1.5px var(--danger)}
-.code{font-family:var(--f-mono);font-weight:600;font-size:14px}
+.code{font-family:var(--f-mono);font-weight:600;font-size:14px;white-space:nowrap;letter-spacing:-0.02em}
 .loc{font-weight:700}
 .loc small{display:block;font-weight:500;color:var(--muted);font-size:11.5px}
+.c-code{white-space:nowrap}
+.c-pri{white-space:nowrap}
+.c-st{white-space:nowrap}
+.c-age{white-space:nowrap;text-align:right}
 .items-sum{font-size:13.5px;min-width:0;overflow:hidden;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .prog{display:flex;gap:3px;margin-top:4px}
 .prog i{height:5px;flex:1;border-radius:3px;background:var(--line)}
@@ -285,11 +293,6 @@ textarea.input{min-height:70px;resize:vertical}
 .st.cooking{background:var(--warn-soft);color:var(--warn)}
 .age{font-size:13px;font-variant-numeric:tabular-nums}
 .age.late{color:var(--danger);font-weight:700}
-@media (max-width:760px){
-  .tr.th{display:none}
-  .tr{grid-template-columns:auto 1fr auto;grid-template-areas:"code loc age" "items items items" "pri pri st";row-gap:6px;padding-left:16px}
-  .tr .c-code{grid-area:code}.tr .c-loc{grid-area:loc}.tr .c-age{grid-area:age;text-align:right}.tr .c-items{grid-area:items}.tr .c-pri{grid-area:pri}.tr .c-st{grid-area:st;text-align:right}
-}
 .detail{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;min-width:0}
 @media (min-width:980px){.detail{position:sticky;top:84px;max-height:calc(100vh - 100px)}}
 @media (max-width:979px){.detail-wrap{position:fixed;inset:0;z-index:50;background:rgba(8,14,11,.5);display:flex;align-items:flex-end}.detail-wrap .detail{width:100%;max-height:90%;border-radius:16px 16px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}}
@@ -356,9 +359,8 @@ textarea.input{min-height:70px;resize:vertical}
 .qr-card .qr img,.qr-card .qr canvas{width:136px!important;height:136px!important}
 .qr-card b{font-family:var(--f-display);font-weight:400;font-size:18px}
 .qr-card small{font-size:10.5px;color:#5D6B62;word-break:break-all}
-.hist-row{display:grid;grid-template-columns:64px 70px minmax(0,1fr) 100px 100px;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);cursor:pointer}
+.hist-row{display:grid;grid-template-columns:75px 145px minmax(200px,1fr) 115px 105px;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);cursor:pointer;min-width:680px}
 .hist-row:hover{background:var(--surface-2)}
-@media (max-width:640px){.hist-row{grid-template-columns:auto 1fr auto}.hist-row .h-items{grid-column:1/-1;order:5}.hist-row .h-st{display:none}}
 .hist-detail{padding:4px 14px 14px;border-top:1px dashed var(--line);display:grid;gap:10px;background:var(--surface-2)}
 .gate{min-height:100%;display:grid;place-items:center;padding:40px 16px}
 .gate-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;width:100%;max-width:360px;display:grid;gap:14px;box-shadow:var(--shadow);text-align:center}
@@ -394,11 +396,10 @@ textarea.input{min-height:70px;resize:vertical}
 .badge-table{background:#F8EFE4;color:#9A5B2A;border:1px solid #E6D0BA}
 
 .id-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);border:1px solid var(--line);padding:3px 8px;border-radius:4px;letter-spacing:.05em;white-space:nowrap}
-.guest-tbl .tr{grid-template-columns:minmax(180px,1.3fr) 120px 170px 140px 130px 110px 95px minmax(160px,auto)}
-@media (max-width:980px){.guest-tbl .tr{grid-template-columns:1fr auto;gap:8px}}
-
-.loc-tbl .tr{grid-template-columns:140px 140px minmax(180px,1fr) 90px 110px 110px}
-@media (max-width:820px){.loc-tbl .tr{grid-template-columns:1fr auto;gap:8px}}
+.guest-tbl .tr{display:grid;grid-template-columns:minmax(190px,1.2fr) 130px 175px 155px 140px 115px 110px 240px;gap:10px;align-items:center;min-width:1320px}
+.loc-tbl .tr{display:grid;grid-template-columns:110px 120px minmax(180px,1.2fr) 280px 75px 100px 95px;gap:10px;align-items:center;min-width:1020px}
+.slab-tbl .tr{display:grid;grid-template-columns:70px minmax(200px,1.4fr) 100px 100px 140px 95px 90px;gap:10px;align-items:center;min-width:855px}
+.raw-tbl .tr{display:grid;grid-template-columns:70px minmax(160px,1.1fr) minmax(220px,1.8fr) 240px 125px 100px 95px 85px;gap:10px;align-items:center;min-width:1165px}
 
 .pagination-bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding:10px 16px;background:#F9FAF9;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
 .pagination-bar .pg-info b{color:var(--ink)}
@@ -578,6 +579,7 @@ textarea.input{min-height:70px;resize:vertical}
   *, *::before, *::after { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
   body{background:#fff!important;color:#000!important}
   .staff-top, .tabs, .page-title, .stats, .no-print, .btn, .icon-btn, .cms-bar, .filters, #toasts, [data-act="folio-refresh"], [data-act="folio-print"]{display:none!important}
+  .resort-print-invoice { display: block !important; width: 100% !important; background: #fff !important; color: #000 !important; }
   .folio-hero{background:#f8f9fa!important;color:#000!important;border:1px solid #ccc!important;box-shadow:none!important}
   .folio-hero .stay-loc{color:#15201A!important}
   .folio-hero .guest-meta, .folio-hero .guest-meta b{color:#333!important}
@@ -860,7 +862,25 @@ const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&
 const inr = n => '₹' + (Math.round(n*100)/100).toLocaleString('en-IN',{minimumFractionDigits: (Math.round(n*100)%100)?2:0, maximumFractionDigits:2});
 const r2 = n => Math.round(n*100)/100;
 const uid = (n=10)=>{const a='abcdefghijkmnpqrstuvwxyz23456789';let s='';const b=crypto.getRandomValues(new Uint8Array(n));for(const x of b)s+=a[x%a.length];return s;};
-const codeGen = ()=>{const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';const b=crypto.getRandomValues(new Uint8Array(4));for(const x of b)s+=a[x%a.length];return s;};
+const codeGen = () => {
+  const d = new Date();
+  const istTime = new Date(d.getTime() + (d.getTimezoneOffset() * 60000) + (5.5 * 3600000));
+  const yyyy = istTime.getFullYear();
+  const mm = String(istTime.getMonth() + 1).padStart(2, '0');
+  const dd = String(istTime.getDate()).padStart(2, '0');
+  const prefix = `${yyyy}${mm}${dd}`;
+  let maxSeq = 0;
+  if (window.S && Array.isArray(window.S.orders)) {
+    for (const ord of window.S.orders) {
+      const c = ord && ord.code ? String(ord.code) : '';
+      if (c.startsWith(prefix + '-')) {
+        const num = parseInt(c.split('-')[1], 10);
+        if (!isNaN(num) && num > maxSeq) maxSeq = num;
+      }
+    }
+  }
+  return `${prefix}-${String(maxSeq + 1).padStart(3, '0')}`;
+};
 const ls = {get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
 const ss = {get(k){try{return sessionStorage.getItem(k);}catch(e){return null;}},set(k,v){try{sessionStorage.setItem(k,v);}catch(e){}}};
 function ago(ts){const m=Math.floor((Date.now()-ts)/60000);if(m<1)return 'just now';if(m<60)return m+' min';const h=Math.floor(m/60);return h+'h '+(m%60)+'m';}
@@ -921,6 +941,14 @@ function makeLiveStore(db){
   };
 }
 
+const DEFAULT_SLABS = [
+  { id: 1, minPax: 1, maxPax: 5, price: 2000, label: '1-5 Persons (₹2,000)', isActive: true },
+  { id: 2, minPax: 6, maxPax: 10, price: 3500, label: '6-10 Persons (₹3,500)', isActive: true },
+  { id: 3, minPax: 11, maxPax: 15, price: 5000, label: '11-15 Persons (₹5,000)', isActive: true },
+  { id: 4, minPax: 16, maxPax: 20, price: 6500, label: '16-20 Persons (₹6,500)', isActive: true },
+  { id: 5, minPax: 21, maxPax: 30, price: 8000, label: '21+ Persons (₹8,000)', isActive: true }
+];
+
 /* ---------------- state ---------------- */
 const S = {
   store:null, mode:'connecting', writable:false, canEdit:false,
@@ -944,6 +972,9 @@ const S = {
   locations: [],
   services: [],
   customCooking: [],
+  cookingSlabs: [],
+  slabDraft: null,
+  slabDraftErr: '',
   rawDraft: null,
   rawSearch: '',
   rawPage: 1,
@@ -1015,6 +1046,7 @@ function attach(store){
   unsubs.push(store.watchColl('locations',{},arr=>{S.locations=arr||[];render();}));
   unsubs.push(store.watchColl('services',{},arr=>{S.services=arr||[];render();}));
   unsubs.push(store.watchColl('customCooking',{},arr=>{S.customCooking=arr||[];render();}));
+  unsubs.push(store.watchColl('cookingSlabs',{},arr=>{S.cookingSlabs=arr||[];render();}));
   let first=true;
   unsubs.push(store.watchColl('alerts',{order:['at','desc'],limit:40},arr=>{
     const prev=new Set(S.alerts.map(a=>a.id));
@@ -2050,8 +2082,33 @@ function detailHTML(o,role){
       ${o.note?`<div class="gnote"><b>Guest note:</b> ${esc(o.note)}</div>`:''}
     </div>
     <div class="detail-body">
-      ${isRaw ? `<div style="background:#FEF3C7;border:1.5px solid #F59E0B;padding:9px 12px;border-radius:6px;color:#92400E;font-size:12.5px;font-weight:700;margin-bottom:8px;">👨‍🍳 COOK-TO-ORDER REQUEST: Prepare fresh using guest's raw materials or procured catch.</div>` : ''}
+      ${isRaw ? `<div style="background:#FEF3C7;border:1.5px solid #F59E0B;padding:10px 12px;border-radius:8px;color:#92400E;font-size:12.5px;margin-bottom:10px;">
+        <div style="font-weight:800;font-size:13px;margin-bottom:4px;">👨‍🍳 COOK-TO-ORDER REQUEST: Prepare fresh custom dishes</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px;">
+          <span>👥 Group Size: <b>${o.paxCount ? o.paxCount + ' Persons' : 'Custom Group'}</b></span>
+          <span>🥦 Source: <b>${o.rawMaterialSource === 'resort' ? 'Chef Procuring from Market' : 'Guest Bringing Raw Material'}</b></span>
+        </div>
+        ${o.rawMaterialNotes ? `<div style="margin-top:4px;font-size:12px;color:#78350F;">📝 Notes: <i>${esc(o.rawMaterialNotes)}</i></div>` : ''}
+      </div>` : ''}
       ${lines}
+      ${isAdmin && isRaw ? `
+      <div style="background:#FFF9EE;border:1.5px solid #F0A04B;padding:12px;border-radius:8px;margin-top:12px;display:grid;gap:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <b style="font-size:12.5px;color:#9A5B2A;text-transform:uppercase;letter-spacing:.05em;">🛒 Raw Material Market Bill (Actuals)</b>
+          <span style="font-size:12px;font-weight:700;color:var(--pine);">${o.rawMaterialCost > 0 ? inr(o.rawMaterialCost) : 'No Bill Added Yet'}</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <div style="position:relative;flex:1;">
+            <span style="position:absolute;left:10px;top:8px;font-weight:700;color:var(--muted);font-size:13px;">₹</span>
+            <input type="number" step="1" min="0" id="raw-cost-${esc(o.id)}" value="${o.rawMaterialCost || 0}" class="input" style="padding-left:24px;font-weight:700;background:#fff;" placeholder="Enter actual market receipt amount">
+          </div>
+          <button type="button" class="btn sm primary" data-act="save-order-raw-cost" data-order="${esc(o.id)}">Save Receipt Bill</button>
+        </div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.35;">
+          Enter the fresh meat/fish/produce market bill if chef procured ingredients. This cost automatically updates the order and adds to the Stay Folio.
+        </div>
+      </div>
+      ` : ''}
       ${isAdmin?`<div style="margin-top:12px">${billHTML(o.bill||computeBill(o.items,S.settings))}</div>`:''}
       ${isAdmin&&!closed?`<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">${S.board.admin.cancelAsk===o.id
         ?`<span class="muted" style="align-self:center">Cancel this order?</span><button class="btn sm" data-act="cancel-no">Keep</button><button class="btn sm danger" data-act="cancel-yes" data-order="${esc(o.id)}">Cancel order</button>`
@@ -2263,16 +2320,24 @@ function guestsView(){
         const locBadge = g.assignedLocationType === 'villa' ? 'badge-villa' : (g.assignedLocationType === 'table' ? 'badge-table' : 'badge-room');
         const locIcon = g.assignedLocationType === 'villa' ? '🏡' : (g.assignedLocationType === 'table' ? '🍽️' : '🛏️');
         const inDate = g.checkInDate ? new Date(Number(g.checkInDate)).toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'}) : '-';
+        const expDate = g.expectedCheckOutDate ? new Date(Number(g.expectedCheckOutDate)).toLocaleDateString('en-IN', {day:'numeric',month:'short'}) : '';
         return `<div class="tr row" style="cursor:default">
-          <div><b>${esc(g.name)}</b>${g.address ? `<small style="display:block;color:var(--muted);font-size:12px">${esc(g.address)}</small>` : ''}</div>
-          <div><a href="tel:${esc(g.phone)}" style="color:var(--ink);text-decoration:none;font-weight:600">${esc(g.phone)}</a></div>
+          <div><b style="font-size:14px;word-break:break-word">${esc(g.name)}</b>${g.address ? `<small style="display:block;color:var(--muted);font-size:12px;word-break:break-word">${esc(g.address)}</small>` : ''}</div>
+          <div><a href="tel:${esc(g.phone)}" style="color:var(--ink);text-decoration:none;font-weight:600;white-space:nowrap">${esc(g.phone)}</a></div>
           <div><span class="id-badge">🪪 ${esc(formatAadhaar(g.aadhaarNumber))}</span></div>
-          <div><span class="badge-loc ${locBadge}">${locIcon} ${esc(locBadgeText(g.assignedLocationType, g.assignedLocationNumber))}</span></div>
-          <div><span style="font-size:13px;font-weight:600;color:var(--brand,#1E4033)">${esc(g.referredBy || '—')}</span></div>
-          <div><span class="num" style="font-size:13px">${inDate}</span></div>
-          <div><span class="st ${isIn ? 'completed' : 'cancelled'}">${isIn ? 'In-House' : 'Departed'}</span></div>
-          <div style="display:flex;gap:6px;justify-content:flex-end;align-items:center">
+          <div>
+            <span class="badge-loc ${locBadge}">${locIcon} ${esc(locBadgeText(g.assignedLocationType, g.assignedLocationNumber))}</span>
+            ${g.roomTariff ? `<small style="display:block;color:var(--muted);font-size:11px;font-family:var(--f-mono);margin-top:2px;">@ ₹${Number(g.roomTariff).toLocaleString('en-IN')}/night</small>` : ''}
+          </div>
+          <div><span style="font-size:13px;font-weight:600;color:var(--brand,#1E4033);white-space:nowrap">${esc(g.referredBy || '—')}</span></div>
+          <div>
+            <span class="num" style="font-size:13px;white-space:nowrap">${inDate}</span>
+            ${expDate ? `<small style="display:block;color:var(--muted);font-size:11px;">To: ${expDate}</small>` : ''}
+          </div>
+          <div><span class="st ${isIn ? 'completed' : 'cancelled'}" style="white-space:nowrap">${isIn ? 'In-House' : 'Departed'}</span></div>
+          <div style="display:flex;gap:6px;justify-content:flex-end;align-items:center;white-space:nowrap;flex-shrink:0">
             <button class="btn sm teak" data-act="folio-from-guest" data-type="${esc(g.assignedLocationType)}" data-num="${esc(g.assignedLocationNumber)}" data-gid="${esc(g.id)}" title="View Stay Billing Folio">🧾 Folio</button>
+            <button class="icon-btn" data-act="guest-edit" data-id="${esc(g.id)}" title="Edit Guest Details">✏️</button>
             ${isIn ? `<button class="btn sm" data-act="guest-checkout" data-id="${esc(g.id)}">Check-out</button>` : ''}
             <button class="icon-btn" data-act="guest-del" data-id="${esc(g.id)}" title="Delete Guest Record" style="color:var(--danger)">🗑️</button>
           </div>
@@ -2285,17 +2350,22 @@ function guestsView(){
 
 function guestEditor(){
   const g = S.guestDraft;
-  const locType = g.assignedLocationType || 'villa';
+  const locType = g.assignedLocationType || 'room';
   const locationsOfType = (S.locations || []).filter(l => l.type === locType && l.isActive !== false);
+  const expDateVal = g.expectedCheckOutDate ? (typeof g.expectedCheckOutDate === 'number' || !isNaN(Number(g.expectedCheckOutDate)) ? new Date(Number(g.expectedCheckOutDate)).toISOString().split('T')[0] : g.expectedCheckOutDate) : '';
 
   return `<div class="overlay" data-act="overlay-close-guest"><div class="sheet" role="dialog" aria-modal="true" aria-label="Guest Check-in">
     <div class="sheet-head"><h3>${g._new ? 'Guest Registration &amp; Check-in' : 'Edit Guest Details'}</h3><button class="icon-btn" data-act="guest-close" aria-label="Close">✕</button></div>
     <div class="sheet-body">
-      <p class="muted" style="font-size:13px">Register guest identity with government ID (Aadhaar Number) and assign their reserved villa or room.</p>
-      <div class="field"><label for="g-name">Guest Full Name *</label><input class="input" id="g-name" data-input="g.name" value="${esc(g.name || '')}" placeholder="Enter your name"></div>
+      <p class="muted" style="font-size:13px">Register guest identity with government ID (Aadhaar Number), stay duration, room tariff, and assigned villa/room.</p>
+      <div class="field"><label for="g-name">Guest Full Name *</label><input class="input" id="g-name" data-input="g.name" value="${esc(g.name || '')}" placeholder="Enter guest name"></div>
       <div class="form-grid">
         <div class="field"><label for="g-phone">Phone Number (10 Digits) *</label><input class="input" id="g-phone" type="tel" maxlength="15" data-input="g.phone" value="${esc(g.phone || '')}" placeholder="e.g. 9876543210"></div>
         <div class="field"><label for="g-aadhaar">Aadhaar Card Number (12 Digits) *</label><input class="input mono" id="g-aadhaar" maxlength="14" data-input="g.aadhaar" value="${esc(g.aadhaarNumber || '')}" placeholder="1234 5678 9012"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label for="g-tariff">Room Tariff (₹ / Night)</label><input class="input mono" id="g-tariff" type="number" min="0" step="100" data-input="g.tariff" value="${esc(g.roomTariff !== undefined ? g.roomTariff : 4500)}" placeholder="e.g. 4500"></div>
+        <div class="field"><label for="g-checkout-exp">Expected Check-out Date</label><input class="input" id="g-checkout-exp" type="date" data-input="g.expcheckout" value="${esc(expDateVal)}"></div>
       </div>
       <div class="form-grid">
         <div class="field"><label for="g-addr">Address / Hometown</label><input class="input" id="g-addr" data-input="g.address" value="${esc(g.address || '')}" placeholder="City, State"></div>
@@ -2311,7 +2381,7 @@ function guestEditor(){
         </div>
         <select class="input" id="g-locnum" data-change="g.locnum">
           <option value="">-- Select ${(locType||'').toUpperCase()} --</option>
-          ${locationsOfType.map(l => `<option value="${esc(l.number)}" ${String(g.assignedLocationNumber || '').toUpperCase() === String(l.number).toUpperCase() ? 'selected' : ''}>${esc(l.number)} — ${esc(l.name)}</option>`).join('')}
+          ${locationsOfType.map(l => `<option value="${esc(l.number)}" ${String(g.assignedLocationNumber || '').toUpperCase() === String(l.number).toUpperCase() ? 'selected' : ''}>${esc(l.number)} — ${esc(l.name)} ${l.parentVilla ? `(${esc(l.parentVilla)})` : ''}</option>`).join('')}
         </select>
       </div>
 
@@ -2319,7 +2389,7 @@ function guestEditor(){
     </div>
     <div class="sheet-foot">
       <button class="btn" data-act="guest-close">Cancel</button>
-      <button class="btn primary" data-act="guest-save">Complete Check-in &amp; Register</button>
+      <button class="btn primary" data-act="guest-save">${g._new ? 'Complete Check-in &amp; Register' : 'Save Changes'}</button>
     </div>
   </div></div>`;
 }
@@ -2353,12 +2423,12 @@ function locationsView(){
       <button class="btn primary" data-act="loc-new" style="margin-left:auto">+ Add Location</button>
     </div>
     <p class="muted" style="font-size:13px;margin-bottom:14px">Locations defined here automatically populate cascading dropdowns for guests and staff. Rooms and Dining Tables are mapped directly under their parent Villa.</p>
-    <div class="tbl loc-tbl" style="grid-template-columns: 110px 130px 1.4fr 150px 75px 100px 70px;">
+    <div class="tbl loc-tbl">
       <div class="tr th">
         <span>Type</span>
         <span>Location Code</span>
         <span>Display Name / Description</span>
-        <span>Assigned Villa</span>
+        <span>Assigned Villa / Host</span>
         <span>Order</span>
         <span>In Service</span>
         <span style="text-align:right">Actions</span>
@@ -2366,7 +2436,9 @@ function locationsView(){
       ${paged.items.length ? paged.items.map(l => {
         const badge = l.type === 'villa' ? 'badge-villa' : (l.type === 'table' ? 'badge-table' : 'badge-room');
         const icon = l.type === 'villa' ? '🏡' : (l.type === 'table' ? '🍽️' : '🛏️');
-        const parentLabel = l.type === 'villa' ? '<span class="chip sm" style="background:var(--pine);color:#fff">Root Villa</span>' : (l.parentVilla ? `<span class="chip sm" style="background:var(--surface-2);font-weight:700">🏡 ${esc(l.parentVilla)}</span>` : `<span class="chip sm" style="background:#FEE2E2;color:#991B1B;font-weight:700">⚠️ Unassigned</span>`);
+        const parentLabel = l.type === 'villa' 
+          ? (l.assignedStaffName ? `<span class="chip sm" style="background:#ECFDF5;color:#065F46;font-weight:700">🛎️ ${esc(l.assignedStaffName)} (${esc(l.assignedStaffPhone || '')})</span>` : '<span class="chip sm" style="background:var(--pine);color:#fff">Root Villa</span>')
+          : (l.parentVilla ? `<span class="chip sm" style="background:var(--surface-2);font-weight:700">🏡 ${esc(l.parentVilla)}</span>` : `<span class="chip sm" style="background:#FEE2E2;color:#991B1B;font-weight:700">⚠️ Unassigned</span>`);
         return `<div class="tr row" style="cursor:default">
           <div><span class="badge-loc ${badge}">${icon} ${esc((l.type||'').toUpperCase())}</span></div>
           <div><b style="font-family:var(--f-mono);font-size:14px">${esc(l.number)}</b></div>
@@ -2376,7 +2448,8 @@ function locationsView(){
           <div>
             <label class="switch"><input type="checkbox" data-act="loc-toggle" data-id="${esc(l.id)}" ${l.isActive !== false ? 'checked' : ''}><span class="hide-sm">${l.isActive !== false ? 'Active' : 'Off'}</span></label>
           </div>
-          <div style="text-align:right">
+          <div style="text-align:right;white-space:nowrap">
+            <button class="icon-btn" data-act="loc-edit" data-id="${esc(l.id)}" title="Edit Location" style="margin-right:4px">✏️</button>
             <button class="icon-btn" data-act="loc-del" data-id="${esc(l.id)}" style="color:var(--danger)" title="Delete Location">🗑️</button>
           </div>
         </div>`;
@@ -2407,8 +2480,27 @@ function locationEditor(){
         </select>
         <small style="color:var(--muted)">Rooms and dining tables will strictly display under this selected villa.</small>
       </div>` : ''}
-      <div class="field"><label for="l-num">Location Code / Number *</label><input class="input" id="l-num" data-input="l.num" value="${esc(l.number || '')}" placeholder="e.g. 101 or 201 or Table 5"></div>
-      <div class="field"><label for="l-name">Display Name *</label><input class="input" id="l-name" data-input="l.name" value="${esc(l.name || '')}" placeholder="e.g. Pine View Room 101 or Deck Table 1"></div>
+      ${l.type === 'villa' ? `
+      <div style="background:var(--surface-2);padding:14px;border-radius:10px;border:1.5px solid #A7F3D0;margin-bottom:14px;">
+        <div style="font-weight:800;color:var(--pine);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-size:13.5px;">🛎️ Dedicated Villa Host / Butler (Client Service Contact)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
+          <div class="field" style="margin:0">
+            <label for="l-staff-name" style="font-size:12px;font-weight:700;">Host Name *</label>
+            <input class="input" id="l-staff-name" data-input="l.assignedStaffName" value="${esc(l.assignedStaffName || '')}" placeholder="e.g. Ramesh Sharma" style="background:#fff;font-weight:600;">
+          </div>
+          <div class="field" style="margin:0">
+            <label for="l-staff-phone" style="font-size:12px;font-weight:700;">Contact Phone / WhatsApp *</label>
+            <input class="input" id="l-staff-phone" data-input="l.assignedStaffPhone" value="${esc(l.assignedStaffPhone || '')}" placeholder="e.g. 9816012345" maxlength="10" style="background:#fff;font-weight:600;">
+          </div>
+        </div>
+        <div class="field" style="margin:0">
+          <label for="l-staff-role" style="font-size:12px;font-weight:700;">Designation / Title</label>
+          <input class="input" id="l-staff-role" data-input="l.assignedStaffRole" value="${esc(l.assignedStaffRole || 'Villa Butler & Host')}" placeholder="e.g. Villa Butler & Host" style="background:#fff;">
+        </div>
+        <p style="margin:6px 0 0;font-size:11.5px;color:var(--muted);">When a guest places or tracks an order from this Villa (or its rooms/tables), this host's direct Call and WhatsApp buttons will appear on their screen for quick inquiries or changes.</p>
+      </div>` : ''}
+      <div class="field"><label for="l-num">Location Code / Number *</label><input class="input" id="l-num" data-input="l.num" value="${esc(l.number || '')}" placeholder="e.g. Villa 1 or 101 or Table 5"></div>
+      <div class="field"><label for="l-name">Display Name *</label><input class="input" id="l-name" data-input="l.name" value="${esc(l.name || '')}" placeholder="e.g. Whispering Pines Villa or Room 101"></div>
       <div class="field"><label for="l-order">Display Sequence Order</label><input class="input num" id="l-order" type="number" data-input="l.order" value="${l.displayOrder || 10}"></div>
       ${S.locDraftErr ? `<div class="notice bad">${esc(S.locDraftErr)}</div>` : ''}
     </div>
@@ -2432,20 +2524,66 @@ function customCookingView() {
   }
   list = list.slice().sort((a,b) => (a.displayOrder || 10) - (b.displayOrder || 10));
   const paged = paginateList(list, S.rawPage, 10);
+  const slabs = (S.cookingSlabs && S.cookingSlabs.length) ? S.cookingSlabs : DEFAULT_SLABS;
 
-  return `<div class="cms-bar" style="margin-bottom:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+  return `
+    <!-- TOP SECTION: COOKING & SERVICE CHARGE PAX SLABS -->
+    <div class="panel" style="margin-bottom:24px;border:1.5px solid var(--line);background:var(--surface);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
+        <div>
+          <h3 style="margin:0;font-size:18px;color:var(--pine);display:flex;align-items:center;gap:8px;">
+            <span>👥</span> Cooking &amp; Service Charge Pax Slabs (Group Size Rates)
+          </h3>
+          <p class="muted" style="font-size:12.5px;margin:3px 0 0;">
+            Cooking and service charges automatically applied by guest group size (1-5 Pax: ₹2,000, 6-10 Pax: ₹3,500, up to 21+ Pax).
+          </p>
+        </div>
+        <button class="btn primary sm" data-act="slab-new">+ Add New Pax Slab</button>
+      </div>
+
+      <div class="tbl slab-tbl">
+        <div class="tr th">
+          <span>Order</span>
+          <span>Slab Display Name</span>
+          <span>Min Pax</span>
+          <span>Max Pax</span>
+          <span>Cooking Fee (₹)</span>
+          <span>Active</span>
+          <span style="text-align:right">Actions</span>
+        </div>
+        ${slabs.map((s, sIdx) => `
+          <div class="tr row" style="cursor:default">
+            <div style="font-family:var(--f-mono);font-size:12px;color:var(--muted)">#${s.displayOrder || (sIdx + 1)}</div>
+            <div><b style="font-size:14px;color:var(--ink);">${esc(s.label || `${s.minPax}-${s.maxPax} Persons`)}</b></div>
+            <div><span class="chip sm">${s.minPax} Pax</span></div>
+            <div><span class="chip sm">${s.maxPax >= 30 ? '30+ Pax' : s.maxPax + ' Pax'}</span></div>
+            <div><b style="color:var(--pine);font-size:15px;font-family:var(--f-mono);">${inr(s.price)}</b></div>
+            <div>
+              <label class="switch"><input type="checkbox" data-act="slab-toggle" data-id="${esc(s.id)}" ${s.isActive !== false ? 'checked' : ''}><span class="hide-sm">${s.isActive !== false ? 'Live' : 'Off'}</span></label>
+            </div>
+            <div style="text-align:right;display:flex;gap:6px;justify-content:flex-end">
+              <button class="icon-btn" data-act="slab-edit" data-id="${esc(s.id)}" title="Edit Slab">✏️</button>
+              <button class="icon-btn" data-act="slab-del" data-id="${esc(s.id)}" style="color:var(--danger)" title="Delete Slab">🗑️</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- BOTTOM SECTION: DISHES & PREPARATIONS -->
+    <div class="cms-bar" style="margin-bottom:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
       <label class="search">${searchIcon()}<input class="input" id="raw-search" type="search" placeholder="Search custom dishes, raw meats, veggies..." value="${esc(S.rawSearch||'')}" data-input="raw-search" aria-label="Search custom cooking items"></label>
       <div style="font-weight:700;color:var(--muted);font-size:13.5px">Total Preparations: ${(S.customCooking||[]).length}</div>
       <button class="btn primary" data-act="raw-new" style="margin-left:auto">+ Add Custom Cooking Option</button>
     </div>
     <p class="muted" style="font-size:13px;margin-bottom:14px">Guests bring raw materials (or chef procures fresh from local market). Manage preparation fees, raw meat/fish/veg categories, and live availability here.</p>
-    <div class="tbl" style="grid-template-columns: 75px 1.4fr 2fr 130px 105px 95px 100px 90px;">
+    <div class="tbl raw-tbl">
       <div class="tr th">
         <span>Image</span>
         <span>Item Name</span>
         <span>Description & Ingredients</span>
         <span>Raw Material Type</span>
-        <span>Cooking Fee</span>
+        <span>Base Cooking Fee</span>
         <span>Diet</span>
         <span>Available</span>
         <span style="text-align:right">Actions</span>
@@ -2455,13 +2593,13 @@ function customCookingView() {
           <div><img src="${esc(it.img || 'photos/palak_paneer.webp')}" style="width:48px;height:48px;border-radius:6px;object-fit:cover;border:1px solid var(--line);"></div>
           <div><b style="font-size:14px">${esc(it.name)}</b>${it.signature ? ' <span style="color:var(--warn)">★ Signature</span>' : ''}</div>
           <div style="font-size:13px;color:var(--muted);line-height:1.35">${esc(it.description)}</div>
-          <div><span class="chip sm" style="background:var(--surface-2);font-weight:600">${esc(it.rawMaterialType || 'General')}</span></div>
-          <div><b style="color:var(--pine);font-size:15px">${inr(it.cookingCharge || it.price)}</b></div>
+          <div><span class="chip sm" style="background:var(--surface-2);font-weight:600;display:inline-block;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis" title="${esc(it.rawMaterialType || 'General')}">${esc(it.rawMaterialType || 'General')}</span></div>
+          <div><b style="color:var(--pine);font-size:15px;white-space:nowrap;font-family:var(--f-mono)">${inr(it.cookingCharge || it.price)}</b></div>
           <div>${it.veg ? '<span class="vmark" style="display:inline-block;width:12px;height:12px;border:1px solid #1D8A3E;border-radius:2px;position:relative"><span style="position:absolute;inset:2px;background:#1D8A3E;border-radius:50%"></span></span> Veg' : '<span class="vmark nv" style="display:inline-block;width:12px;height:12px;border:1px solid #8E2B1E;border-radius:2px;position:relative"><span style="position:absolute;inset:2px;background:#8E2B1E;border-radius:50%"></span></span> Non-Veg'}</div>
           <div>
             <label class="switch"><input type="checkbox" data-act="raw-toggle" data-id="${esc(it.id)}" ${it.available !== false ? 'checked' : ''}><span class="hide-sm">${it.available !== false ? 'Live' : 'Off'}</span></label>
           </div>
-          <div style="text-align:right;display:flex;gap:6px;justify-content:flex-end">
+          <div style="text-align:right;display:flex;gap:6px;justify-content:flex-end;white-space:nowrap">
             <button class="icon-btn" data-act="raw-edit" data-id="${esc(it.id)}" title="Edit">✏️</button>
             <button class="icon-btn" data-act="raw-del" data-id="${esc(it.id)}" style="color:var(--danger)" title="Delete">🗑️</button>
           </div>
@@ -2469,7 +2607,46 @@ function customCookingView() {
       }).join('') : `<div class="empty-state" style="grid-column:1/-1">${list.length ? 'No items on this page.' : (q ? 'No items match "' + esc(q) + '".' : 'No custom cooking items configured yet. Click "+ Add Custom Cooking Option" to start.')}</div>`}
       ${paginationBar(paged, 'raw')}
     </div>
+    ${S.slabDraft ? slabEditor() : ''}
     ${S.rawDraft ? customCookingEditor() : ''}`;
+}
+
+function slabEditor() {
+  const d = S.slabDraft;
+  return `<div class="overlay" data-act="overlay-close-slab"><div class="sheet" role="dialog" aria-modal="true" aria-label="Pax Slab Editor" style="max-width:440px;">
+    <div class="sheet-head"><h3>${d.id && !d._new ? 'Edit' : 'Add'} Cooking Pax Slab</h3><button class="icon-btn" data-act="slab-close" aria-label="Close">✕</button></div>
+    <div class="sheet-body">
+      <div class="field">
+        <label for="slab-label">Slab Display Label *</label>
+        <input class="input" id="slab-label" data-input="slab.label" value="${esc(d.label || '')}" placeholder="e.g. 1-5 Persons (₹2,000)">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="field">
+          <label for="slab-min">Min Persons (Pax) *</label>
+          <input class="input num" id="slab-min" type="number" min="1" max="100" data-input="slab.minPax" value="${d.minPax || 1}">
+        </div>
+        <div class="field">
+          <label for="slab-max">Max Persons (Pax) *</label>
+          <input class="input num" id="slab-max" type="number" min="1" max="100" data-input="slab.maxPax" value="${d.maxPax || 5}">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="field">
+          <label for="slab-price">Cooking &amp; Service Fee (₹) *</label>
+          <input class="input num" id="slab-price" type="number" step="50" min="0" data-input="slab.price" value="${d.price || 2000}">
+        </div>
+        <div class="field">
+          <label for="slab-order">Sort Order</label>
+          <input class="input num" id="slab-order" type="number" data-input="slab.order" value="${d.displayOrder || 10}">
+        </div>
+      </div>
+      ${S.slabDraftErr ? `<div class="notice bad">${esc(S.slabDraftErr)}</div>` : ''}
+    </div>
+    <div class="sheet-foot">
+      <button class="btn" data-act="slab-close">Cancel</button>
+      <button class="btn primary" data-act="slab-save">Save Slab</button>
+    </div>
+  </div></div>`;
 }
 
 function customCookingEditor() {
@@ -2581,16 +2758,37 @@ function serviceEditor(){
   </div></div>`;
 }
 
-/* ---------- 4. STAY BILLING FOLIO (DAY-WISE & CUMULATIVE) ---------- */
-async function loadFolio(type, num, guestId) {
+/* ---------- 4. STAY BILLING FOLIO (DAY-WISE & CUMULATIVE 2-TABLES) ---------- */
+function numberToWordsInr(amount) {
+  const num = Math.round(Number(amount) || 0);
+  if (num === 0) return 'Zero Rupees Only';
+  const a = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+  const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+  function inWords(n) {
+    if (n < 20) return a[n];
+    if (n < 100) return b[Math.floor(n / 10)] + (n % 10 !== 0 ? ' ' + a[n % 10] : '');
+    if (n < 1000) return inWords(Math.floor(n / 100)) + ' Hundred' + (n % 100 !== 0 ? ' and ' + inWords(n % 100) : '');
+    if (n < 100000) return inWords(Math.floor(n / 1000)) + ' Thousand' + (n % 1000 !== 0 ? ' ' + inWords(n % 1000) : '');
+    if (n < 10000000) return inWords(Math.floor(n / 100000)) + ' Lakh' + (n % 100000 !== 0 ? ' ' + inWords(n % 100000) : '');
+    return inWords(Math.floor(n / 10000000)) + ' Crore' + (n % 10000000 !== 0 ? ' ' + inWords(n % 10000000) : '');
+  }
+  return inWords(num) + ' Rupees Only';
+}
+
+async function loadFolio(type, num, guestId, room, table) {
   S.folioState.loading = true;
   S.folioState.error = null;
   render();
   try {
     const base = S.store?.apiBase || '';
     let url = `${base}/api/orders/folio?`;
-    if (guestId) url += `guestId=${encodeURIComponent(guestId)}`;
-    else url += `type=${encodeURIComponent(type || '')}&num=${encodeURIComponent(num || '')}`;
+    if (guestId) {
+      url += `guestId=${encodeURIComponent(guestId)}`;
+    } else {
+      url += `type=${encodeURIComponent(type || '')}&num=${encodeURIComponent(num || '')}`;
+      if (room) url += `&room=${encodeURIComponent(room)}`;
+      if (table) url += `&table=${encodeURIComponent(table)}`;
+    }
     const res = await fetch(url);
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));
@@ -2601,6 +2799,7 @@ async function loadFolio(type, num, guestId) {
     if (data.location) {
       S.folioState.type = data.location.type;
       S.folioState.num = data.location.number;
+      if (data.location.room) S.folioState.room = data.location.room;
     }
     if (data.guest) {
       S.folioState.guestId = data.guest.id;
@@ -2614,6 +2813,7 @@ async function loadFolio(type, num, guestId) {
     render();
   }
 }
+window.loadFolio = loadFolio;
 
 function folioView(){
   const fs = S.folioState;
@@ -2622,8 +2822,13 @@ function folioView(){
   const checkedInGuests = (S.guests || []).filter(g => g.status === 'checked_in');
   const data = fs.data;
 
+  // Find child rooms & tables for selected Villa
+  const selectedVillaNum = String(fs.num || (locationsOfType[0] ? locationsOfType[0].number : '')).trim().toUpperCase();
+  const childRoomsOfVilla = (S.locations || []).filter(l => l.type === 'room' && String(l.parentVilla || '').trim().toUpperCase() === selectedVillaNum && l.isActive !== false);
+  const childTablesOfVilla = (S.locations || []).filter(l => l.type === 'table' && String(l.parentVilla || '').trim().toUpperCase() === selectedVillaNum && l.isActive !== false);
+
   return `<div class="folio-container">
-    <div class="panel">
+    <div class="panel no-print">
       <h3>Select Stay Location or Registered Guest <span class="muted" style="font-size:12px;font-weight:400">Strictly Confidential &bull; Manager / Reception Only</span></h3>
       <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
         <div class="field"><label>Location Type</label>
@@ -2633,24 +2838,36 @@ function folioView(){
             <button data-act="f-type" data-v="table" aria-pressed="${locType === 'table'}">🍽️ Table</button>
           </div>
         </div>
+
         <div class="field" style="min-width:180px"><label>Location Number</label>
           <select class="input" id="f-locnum" data-change="flocnum">
             <option value="">-- Choose ${(locType||'').toUpperCase()} --</option>
             ${locationsOfType.map(l => `<option value="${esc(l.number)}" ${String(fs.num).toUpperCase() === String(l.number).toUpperCase() ? 'selected' : ''}>${esc(l.number)} — ${esc(l.name)}</option>`).join('')}
           </select>
         </div>
+
+        ${locType === 'villa' ? `
+        <div class="field" style="min-width:210px"><label>Scope / Sub-Unit</label>
+          <select class="input" id="f-room" data-change="flocroom" style="font-weight:600;">
+            <option value="">🏡 All Villa (Master Consolidated Bill)</option>
+            ${childRoomsOfVilla.map(r => `<option value="${esc(r.number)}" ${String(fs.room || '').toUpperCase() === String(r.number).toUpperCase() ? 'selected' : ''}>🛏️ Room ${esc(r.number)} (${esc(r.name)})</option>`).join('')}
+            ${childTablesOfVilla.map(t => `<option value="${esc(t.number)}" ${String(fs.room || '').toUpperCase() === String(t.number).toUpperCase() ? 'selected' : ''}>🍽️ Table ${esc(t.number)}</option>`).join('')}
+          </select>
+        </div>` : ''}
+
         <div class="field" style="min-width:200px"><label>Or Select Checked-in Guest</label>
           <select class="input" id="f-guest" data-change="fguest">
             <option value="">-- In-house Guest --</option>
             ${checkedInGuests.map(g => `<option value="${esc(g.id)}" ${fs.guestId === g.id ? 'selected' : ''}>${esc(g.name)} (${(g.assignedLocationType||'').toUpperCase()} ${esc(g.assignedLocationNumber)})</option>`).join('')}
           </select>
         </div>
+
         <button class="btn primary" data-act="folio-fetch" ${fs.num || fs.guestId ? '' : 'disabled'}>${fs.loading ? 'Loading...' : '🔍 Generate Stay Folio'}</button>
       </div>
       ${fs.error ? `<div class="notice bad" style="margin-top:8px">${esc(fs.error)}</div>` : ''}
     </div>
 
-    ${data ? renderFolioData(data) : `<div class="panel empty-state" style="padding:40px 16px">
+    ${data ? renderFolioData(data) : `<div class="panel empty-state no-print" style="padding:40px 16px">
       <div style="font-size:42px;margin-bottom:12px">🧾</div>
       <h3 style="justify-content:center">No Location Selected</h3>
       <p class="muted">Select a Villa, Room, or Guest from above and click “Generate Stay Folio” to review cumulative dining orders, raw material preparation charges, luxury extra services, and day-wise itemized bills.</p>
@@ -2664,99 +2881,496 @@ function renderFolioData(d){
   const sum = d.summary || {};
   const days = d.days || [];
 
+  const villaName = g?.assigned_villa || loc.villa || (loc.type === 'villa' ? loc.number : 'Villa 1');
+  const roomNum = g?.room || loc.room || (loc.type === 'room' ? loc.number : 'All Rooms');
+  const scopeLabel = loc.room ? `Room ${esc(loc.room)} (${esc(villaName)})` : (loc.type === 'room' ? `Room ${esc(loc.number)} (${esc(villaName)})` : `${esc((loc.type || 'Stay').toUpperCase())} ${esc(loc.number || '')} (Consolidated Stay)`);
+  const folioCode = `PE-FOLIO-${(loc.number || 'V1').replace(/\s+/g,'')}-${(roomNum || 'ALL').replace(/\s+/g,'')}-${Date.now().toString(36).toUpperCase()}`;
+
+  const inDateStr = g?.check_in_date ? new Date(Number(g.check_in_date)).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+  const outDateRaw = g?.check_out_date || g?.expected_check_out_date;
+  const outDateStr = outDateRaw ? new Date(Number(outDateRaw)).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+
+  const nightsCount = sum.nights || g?.nights || 1;
+  const roomRate = sum.roomTariff || g?.roomTariff || 0;
+  const roomTotal = sum.totalRoom || g?.roomSubtotal || (roomRate * nightsCount);
+  const roomTaxTotal = sum.roomTax || g?.roomTaxTotal || 0;
+  const roomCgst = sum.roomCgst || g?.roomCgst || 0;
+  const roomSgst = sum.roomSgst || g?.roomSgst || 0;
+  const roomGstPct = roomRate > 7500 ? '18%' : '12%';
+  const roomCgstPct = roomRate > 7500 ? '9.0%' : '6.0%';
+
+  const totalFood = sum.totalFood || 0;
+  const totalCooking = sum.totalRawAndCooking || 0;
+  const totalServices = sum.totalServices || 0;
+  const grossSubtotal = sum.grossSubtotal || sum.subtotal || (roomTotal + totalFood + totalCooking + totalServices);
+  const serviceCharge = sum.serviceCharge || sum.charges || 0;
+  const foodCgst = sum.foodCgst || 0;
+  const foodSgst = sum.foodSgst || 0;
+  const totalTaxes = sum.totalTaxes || sum.taxes || (roomTaxTotal + foodCgst + foodSgst);
+  const grandTotal = sum.grandTotal || sum.totalGrand || (grossSubtotal + serviceCharge + totalTaxes);
+  const amountWords = numberToWordsInr(grandTotal);
+
   return `<div>
-    <div class="folio-hero">
+    <!-- Screen Interactive Folio -->
+    <div class="folio-hero no-print">
       <div class="h-top">
         <div>
-          <span class="eyebrow" style="color:rgba(255,255,255,0.7)">RESORT STAY BILLING FOLIO</span>
-          <h2 class="stay-loc">🌲 ${esc((loc.type || 'Stay').toUpperCase())} ${esc(loc.number || '')}</h2>
+          <span class="eyebrow" style="color:rgba(255,255,255,0.7)">RESORT STAY &amp; DINING FOLIO</span>
+          <h2 class="stay-loc">🌲 ${scopeLabel}</h2>
         </div>
         <div style="display:flex;gap:8px">
-          <button class="btn teak" data-act="folio-print">🖨️ Print Stay Folio</button>
+          <button class="btn teak" data-act="folio-print" style="box-shadow:0 2px 8px rgba(0,0,0,0.3);font-weight:700;">🖨️ Print Resort Tax Invoice</button>
           <button class="btn" style="background:rgba(255,255,255,0.15);color:#fff;border-color:rgba(255,255,255,0.3)" data-act="folio-refresh">🔄 Refresh</button>
         </div>
       </div>
-      <div class="guest-meta">
-        ${g ? `<span>👤 Guest: <b>${esc(g.name)}</b></span>
-               <span>📞 Phone: <b>${esc(g.phone)}</b></span>
-               <span>🪪 Aadhaar: <b>${esc(formatAadhaar(g.aadhaar_number || g.aadhaarNumber))}</b></span>
-               <span>📍 Check-in: <b>${g.check_in_date ? new Date(Number(g.check_in_date)).toLocaleDateString('en-IN') : 'Recent'}</b></span>`
-            : `<span>👤 Guest: <b>Unregistered / Walk-in Guest</b></span>`}
-        <span>📊 Total Orders: <b>${sum.totalOrders || 0}</b> across <b>${sum.totalDays || 0} Day(s)</b></span>
+      <div class="guest-meta" style="display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;">
+        ${g ? `
+          <span>👤 Guest: <b>${esc(g.name)}</b></span>
+          <span>📞 Phone: <b>${esc(g.phone)}</b></span>
+          <span>🪪 Aadhaar: <b>${esc(formatAadhaar(g.aadhaar_number || g.aadhaarNumber))}</b></span>
+          <span>🏡 Villa: <b>Whispering Pines &bull; ${esc(villaName)}</b></span>
+          <span>🛏️ Room: <b>Room ${esc(roomNum)}</b></span>
+          <span>📅 Stay Dates: <b>${inDateStr} to ${outDateStr}</b> (<b>${nightsCount} Night${nightsCount > 1 ? 's' : ''}</b>)</span>
+          <span>🏷️ Room Tariff: <b>₹${roomRate.toLocaleString('en-IN')} / night</b></span>
+        ` : `
+          <span>👤 Guest: <b>Unregistered / Walk-in Guest</b></span>
+          <span>🏡 Villa: <b>Whispering Pines &bull; ${esc(villaName)}</b></span>
+          <span>🛏️ Room: <b>Room ${esc(roomNum)}</b></span>
+        `}
+        <span>📊 Total Orders: <b>${sum.totalOrders || 0}</b> across <b>${sum.totalDays || days.length || 0} Day(s)</b></span>
       </div>
 
-      <div class="folio-stat-cards">
+      <div class="folio-stat-cards" style="margin-top:16px;">
         <div class="folio-stat-card grand">
-          <div class="lbl">Cumulative Stay Grand Total</div>
-          <div class="amt">${inr(sum.totalGrand || 0)}</div>
+          <div class="lbl">Net Grand Total (Payable)</div>
+          <div class="amt">${inr(grandTotal)}</div>
+          <div class="sub" style="font-size:11px;opacity:0.85;margin-top:2px;">Room + Dining + Taxes</div>
+        </div>
+        <div class="folio-stat-card">
+          <div class="lbl">🛏️ Room Stay (${nightsCount} N)</div>
+          <div class="amt">${inr(roomTotal)}</div>
+          <div class="sub" style="font-size:11.5px;color:var(--muted);margin-top:2px;">@ ${inr(roomRate)}/night</div>
         </div>
         <div class="folio-stat-card">
           <div class="lbl">🍽️ À La Carte Dining</div>
-          <div class="amt">${inr(sum.totalFood || 0)}</div>
+          <div class="amt">${inr(totalFood)}</div>
         </div>
         <div class="folio-stat-card">
-          <div class="lbl">🥩 Raw Cooking Charges</div>
-          <div class="amt">${inr(sum.totalRawAndCooking || 0)}</div>
+          <div class="lbl">🥩 Raw Cooking Fees</div>
+          <div class="amt">${inr(totalCooking)}</div>
         </div>
         <div class="folio-stat-card">
-          <div class="lbl">✨ Extra Luxury Services</div>
-          <div class="amt">${inr(sum.totalServices || 0)}</div>
+          <div class="lbl">✨ Luxury Services</div>
+          <div class="amt">${inr(totalServices)}</div>
         </div>
         <div class="folio-stat-card">
-          <div class="lbl">🏛️ Taxes &amp; Service Charges</div>
-          <div class="amt">${inr((sum.totalTaxes || 0) + (sum.totalCharges || 0))}</div>
+          <div class="lbl">🏛️ Total Taxes (GST)</div>
+          <div class="amt">${inr(totalTaxes)}</div>
         </div>
       </div>
     </div>
 
-    <div style="margin-top:20px">
-      <h3 style="font-family:var(--f-display);font-size:22px;color:var(--pine);margin-bottom:12px">Day-Wise Itemized Stay Breakdown</h3>
+    <!-- TABLE 1: FINANCIAL & TAX BREAKDOWN (SCREEN) -->
+    <div class="panel no-print" style="margin-top:20px;border:1.5px solid #D1D5DB;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;border-bottom:1.5px solid var(--line);padding-bottom:10px;">
+        <h3 style="font-family:var(--f-display);font-size:20px;color:var(--pine);margin:0;">📊 TABLE 1: Cumulative Financial &amp; Tax Breakdown</h3>
+        <span class="chip sm" style="background:var(--surface-2);font-weight:700">Audit &amp; Stay Commercial Summary</span>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:13.5px;">
+        <thead>
+          <tr style="background:var(--surface-2);text-align:left;border-bottom:2px solid var(--line);">
+            <th style="padding:10px 12px;width:60px;">S.No</th>
+            <th style="padding:10px 12px;">Billing Particulars / Expense Head</th>
+            <th style="padding:10px 12px;text-align:center;width:170px;">Rate / Duration</th>
+            <th style="padding:10px 12px;text-align:right;width:180px;">Amount (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--line);background:rgba(23,54,42,0.02);">
+            <td style="padding:10px 12px;font-weight:600;">1</td>
+            <td style="padding:10px 12px;">
+              <b>Room Stay Accommodation Charges</b><br>
+              <small class="muted">Room ${esc(roomNum)}, ${esc(villaName)} &bull; ${inDateStr} to ${outDateStr} (${nightsCount} Night${nightsCount > 1 ? 's' : ''})</small>
+            </td>
+            <td style="padding:10px 12px;text-align:center;">${nightsCount} Nights @ ${inr(roomRate)}/n</td>
+            <td style="padding:10px 12px;text-align:right;font-family:var(--f-mono);font-size:14px;font-weight:700;">${inr(roomTotal)}</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--line);">
+            <td style="padding:10px 12px;font-weight:600;">2</td>
+            <td style="padding:10px 12px;"><b>À La Carte Dining (Food &amp; Beverages)</b><br><small class="muted">All regular breakfast, lunch, snacks, and dinner preparations</small></td>
+            <td style="padding:10px 12px;text-align:center;">As per menu</td>
+            <td style="padding:10px 12px;text-align:right;font-family:var(--f-mono);font-size:14px;font-weight:700;">${inr(totalFood)}</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--line);">
+            <td style="padding:10px 12px;font-weight:600;">3</td>
+            <td style="padding:10px 12px;"><b>Chef's Custom Kitchen &amp; Raw Material Preparation Charges</b><br><small class="muted">Custom homestyle/trout fish/mutton cooking on actual raw materials</small></td>
+            <td style="padding:10px 12px;text-align:center;">Per dish fee</td>
+            <td style="padding:10px 12px;text-align:right;font-family:var(--f-mono);font-size:14px;font-weight:700;">${inr(totalCooking)}</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--line);">
+            <td style="padding:10px 12px;font-weight:600;">4</td>
+            <td style="padding:10px 12px;"><b>Resort Experiences &amp; Extra Luxury Services</b><br><small class="muted">Pine wood bonfire, private BBQ, live acoustic singer, spa therapy</small></td>
+            <td style="padding:10px 12px;text-align:center;">Per session</td>
+            <td style="padding:10px 12px;text-align:right;font-family:var(--f-mono);font-size:14px;font-weight:700;">${inr(totalServices)}</td>
+          </tr>
+          <tr style="background:#F9FAFB;border-bottom:2px solid #D1D5DB;font-weight:800;">
+            <td style="padding:12px;text-align:center;">A</td>
+            <td style="padding:12px;color:var(--pine);font-size:14.5px;">GROSS BILLABLE SUBTOTAL (ROOM + DINING + SERVICES)</td>
+            <td style="padding:12px;text-align:center;">-</td>
+            <td style="padding:12px;text-align:right;font-family:var(--f-mono);font-size:15px;color:var(--pine);">${inr(grossSubtotal)}</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--line);">
+            <td style="padding:10px 12px;font-weight:600;">5</td>
+            <td style="padding:10px 12px;"><b>Resort Service Charge</b></td>
+            <td style="padding:10px 12px;text-align:center;">5.0% on F&amp;B</td>
+            <td style="padding:10px 12px;text-align:right;font-family:var(--f-mono);font-size:14px;font-weight:600;">${inr(serviceCharge)}</td>
+          </tr>
+          ${roomTotal > 0 ? `
+          <tr style="border-bottom:1px solid var(--line);">
+            <td style="padding:10px 12px;font-weight:600;">6</td>
+            <td style="padding:10px 12px;"><b>Room Accommodation GST (${roomGstPct})</b><br><small class="muted">Central GST (${roomCgstPct}): ${inr(roomCgst)} &bull; State GST (${roomCgstPct}): ${inr(roomSgst)}</small></td>
+            <td style="padding:10px 12px;text-align:center;">${roomGstPct} (Room)</td>
+            <td style="padding:10px 12px;text-align:right;font-family:var(--f-mono);font-size:14px;font-weight:600;">${inr(roomTaxTotal)}</td>
+          </tr>` : ''}
+          <tr style="border-bottom:1px solid var(--line);">
+            <td style="padding:10px 12px;font-weight:600;">${roomTotal > 0 ? '7' : '6'}</td>
+            <td style="padding:10px 12px;"><b>Restaurant Dining &amp; F&amp;B GST (5.0%)</b><br><small class="muted">Central GST (2.5%): ${inr(foodCgst)} &bull; State GST (2.5%): ${inr(foodSgst)}</small></td>
+            <td style="padding:10px 12px;text-align:center;">5.0% (F&amp;B)</td>
+            <td style="padding:10px 12px;text-align:right;font-family:var(--f-mono);font-size:14px;font-weight:600;">${inr(foodCgst + foodSgst)}</td>
+          </tr>
+          <tr style="background:#ECFDF5;border-top:2px solid #059669;font-weight:900;">
+            <td style="padding:14px 12px;text-align:center;font-size:16px;">★</td>
+            <td style="padding:14px 12px;font-size:16px;color:#065F46;">NET PAYABLE GRAND TOTAL (INCL. ALL TAXES)</td>
+            <td style="padding:14px 12px;text-align:center;font-size:12px;color:#047857;">ALL INCLUSIVE</td>
+            <td style="padding:14px 12px;text-align:right;font-family:var(--f-mono);font-size:20px;color:#065F46;">${inr(grandTotal)}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="background:#F9FAFB;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:12.5px;color:#4B5563;">
+        <b>Amount in words:</b> <span style="font-style:italic;color:#1F2937;">${esc(amountWords)}</span>
+      </div>
+    </div>
+
+    <!-- TABLE 2: DAY-WISE ITEMIZED BREAKDOWN (SCREEN) -->
+    <div class="panel no-print" style="margin-top:24px;border:1.5px solid #D1D5DB;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1.5px solid var(--line);padding-bottom:10px;">
+        <h3 style="font-family:var(--f-display);font-size:20px;color:var(--pine);margin:0;">📅 TABLE 2: Day-Wise Itemized Consumption Timeline</h3>
+        <span class="chip sm" style="background:var(--surface-2);font-weight:700">${days.length} Stay Day(s) Recorded</span>
+      </div>
+
       <div class="folio-days-list">
         ${days.length ? days.map((day, idx) => {
-          return `<div class="folio-day-box">
-            <div class="folio-day-head" data-act="folio-toggle-day" data-d="${esc(day.date)}">
-              <h4>📅 Day ${idx + 1} &bull; ${esc(day.label)} <small class="muted" style="font-weight:400">(${day.orders.length} order${day.orders.length > 1 ? 's' : ''})</small></h4>
-              <div class="day-total">Day Total: ${inr(day.dayTotal)}</div>
+          return `<div class="folio-day-box" style="margin-bottom:18px;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;">
+            <div class="folio-day-head" data-act="folio-toggle-day" data-d="${esc(day.date)}" style="background:var(--surface-2);padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+              <h4 style="margin:0;font-size:16px;color:var(--pine);font-weight:800;">📅 Day ${idx + 1} &bull; ${esc(day.label)} <small class="muted" style="font-weight:500">(${day.orders.length} order${day.orders.length > 1 ? 's' : ''})</small></h4>
+              <div class="day-total" style="font-weight:800;font-size:15px;color:var(--pine);">Day Total: ${inr(day.dayTotal)}</div>
             </div>
-            <div class="folio-day-body">
-              ${day.orders.map(o => {
-                const isRaw = o.orderType === 'raw_material';
-                const isSrv = o.orderType === 'extra_service';
-                const badgeLabel = isRaw ? '🥩 Custom Cooking (Raw + Cooking Fee)' : (isSrv ? '✨ Extra Service' : '🍽️ À la Carte Dining');
-                const badgeColor = isRaw ? 'var(--warn)' : (isSrv ? 'var(--teak)' : 'var(--pine)');
-                return `<div class="folio-order-row">
-                  <div class="top">
-                    <div>
-                      <b class="code">#${esc(o.code)}</b> &bull; <span class="muted">${clock(o.createdAt)}</span>
-                      <span class="chip" style="margin-left:8px;font-size:11px;padding:2px 8px;border-color:${badgeColor};color:${badgeColor}">${badgeLabel}</span>
-                    </div>
-                    <div><span class="st ${STAGE_C[orderStage(o)]}">${STAGE_L[orderStage(o)]}</span> <b class="num" style="margin-left:8px;font-size:15px">${inr(o.bill?.total || 0)}</b></div>
-                  </div>
-                  <div>
-                    ${(o.items || []).map(i => {
-                      return `<div class="folio-item-line">
-                        <span>${vmark(i)}</span>
-                        <span><b>${i.qty} × ${esc(i.name)}</b>${i.note ? ` <small class="muted">(${esc(i.note)})</small>` : ''}</span>
-                        <span class="num">${inr(i.price * i.qty)}</span>
-                      </div>`;
-                    }).join('')}
-                    ${isRaw ? `<div class="folio-item-line raw-spec">
-                      <span>ℹ️</span>
-                      <span><b>Raw Material Cost:</b> ${inr(o.rawMaterialCost)} &bull; <b>Resort Cooking / Service Charge:</b> ${inr(o.cookingCharge)}</span>
-                      <span class="num">${inr(o.rawMaterialCost + o.cookingCharge)}</span>
-                    </div>` : ''}
-                  </div>
-                  <div style="font-size:12px;color:var(--muted);display:flex;justify-content:flex-end;gap:12px;border-top:1px dashed var(--line);padding-top:4px">
-                    <span>Subtotal: <b>${inr(o.bill?.subtotal || 0)}</b></span>
-                    <span>Taxes (GST): <b>${inr(o.bill?.taxes || 0)}</b></span>
-                    <span>Service: <b>${inr(o.bill?.charges || 0)}</b></span>
-                    <span style="color:var(--ink)">Total: <b>${inr(o.bill?.total || 0)}</b></span>
-                  </div>
-                </div>`;
-              }).join('')}
+            <div class="folio-day-body" style="padding:14px 16px;">
+              <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:8px;">
+                <thead>
+                  <tr style="border-bottom:1.5px solid var(--line);text-align:left;color:var(--muted);font-size:11.5px;text-transform:uppercase;">
+                    <th style="padding:6px 8px;width:90px;">Time / Code</th>
+                    <th style="padding:6px 8px;">Items Consumed</th>
+                    <th style="padding:6px 8px;width:150px;">Category</th>
+                    <th style="padding:6px 8px;text-align:center;width:60px;">Qty</th>
+                    <th style="padding:6px 8px;text-align:right;width:90px;">Rate</th>
+                    <th style="padding:6px 8px;text-align:right;width:110px;">Item Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${day.orders.map(o => {
+                    const isRaw = o.orderType === 'raw_material';
+                    const isSrv = o.orderType === 'extra_service';
+                    const catLabel = isRaw ? '🥩 Custom Kitchen' : (isSrv ? '✨ Extra Service' : '🍽️ À la Carte');
+                    const catBadge = isRaw ? 'var(--warn)' : (isSrv ? 'var(--teak)' : 'var(--pine)');
+                    const itemRows = (o.items || []).map((it, iIdx) => `
+                      <tr style="border-bottom:1px solid rgba(0,0,0,0.05);">
+                        <td style="padding:8px;font-family:var(--f-mono);font-size:12px;color:var(--muted);">
+                          ${iIdx === 0 ? `<b>#${esc(o.code)}</b><br><small>${clock(o.createdAt)}</small>` : ''}
+                        </td>
+                        <td style="padding:8px;">
+                          <b>${esc(it.name)}</b>${it.note ? ` <small class="muted">(${esc(it.note)})</small>` : ''}
+                        </td>
+                        <td style="padding:8px;">
+                          <span class="chip sm" style="font-size:11px;padding:1px 6px;color:${catBadge};border-color:${catBadge}">${catLabel}</span>
+                        </td>
+                        <td style="padding:8px;text-align:center;font-weight:700;">${it.qty}</td>
+                        <td style="padding:8px;text-align:right;font-family:var(--f-mono);">${inr(it.price)}</td>
+                        <td style="padding:8px;text-align:right;font-family:var(--f-mono);font-weight:700;">${inr(it.price * it.qty)}</td>
+                      </tr>
+                    `).join('');
+                    const rawCostRow = (o.rawMaterialCost > 0) ? `
+                      <tr style="border-bottom:1px solid rgba(0,0,0,0.05);background:rgba(245,158,11,0.06);">
+                        <td style="padding:8px;font-family:var(--f-mono);font-size:12px;color:var(--muted);">
+                          ${(o.items||[]).length === 0 ? `<b>#${esc(o.code)}</b><br><small>${clock(o.createdAt)}</small>` : ''}
+                        </td>
+                        <td style="padding:8px;">
+                          <b style="color:#92400E;">🛒 Raw Material Market Bill (Actuals)</b><br>
+                          <small class="muted">${o.rawMaterialNotes ? esc(o.rawMaterialNotes) : 'Fresh market procurement receipt bill'}</small>
+                        </td>
+                        <td style="padding:8px;">
+                          <span class="chip sm" style="font-size:11px;padding:1px 6px;color:#92400E;border-color:#F59E0B">🥩 Raw Materials</span>
+                        </td>
+                        <td style="padding:8px;text-align:center;font-weight:700;">1</td>
+                        <td style="padding:8px;text-align:right;font-family:var(--f-mono);">${inr(o.rawMaterialCost)}</td>
+                        <td style="padding:8px;text-align:right;font-family:var(--f-mono);font-weight:700;color:#92400E;">${inr(o.rawMaterialCost)}</td>
+                      </tr>
+                    ` : '';
+                    return itemRows + rawCostRow;
+                  }).join('')}
+                </tbody>
+              </table>
+              <div style="text-align:right;padding-top:6px;border-top:1px dashed var(--line);font-size:13px;color:var(--muted);">
+                Day Subtotal: <b>${inr(day.daySubtotal)}</b> | Taxes: <b>${inr(day.dayTaxes)}</b> | Service: <b>${inr(day.dayCharges)}</b> &bull; <b style="color:var(--ink);font-size:14px;">Day Grand Total: ${inr(day.dayTotal)}</b>
+              </div>
             </div>
           </div>`;
-        }).join('') : `<div class="panel empty-state">No completed orders found for this location during the stay.</div>`}
+        }).join('') : `<div class="empty-state">No dining orders recorded during this stay period.</div>`}
+      </div>
+    </div>
+
+    <!-- OFFICIAL RESORT TAX INVOICE (PRINT-ONLY) -->
+    <div class="resort-print-invoice" style="display:none;background:#fff;color:#000;padding:20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
+      <!-- Header -->
+      <div style="border-bottom:2.5px solid #17362A;padding-bottom:14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <h1 style="margin:0;font-size:24px;color:#17362A;letter-spacing:1px;font-weight:900;">🌲 PINES EXOTICA</h1>
+          <div style="font-size:12px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:0.8px;margin-top:2px;">Resort &amp; Whispering Pines Homestay</div>
+          <div style="font-size:11.5px;color:#444;margin-top:4px;line-height:1.4;">
+            Amidst The Deodars, Village Shuru, Manali, Distt. Kullu, H.P. - 175131<br>
+            Phone: +91 98160 12345 &bull; Email: stay@pinesexotica.com &bull; Web: www.pinesexotica.com
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="display:inline-block;border:2px solid #17362A;padding:6px 14px;font-weight:900;font-size:14px;color:#17362A;text-transform:uppercase;letter-spacing:1px;">
+            TAX INVOICE / GUEST STAY FOLIO
+          </div>
+          <div style="font-size:11.5px;color:#333;margin-top:6px;"><b>GSTIN:</b> 02AAACP4921C1ZX</div>
+          <div style="font-size:11.5px;color:#333;"><b>Invoice No:</b> ${esc(folioCode)}</div>
+          <div style="font-size:11.5px;color:#333;"><b>Date of Issue:</b> ${new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' })}</div>
+        </div>
+      </div>
+
+      <!-- Guest Details & Stay Information Box -->
+      <div style="border:1.5px solid #17362A;border-radius:6px;padding:12px 16px;margin-bottom:18px;background:#FDFDFD;display:grid;grid-template-columns:1.2fr 1fr;gap:20px;font-size:12px;line-height:1.6;">
+        <div>
+          <div style="font-size:13px;font-weight:800;color:#17362A;border-bottom:1px solid #E5E7EB;padding-bottom:3px;margin-bottom:6px;text-transform:uppercase;">Guest Identification Details</div>
+          <div><b>Guest Name:</b> ${esc(g?.name || 'Walk-in / In-House Guest')}</div>
+          <div><b>Mobile Number:</b> ${esc(g?.phone || 'Not Provided')}</div>
+          <div><b>Aadhaar / Govt. ID:</b> <span style="font-family:monospace;font-weight:700;">${esc(formatAadhaar(g?.aadhaar_number || g?.aadhaarNumber))}</span></div>
+          <div><b>Address / Hometown:</b> ${esc(g?.address || '—')}</div>
+          ${g?.referred_by ? `<div><b>Referred By / Booking Via:</b> ${esc(g.referred_by)}</div>` : ''}
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:800;color:#17362A;border-bottom:1px solid #E5E7EB;padding-bottom:3px;margin-bottom:6px;text-transform:uppercase;">Stay Location &amp; Dates</div>
+          <div><b>Assigned Villa:</b> <b>Whispering Pines &bull; ${esc(villaName)}</b></div>
+          <div><b>Assigned Room:</b> <b>Room ${esc(roomNum)}</b></div>
+          <div><b>Dates From (Check-in):</b> <b>${inDateStr}</b></div>
+          <div><b>Dates To (Check-out):</b> <b>${outDateStr}</b></div>
+          <div><b>Stay Duration:</b> <b>${nightsCount} Night${nightsCount > 1 ? 's' : ''}</b> &bull; Room Tariff: <b>₹${roomRate.toLocaleString('en-IN')} / Night</b></div>
+        </div>
+      </div>
+
+      <!-- Table 1: Room Stay Accommodation -->
+      <div style="margin-bottom:18px;">
+        <div style="font-size:13px;font-weight:800;color:#17362A;margin-bottom:6px;text-transform:uppercase;border-bottom:1px solid #17362A;padding-bottom:3px;">
+          Table 1: Room Stay Accommodation Charges
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+          <thead>
+            <tr style="background:#F3F4F6;border:1px solid #9CA3AF;text-align:left;">
+              <th style="padding:6px 8px;width:50px;border:1px solid #9CA3AF;">S.No</th>
+              <th style="padding:6px 8px;border:1px solid #9CA3AF;">Room Particulars / Description</th>
+              <th style="padding:6px 8px;width:170px;text-align:center;border:1px solid #9CA3AF;">Stay Dates (From - To)</th>
+              <th style="padding:6px 8px;width:70px;text-align:center;border:1px solid #9CA3AF;">Nights</th>
+              <th style="padding:6px 8px;width:95px;text-align:right;border:1px solid #9CA3AF;">Tariff / Night (₹)</th>
+              <th style="padding:6px 8px;width:110px;text-align:right;border:1px solid #9CA3AF;">Amount (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border:1px solid #D1D5DB;">
+              <td style="padding:6px 8px;border:1px solid #D1D5DB;text-align:center;font-weight:600;">1</td>
+              <td style="padding:6px 8px;border:1px solid #D1D5DB;">
+                <b>Resort Room Stay Accommodation</b><br>
+                <span style="color:#555;">Room ${esc(roomNum)} &bull; Whispering Pines ${esc(villaName)}</span>
+              </td>
+              <td style="padding:6px 8px;text-align:center;border:1px solid #D1D5DB;">${inDateStr} to ${outDateStr}</td>
+              <td style="padding:6px 8px;text-align:center;border:1px solid #D1D5DB;font-weight:700;">${nightsCount}</td>
+              <td style="padding:6px 8px;text-align:right;border:1px solid #D1D5DB;font-family:monospace;">₹${roomRate.toFixed(2)}</td>
+              <td style="padding:6px 8px;text-align:right;border:1px solid #D1D5DB;font-family:monospace;font-weight:700;">₹${roomTotal.toFixed(2)}</td>
+            </tr>
+            <tr style="background:#F9FAFB;font-weight:700;border:1px solid #9CA3AF;">
+              <td colspan="5" style="padding:6px 8px;text-align:right;border:1px solid #9CA3AF;">Total Room Accommodation Charges:</td>
+              <td style="padding:6px 8px;text-align:right;border:1px solid #9CA3AF;font-family:monospace;">₹${roomTotal.toFixed(2)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Table 2: Day-Wise Food & Dining Consumption -->
+      <div style="margin-bottom:18px;">
+        <div style="font-size:13px;font-weight:800;color:#17362A;margin-bottom:6px;text-transform:uppercase;border-bottom:1px solid #17362A;padding-bottom:3px;">
+          Table 2: Day-Wise Itemized Food &amp; Dining Consumption Breakdown
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+          <thead>
+            <tr style="background:#F3F4F6;border:1px solid #9CA3AF;text-align:left;">
+              <th style="padding:6px;width:80px;border:1px solid #9CA3AF;">Date / Day</th>
+              <th style="padding:6px;width:75px;border:1px solid #9CA3AF;">Order #</th>
+              <th style="padding:6px;border:1px solid #9CA3AF;">Particulars / Description</th>
+              <th style="padding:6px;width:115px;border:1px solid #9CA3AF;">Category</th>
+              <th style="padding:6px;width:40px;text-align:center;border:1px solid #9CA3AF;">Qty</th>
+              <th style="padding:6px;width:75px;text-align:right;border:1px solid #9CA3AF;">Rate (₹)</th>
+              <th style="padding:6px;width:85px;text-align:right;border:1px solid #9CA3AF;">Amount (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${days.length ? days.map((day, dIdx) => {
+              return day.orders.map((o, oIdx) => {
+                const isRaw = o.orderType === 'raw_material';
+                const isSrv = o.orderType === 'extra_service';
+                const catLabel = isRaw ? 'Custom Kitchen' : (isSrv ? 'Extra Service' : 'Dining F&B');
+                const itemRows = (o.items || []).map((it, iIdx) => `
+                  <tr style="border:1px solid #D1D5DB;">
+                    <td style="padding:5px;border:1px solid #D1D5DB;">${(oIdx === 0 && iIdx === 0) ? `<b>Day ${dIdx + 1}</b><br><small style="color:#555">${esc(day.label)}</small>` : ''}</td>
+                    <td style="padding:5px;border:1px solid #D1D5DB;font-family:monospace;">${iIdx === 0 ? `#${esc(o.code)}` : ''}</td>
+                    <td style="padding:5px;border:1px solid #D1D5DB;">${esc(it.name)}${it.note ? ` <small style="color:#666">(${esc(it.note)})</small>` : ''}</td>
+                    <td style="padding:5px;border:1px solid #D1D5DB;">${catLabel}</td>
+                    <td style="padding:5px;text-align:center;border:1px solid #D1D5DB;">${it.qty}</td>
+                    <td style="padding:5px;text-align:right;border:1px solid #D1D5DB;font-family:monospace;">${Number(it.price).toFixed(2)}</td>
+                    <td style="padding:5px;text-align:right;border:1px solid #D1D5DB;font-family:monospace;font-weight:700;">${(Number(it.price) * Number(it.qty)).toFixed(2)}</td>
+                  </tr>
+                `).join('');
+
+                const rawRow = (o.rawMaterialCost > 0) ? `
+                  <tr style="border:1px solid #D1D5DB;background:#FFFBEB;">
+                    <td style="padding:5px;border:1px solid #D1D5DB;">${(oIdx === 0 && (o.items||[]).length === 0) ? `<b>Day ${dIdx + 1}</b><br><small style="color:#555">${esc(day.label)}</small>` : ''}</td>
+                    <td style="padding:5px;border:1px solid #D1D5DB;font-family:monospace;">${(o.items||[]).length === 0 ? `#${esc(o.code)}` : ''}</td>
+                    <td style="padding:5px;border:1px solid #D1D5DB;color:#92400E;"><b>🛒 Raw Material Market Bill (Actuals)</b>${o.rawMaterialNotes ? `<br><small style="color:#666">${esc(o.rawMaterialNotes)}</small>` : ''}</td>
+                    <td style="padding:5px;border:1px solid #D1D5DB;color:#92400E;">Raw Procurement</td>
+                    <td style="padding:5px;text-align:center;border:1px solid #D1D5DB;">1</td>
+                    <td style="padding:5px;text-align:right;border:1px solid #D1D5DB;font-family:monospace;">${Number(o.rawMaterialCost).toFixed(2)}</td>
+                    <td style="padding:5px;text-align:right;border:1px solid #D1D5DB;font-family:monospace;font-weight:700;color:#92400E;">${Number(o.rawMaterialCost).toFixed(2)}</td>
+                  </tr>
+                ` : '';
+
+                return itemRows + rawRow;
+              }).join('') + `
+              <tr style="background:#F9FAFB;font-weight:700;border:1px solid #9CA3AF;">
+                <td colspan="6" style="padding:6px;text-align:right;border:1px solid #9CA3AF;">Day ${dIdx + 1} Dining Subtotal (${esc(day.label)}):</td>
+                <td style="padding:6px;text-align:right;border:1px solid #9CA3AF;font-family:monospace;">₹${Number(day.daySubtotal).toFixed(2)}</td>
+              </tr>`;
+            }).join('') : `<tr><td colspan="7" style="padding:10px;text-align:center;border:1px solid #ccc;">No dining orders recorded during this stay period.</td></tr>`}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Table 3: Consolidated Financial Summary & Taxes -->
+      <div style="margin-bottom:18px;page-break-inside:avoid;">
+        <div style="font-size:13px;font-weight:800;color:#17362A;margin-bottom:6px;text-transform:uppercase;border-bottom:1px solid #17362A;padding-bottom:3px;">
+          Table 3: Consolidated Financial Summary &amp; Statutory Tax Breakdown
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead>
+            <tr style="background:#F3F4F6;border:1px solid #9CA3AF;text-align:left;">
+              <th style="padding:6px 8px;width:50px;border:1px solid #9CA3AF;">S.No</th>
+              <th style="padding:6px 8px;border:1px solid #9CA3AF;">Description / Accounting Head</th>
+              <th style="padding:6px 8px;width:150px;text-align:center;border:1px solid #9CA3AF;">Applicable Basis / Rate</th>
+              <th style="padding:6px 8px;width:140px;text-align:right;border:1px solid #9CA3AF;">Amount (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border:1px solid #D1D5DB;background:rgba(23,54,42,0.02);">
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;text-align:center;font-weight:600;">1</td>
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;"><b>Room Stay Accommodation Charges</b> (${nightsCount} Nights @ ₹${roomRate.toLocaleString('en-IN')})</td>
+              <td style="padding:5px 8px;text-align:center;border:1px solid #D1D5DB;">${nightsCount} Nights</td>
+              <td style="padding:5px 8px;text-align:right;border:1px solid #D1D5DB;font-family:monospace;font-weight:700;">₹${roomTotal.toFixed(2)}</td>
+            </tr>
+            <tr style="border:1px solid #D1D5DB;">
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;text-align:center;font-weight:600;">2</td>
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;">À La Carte Dining (Food &amp; Beverage Consumption)</td>
+              <td style="padding:5px 8px;text-align:center;border:1px solid #D1D5DB;">As per menu</td>
+              <td style="padding:5px 8px;text-align:right;border:1px solid #D1D5DB;font-family:monospace;">₹${totalFood.toFixed(2)}</td>
+            </tr>
+            <tr style="border:1px solid #D1D5DB;">
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;text-align:center;font-weight:600;">3</td>
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;">Chef's Custom Kitchen &amp; Raw Material Preparation Charges</td>
+              <td style="padding:5px 8px;text-align:center;border:1px solid #D1D5DB;">Per preparation fee</td>
+              <td style="padding:5px 8px;text-align:right;border:1px solid #D1D5DB;font-family:monospace;">₹${totalCooking.toFixed(2)}</td>
+            </tr>
+            <tr style="border:1px solid #D1D5DB;">
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;text-align:center;font-weight:600;">4</td>
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;">Resort Luxury Experiences &amp; Extra Services (Bonfire/BBQ/Spa)</td>
+              <td style="padding:5px 8px;text-align:center;border:1px solid #D1D5DB;">Per experience</td>
+              <td style="padding:5px 8px;text-align:right;border:1px solid #D1D5DB;font-family:monospace;">₹${totalServices.toFixed(2)}</td>
+            </tr>
+            <tr style="background:#F9FAFB;font-weight:700;border:1.5px solid #9CA3AF;">
+              <td style="padding:6px 8px;text-align:center;border:1.5px solid #9CA3AF;">A</td>
+              <td style="padding:6px 8px;border:1.5px solid #9CA3AF;">GROSS TAXABLE VALUE (ROOM + DINING + SERVICES SUBTOTAL)</td>
+              <td style="padding:6px 8px;text-align:center;border:1.5px solid #9CA3AF;">-</td>
+              <td style="padding:6px 8px;text-align:right;border:1.5px solid #9CA3AF;font-family:monospace;font-size:13px;font-weight:800;">₹${grossSubtotal.toFixed(2)}</td>
+            </tr>
+            <tr style="border:1px solid #D1D5DB;">
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;text-align:center;font-weight:600;">5</td>
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;">Resort Service Charge</td>
+              <td style="padding:5px 8px;text-align:center;border:1px solid #D1D5DB;">5.0% on F&amp;B</td>
+              <td style="padding:5px 8px;text-align:right;border:1px solid #D1D5DB;font-family:monospace;">₹${serviceCharge.toFixed(2)}</td>
+            </tr>
+            ${roomTotal > 0 ? `
+            <tr style="border:1px solid #D1D5DB;">
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;text-align:center;font-weight:600;">6</td>
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;">Room Accommodation Central GST (CGST)</td>
+              <td style="padding:5px 8px;text-align:center;border:1px solid #D1D5DB;">${roomCgstPct}</td>
+              <td style="padding:5px 8px;text-align:right;border:1px solid #D1D5DB;font-family:monospace;">₹${roomCgst.toFixed(2)}</td>
+            </tr>
+            <tr style="border:1px solid #D1D5DB;">
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;text-align:center;font-weight:600;">7</td>
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;">Room Accommodation State GST (SGST)</td>
+              <td style="padding:5px 8px;text-align:center;border:1px solid #D1D5DB;">${roomCgstPct}</td>
+              <td style="padding:5px 8px;text-align:right;border:1px solid #D1D5DB;font-family:monospace;">₹${roomSgst.toFixed(2)}</td>
+            </tr>` : ''}
+            <tr style="border:1px solid #D1D5DB;">
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;text-align:center;font-weight:600;">${roomTotal > 0 ? '8' : '6'}</td>
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;">Restaurant F&amp;B Central GST (CGST)</td>
+              <td style="padding:5px 8px;text-align:center;border:1px solid #D1D5DB;">2.5%</td>
+              <td style="padding:5px 8px;text-align:right;border:1px solid #D1D5DB;font-family:monospace;">₹${foodCgst.toFixed(2)}</td>
+            </tr>
+            <tr style="border:1px solid #D1D5DB;">
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;text-align:center;font-weight:600;">${roomTotal > 0 ? '9' : '7'}</td>
+              <td style="padding:5px 8px;border:1px solid #D1D5DB;">Restaurant F&amp;B State GST (SGST)</td>
+              <td style="padding:5px 8px;text-align:center;border:1px solid #D1D5DB;">2.5%</td>
+              <td style="padding:5px 8px;text-align:right;border:1px solid #D1D5DB;font-family:monospace;">₹${foodSgst.toFixed(2)}</td>
+            </tr>
+            <tr style="background:#E5E7EB;font-weight:900;border:2px solid #111;">
+              <td style="padding:8px;text-align:center;border:2px solid #111;font-size:14px;">★</td>
+              <td style="padding:8px;font-size:13px;border:2px solid #111;color:#111;">TOTAL AMOUNT PAYABLE (GRAND TOTAL INCL. ALL TAXES)</td>
+              <td style="padding:8px;text-align:center;font-size:11px;border:2px solid #111;color:#333;">NET PAYABLE</td>
+              <td style="padding:8px;text-align:right;font-family:monospace;font-size:16px;border:2px solid #111;color:#000;">₹${grandTotal.toFixed(2)}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="border:1px solid #9CA3AF;border-top:none;padding:8px 12px;font-size:12px;background:#F9FAFB;">
+          <b>Amount in Words:</b> <i style="font-weight:600;color:#111;">${esc(amountWords)}</i>
+        </div>
+      </div>
+
+      <!-- Signatures Box -->
+      <div style="margin-top:35px;display:grid;grid-template-columns:1fr 1fr;gap:40px;page-break-inside:avoid;padding-top:15px;">
+        <div style="text-align:center;">
+          <div style="border-top:1.5px solid #333;width:80%;margin:0 auto 6px;"></div>
+          <div style="font-size:12px;font-weight:700;">Guest Signature</div>
+          <div style="font-size:10.5px;color:#666;">I confirm that the above room stay, dining items, and services were satisfactorily received.</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="border-top:1.5px solid #333;width:80%;margin:0 auto 6px;"></div>
+          <div style="font-size:12px;font-weight:700;">Authorized Signatory / Front Office Manager</div>
+          <div style="font-size:10.5px;color:#666;">For Pines Exotica Resort &amp; Whispering Pines</div>
+        </div>
+      </div>
+
+      <!-- Footer Note -->
+      <div style="margin-top:24px;text-align:center;font-size:11px;color:#555;border-top:1px dashed #ccc;padding-top:10px;">
+        🌲 <i>Thank you for choosing Pines Exotica Resort! We look forward to welcoming you back amidst the deodars.</i>
       </div>
     </div>
   </div>`;
@@ -2767,13 +3381,25 @@ async function saveGuest(){
   const name = String(g.name||'').trim();
   const phone = String(g.phone||'').trim();
   const aadhaar = String(g.aadhaarNumber||'').replace(/\D/g,'');
-  const locType = g.assignedLocationType || 'villa';
+  const locType = g.assignedLocationType || 'room';
   const locNum = String(g.assignedLocationNumber||'').trim().toUpperCase();
+  const roomTariff = parseFloat(g.roomTariff !== undefined ? g.roomTariff : 4500) || 0;
+  const expectedCheckOut = g.expectedCheckOutDate ? new Date(g.expectedCheckOutDate).getTime() : null;
 
   if(!name){ S.guestDraftErr = 'Enter guest full name.'; render(); return; }
   if(phone.length < 10){ S.guestDraftErr = 'Enter a valid 10-digit mobile number.'; render(); return; }
   if(aadhaar.length !== 12){ S.guestDraftErr = 'Enter a valid 12-digit Aadhaar Card number.'; render(); return; }
   if(!locNum){ S.guestDraftErr = `Select an assigned ${locType}.`; render(); return; }
+
+  let assignedVilla = (g.assignedVilla || '').trim();
+  if (!assignedVilla) {
+    if (locType === 'villa') {
+      assignedVilla = locNum;
+    } else {
+      const locObj = (S.locations || []).find(l => String(l.number).toUpperCase() === locNum.toUpperCase());
+      if (locObj && locObj.parentVilla) assignedVilla = locObj.parentVilla;
+    }
+  }
 
   const id = g._new ? ('gst_' + Date.now().toString(36) + uid(4)) : g.id;
   const doc = {
@@ -2784,13 +3410,16 @@ async function saveGuest(){
     referredBy: String(g.referredBy||'').trim(),
     assignedLocationType: locType,
     assignedLocationNumber: locNum,
+    assignedVilla: assignedVilla || 'Villa 1',
+    roomTariff,
+    expectedCheckOutDate: expectedCheckOut,
     checkInDate: g.checkInDate || Date.now(),
     status: g.status || 'checked_in'
   };
 
-  const ok = await write(() => S.store.set('guests/' + id, doc));
+  const ok = g._new ? await write(() => S.store.set('guests/' + id, doc)) : await write(() => S.store.update('guests/' + id, doc));
   if(ok){
-    toast('Guest Registered', `${name} assigned to ${locType.toUpperCase()} ${locNum}`, 'new');
+    toast(g._new ? 'Guest Registered' : 'Guest Details Updated', `${name} assigned to ${locType.toUpperCase()} ${locNum}`, 'new');
     S.guestDraft = null;
     S.guestDraftErr = '';
     render();
@@ -2817,6 +3446,9 @@ async function saveLocation(){
     number: num,
     name,
     parentVilla,
+    assignedStaffName: l.assignedStaffName || '',
+    assignedStaffPhone: l.assignedStaffPhone || '',
+    assignedStaffRole: l.assignedStaffRole || 'Villa Butler & Host',
     displayOrder,
     isActive: l.isActive !== false
   };
@@ -2863,6 +3495,59 @@ async function saveCustomCooking() {
     S.rawDraft = null;
     S.rawDraftErr = '';
     render();
+  }
+}
+
+async function saveCustomCookingSlab() {
+  const d = S.slabDraft;
+  if (!d) return;
+  const minPax = parseInt(d.minPax, 10);
+  const maxPax = parseInt(d.maxPax, 10);
+  const price = parseFloat(d.price);
+  if (isNaN(minPax) || isNaN(maxPax) || minPax < 1 || maxPax < minPax) {
+    S.slabDraftErr = 'Please enter valid Min and Max Pax counts.';
+    render();
+    return;
+  }
+  if (isNaN(price) || price < 0) {
+    S.slabDraftErr = 'Please enter a valid price in rupees.';
+    render();
+    return;
+  }
+  const label = (d.label || `${minPax}-${maxPax} Persons (₹${price})`).trim();
+  const displayOrder = parseInt(d.displayOrder || d.order, 10) || minPax;
+
+  const payload = { minPax, maxPax, price, label, displayOrder, isActive: d.isActive !== false };
+  if (d.id && !d._new) {
+    await write(() => S.store.update('cookingSlabs/' + d.id, payload));
+    toast('Saved', `Slab ${label} updated`, '');
+  } else {
+    await write(() => S.store.set('cookingSlabs/' + Date.now(), payload));
+    toast('Created', `Slab ${label} added`, '');
+  }
+  S.slabDraft = null;
+  S.slabDraftErr = '';
+  render();
+}
+
+async function saveOrderRawCost(orderId) {
+  const inp = document.getElementById('raw-cost-' + orderId);
+  if (!inp) return;
+  const cost = parseFloat(inp.value || 0);
+  try {
+    const res = await fetch(`/api/orders/${orderId}/raw-material`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rawMaterialCost: cost })
+    });
+    if (!res.ok) throw new Error('Failed to update raw material cost');
+    const updated = await res.json();
+    const idx = S.orders.findIndex(o => o.id === orderId);
+    if (idx !== -1) S.orders[idx] = updated;
+    toast('Receipt Saved', `Raw material cost ₹${cost} saved on order #${updated.code}`, 'serve');
+    render();
+  } catch (err) {
+    toast('Error', 'Failed to save market receipt', 'reprepare');
   }
 }
 
@@ -3220,7 +3905,8 @@ document.addEventListener('click',async e=>{
     case 'copy': {const v=t.dataset.v;try{await navigator.clipboard.writeText(v);toast('Copied',v,'');}catch(err){toast('Copy not available','Select the link text and copy it manually.','');}return;}
     case 'g-filter': S.guestFilter=t.dataset.v; S.guestPage=1; break;
     case 'guest-page': S.guestPage = Number(t.dataset.page) || 1; break;
-    case 'guest-new': S.guestDraft={_new:true,name:'',phone:'',aadhaarNumber:'',address:'',referredBy:'',assignedLocationType:'villa',assignedLocationNumber:'',checkInDate:Date.now(),status:'checked_in'}; S.guestDraftErr=''; break;
+    case 'guest-new': S.guestDraft={_new:true,name:'',phone:'',aadhaarNumber:'',address:'',referredBy:'',assignedLocationType:'room',assignedLocationNumber:'',roomTariff:4500,expectedCheckOutDate:'',checkInDate:Date.now(),status:'checked_in'}; S.guestDraftErr=''; break;
+    case 'guest-edit': { const g = (S.guests||[]).find(x => x.id === id); if(g){ S.guestDraft = { ...g, _new:false, roomTariff: g.roomTariff !== undefined ? g.roomTariff : 4500 }; S.guestDraftErr=''; } break; }
     case 'guest-close': case 'overlay-close-guest': S.guestDraft=null; break;
     case 'g-loctype': S.guestDraft.assignedLocationType=t.dataset.v; break;
     case 'guest-save': await saveGuest(); break;
@@ -3230,7 +3916,8 @@ document.addEventListener('click',async e=>{
 
     case 'loc-filter': S.locFilter=t.dataset.v; S.locPage=1; break;
     case 'loc-page': S.locPage = Number(t.dataset.page) || 1; break;
-    case 'loc-new': S.locDraft={_new:true,type:S.locFilter!=='all'?S.locFilter:'villa',number:'',name:'',parentVilla:'',displayOrder:10,isActive:true}; S.locDraftErr=''; break;
+    case 'loc-new': S.locDraft={_new:true,type:S.locFilter!=='all'?S.locFilter:'villa',number:'',name:'',parentVilla:'',assignedStaffName:'',assignedStaffPhone:'',assignedStaffRole:'Villa Butler & Host',displayOrder:10,isActive:true}; S.locDraftErr=''; break;
+    case 'loc-edit': { const loc = (S.locations||[]).find(x => x.id === id); if(loc){ S.locDraft = {...loc}; S.locDraftErr=''; } break; }
     case 'loc-close': case 'overlay-close-loc': S.locDraft=null; break;
     case 'l-type':
       S.locDraft.type=t.dataset.v;
@@ -3239,6 +3926,33 @@ document.addEventListener('click',async e=>{
     case 'loc-save': await saveLocation(); break;
     case 'loc-toggle': { await write(()=>S.store.update('locations/'+id,{isActive:t.checked})); toast('Updated','Location status changed',''); break; }
     case 'loc-del': { if(confirm('Delete this location?')){ await write(()=>S.store.del('locations/'+id)); toast('Location Deleted','',''); } break; }
+
+    case 'slab-new': S.slabDraft = { _new: true, label: '', minPax: 1, maxPax: 5, price: 2000, displayOrder: 10, isActive: true }; S.slabDraftErr = ''; break;
+    case 'slab-edit': {
+      const slabs = (S.cookingSlabs && S.cookingSlabs.length) ? S.cookingSlabs : DEFAULT_SLABS;
+      const sl = slabs.find(x => String(x.id) === String(id));
+      if (sl) { S.slabDraft = { ...sl }; S.slabDraftErr = ''; }
+      break;
+    }
+    case 'slab-close': case 'overlay-close-slab': S.slabDraft = null; break;
+    case 'slab-save': await saveCustomCookingSlab(); break;
+    case 'slab-toggle': {
+      await write(() => S.store.update('cookingSlabs/' + id, { isActive: t.checked }));
+      toast('Updated', 'Slab availability changed', '');
+      break;
+    }
+    case 'slab-del': {
+      if (confirm('Delete this Pax Slab?')) {
+        await write(() => S.store.del('cookingSlabs/' + id));
+        toast('Slab Deleted', '', '');
+      }
+      break;
+    }
+    case 'save-order-raw-cost': {
+      const ordId = t.dataset.order;
+      await saveOrderRawCost(ordId);
+      break;
+    }
 
     case 'raw-page': S.rawPage = Number(t.dataset.page) || 1; break;
     case 'raw-new': S.rawDraft={_new:true,name:'',description:'',cookingCharge:200,rawMaterialType:'Farm Vegetables & Greens',veg:true,signature:false,available:true,displayOrder:10,img:'photos/palak_paneer.webp'}; S.rawDraftErr=''; break;
@@ -3262,8 +3976,8 @@ document.addEventListener('click',async e=>{
     case 'srv-toggle': { await write(()=>S.store.update('services/'+id,{available:t.checked})); toast('Updated','Service availability changed',''); break; }
     case 'srv-del': { if(confirm('Delete this service?')){ await write(()=>S.store.del('services/'+id)); toast('Service Deleted','',''); } break; }
 
-    case 'f-type': S.folioState.type=t.dataset.v; S.folioState.num=''; S.folioState.guestId=''; break;
-    case 'folio-fetch': case 'folio-refresh': await loadFolio(S.folioState.type, S.folioState.num, S.folioState.guestId); break;
+    case 'f-type': S.folioState.type=t.dataset.v; S.folioState.num=''; S.folioState.room=''; S.folioState.guestId=''; break;
+    case 'folio-fetch': case 'folio-refresh': await loadFolio(S.folioState.type, S.folioState.num, S.folioState.guestId, S.folioState.room); break;
     case 'folio-print': window.print(); break;
     case 'folio-toggle-day': { const b = t.closest('.folio-day-box'); if(b) b.classList.toggle('collapsed'); break; }
     case 'print-common-qr': window.print(); return;
@@ -3331,9 +4045,14 @@ document.addEventListener('input',e=>{
   else if(k==='g.aadhaar'){if(S.guestDraft)S.guestDraft.aadhaarNumber=t.value.replace(/\D/g,'').slice(0,12);}
   else if(k==='g.address'){if(S.guestDraft)S.guestDraft.address=t.value;}
   else if(k==='g.ref'){if(S.guestDraft)S.guestDraft.referredBy=t.value;}
+  else if(k==='g.tariff'){if(S.guestDraft)S.guestDraft.roomTariff=t.value;}
+  else if(k==='g.expcheckout'){if(S.guestDraft)S.guestDraft.expectedCheckOutDate=t.value;}
   else if(k==='l.num'){if(S.locDraft)S.locDraft.number=t.value;}
   else if(k==='l.name'){if(S.locDraft)S.locDraft.name=t.value;}
   else if(k==='l.parentVilla'){if(S.locDraft)S.locDraft.parentVilla=t.value;}
+  else if(k==='l.assignedStaffName'){if(S.locDraft)S.locDraft.assignedStaffName=t.value;}
+  else if(k==='l.assignedStaffPhone'){if(S.locDraft)S.locDraft.assignedStaffPhone=t.value.replace(/\D/g,'').slice(0,10);}
+  else if(k==='l.assignedStaffRole'){if(S.locDraft)S.locDraft.assignedStaffRole=t.value;}
   else if(k==='l.order'){if(S.locDraft)S.locDraft.displayOrder=+t.value;}
   else if(k.startsWith('raw.')){
     const f=k.slice(4);
@@ -3343,6 +4062,10 @@ document.addEventListener('input',e=>{
     else if(f==='name') S.rawDraft.name=t.value;
     else if(f==='desc') S.rawDraft.description=t.value;
     else if(f==='img') S.rawDraft.img=t.value;
+  }
+  else if(k.startsWith('slab.')){
+    const f=k.slice(5);
+    if(S.slabDraft) S.slabDraft[f]=t.value;
   }
   else if(k==='s.name'){if(S.serviceDraft)S.serviceDraft.name=t.value;}
   else if(k==='s.category'){if(S.serviceDraft)S.serviceDraft.category=t.value;}
@@ -3363,8 +4086,9 @@ document.addEventListener('change',async e=>{
   else if(k==='ediet'){S.cms.edit.veg=t.value==='veg';S.cms.edit.egg=t.value==='egg';}
   else if(k==='photo'){const f=t.files&&t.files[0];if(!f)return;try{S.cms.edit.img=await resizeImage(f);S.cms.err='';}catch(err){S.cms.err='That file could not be read as an image. Try a JPG or PNG.';}}
   else if(k==='g.locnum'){if(S.guestDraft)S.guestDraft.assignedLocationNumber=t.value;}
-  else if(k==='flocnum'){S.folioState.num=t.value;S.folioState.guestId='';render();}
-  else if(k==='fguest'){S.folioState.guestId=t.value;if(t.value){const g=(S.guests||[]).find(x=>x.id===t.value);if(g){S.folioState.type=g.assignedLocationType;S.folioState.num=g.assignedLocationNumber;}}render();}
+  else if(k==='flocnum'){S.folioState.num=t.value;S.folioState.room='';S.folioState.guestId='';render();}
+  else if(k==='flocroom'){S.folioState.room=t.value;render();}
+  else if(k==='fguest'){S.folioState.guestId=t.value;if(t.value){const g=(S.guests||[]).find(x=>x.id===t.value);if(g){S.folioState.type=g.assignedLocationType;S.folioState.num=g.assignedLocationNumber;S.folioState.room='';}}render();}
   render();
 });
 // refresh waiting times without re-writing anything

@@ -16,6 +16,7 @@ function makeBackendStore() {
     services: [],
     guests: [],
     customCooking: [],
+    cookingSlabs: [],
     settings: { billing: null }
   };
 
@@ -27,6 +28,7 @@ function makeBackendStore() {
     services: new Set(),
     guests: new Set(),
     customCooking: new Set(),
+    cookingSlabs: new Set(),
     settings: new Set()
   };
 
@@ -61,6 +63,9 @@ function makeBackendStore() {
       } else if (name === 'customCooking' || name === 'custom_cooking') {
         const res = await fetch(`${API_BASE}/api/custom-cooking`);
         if (res.ok) { collections.customCooking = await res.json(); notify('customCooking'); }
+      } else if (name === 'cookingSlabs' || name === 'slabs') {
+        const res = await fetch(`${API_BASE}/api/custom-cooking/slabs`);
+        if (res.ok) { collections.cookingSlabs = await res.json(); notify('cookingSlabs'); }
       }
     } catch (err) {
       console.warn(`[BackendStore] Error fetching ${name}:`, err);
@@ -130,6 +135,10 @@ function makeBackendStore() {
 
     socket.on('custom_cooking:updated', () => {
       fetchCollection('customCooking');
+    });
+
+    socket.on('custom_cooking:slabs_updated', () => {
+      fetchCollection('cookingSlabs');
     });
 
     socket.on('alerts:created', (alert) => {
@@ -235,6 +244,14 @@ function makeBackendStore() {
         });
         if (!res.ok) throw new Error('Failed to add custom cooking item');
         return await res.json();
+      } else if (col === 'cookingSlabs' || col === 'slabs') {
+        const res = await fetch(`${API_BASE}/api/custom-cooking/slabs`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(v)
+        });
+        if (!res.ok) throw new Error('Failed to add cooking slab');
+        return await res.json();
       } else if (col === 'settings') {
         const res = await fetch(`${API_BASE}/api/settings`, {
           method: 'PUT',
@@ -304,6 +321,14 @@ function makeBackendStore() {
         });
         if (!res.ok) throw new Error('Failed to update custom cooking item');
         return await res.json();
+      } else if (col === 'cookingSlabs' || col === 'slabs') {
+        const res = await fetch(`${API_BASE}/api/custom-cooking/slabs/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(v)
+        });
+        if (!res.ok) throw new Error('Failed to update cooking slab');
+        return await res.json();
       } else if (col === 'settings') {
         const res = await fetch(`${API_BASE}/api/settings`, {
           method: 'PUT',
@@ -323,6 +348,7 @@ function makeBackendStore() {
       else if (col === 'services') endpoint = `${API_BASE}/api/services/${id}`;
       else if (col === 'guests') endpoint = `${API_BASE}/api/guests/${id}`;
       else if (col === 'customCooking' || col === 'custom_cooking') endpoint = `${API_BASE}/api/custom-cooking/${id}`;
+      else if (col === 'cookingSlabs' || col === 'slabs') endpoint = `${API_BASE}/api/custom-cooking/slabs/${id}`;
 
       if (endpoint) {
         const res = await fetch(endpoint, { method: 'DELETE' });
