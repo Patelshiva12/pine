@@ -21,4 +21,9 @@ syncFile('service.html', '3-Room-Service.html', 'service');
 syncFile('index.html', '1-Guest-Menu.html', null);
 syncFile('index.html', 'Pines-Exotica-Menu.html', null);
 
+// Copy helper scripts to root
+fs.copyFileSync(path.join(publicDir, 'api-store.js'), path.join(rootDir, 'api-store.js'));
+fs.copyFileSync(path.join(publicDir, 'qrcode.min.js'), path.join(rootDir, 'qrcode.min.js'));
+console.log('Synced api-store.js and qrcode.min.js to root directory');
+
 console.log('All root HTML files updated successfully!');

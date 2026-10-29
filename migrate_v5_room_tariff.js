@@ -24,11 +24,15 @@ async function migrate() {
       }
     }
     console.log('[Migration V5] Existing guests updated with assigned_villa.');
-    process.exit(0);
+    return true;
   } catch (err) {
     console.error('[Migration V5 Error]', err);
-    process.exit(1);
+    throw err;
   }
 }
 
-migrate();
+if (require.main === module) {
+  migrate().then(() => process.exit(0)).catch(() => process.exit(1));
+}
+
+module.exports = migrate;

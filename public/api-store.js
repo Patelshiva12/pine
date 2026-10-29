@@ -4,9 +4,9 @@
  * Supports: Menu, Orders, Alerts, Settings, Locations (Villas/Rooms/Tables), Services (Spa/BBQ), Guests
  */
 function makeBackendStore() {
-  const isBackendHost = location.port === '3000';
-  const API_BASE = window.API_BASE_URL || (isBackendHost ? '' : 'http://localhost:3000');
-  const socket = (typeof io !== 'undefined') ? io(API_BASE || undefined) : null;
+  const isHttp = location.protocol.startsWith('http');
+  const API_BASE = window.API_BASE_URL || (isHttp ? '' : 'http://localhost:3000');
+  const socket = (typeof io !== 'undefined') ? (API_BASE ? io(API_BASE) : io()) : null;
 
   const collections = {
     menu: [],
@@ -17,6 +17,9 @@ function makeBackendStore() {
     guests: [],
     customCooking: [],
     cookingSlabs: [],
+    referralSources: [],
+    geoStates: [],
+    geoCities: [],
     settings: { billing: null }
   };
 
@@ -29,6 +32,9 @@ function makeBackendStore() {
     guests: new Set(),
     customCooking: new Set(),
     cookingSlabs: new Set(),
+    referralSources: new Set(),
+    geoStates: new Set(),
+    geoCities: new Set(),
     settings: new Set()
   };
 
@@ -66,6 +72,15 @@ function makeBackendStore() {
       } else if (name === 'cookingSlabs' || name === 'slabs') {
         const res = await fetch(`${API_BASE}/api/custom-cooking/slabs`);
         if (res.ok) { collections.cookingSlabs = await res.json(); notify('cookingSlabs'); }
+      } else if (name === 'referralSources' || name === 'referrals') {
+        const res = await fetch(`${API_BASE}/api/referral-sources?all=true`);
+        if (res.ok) { collections.referralSources = await res.json(); notify('referralSources'); }
+      } else if (name === 'geoStates' || name === 'states') {
+        const res = await fetch(`${API_BASE}/api/geo/states`);
+        if (res.ok) { collections.geoStates = await res.json(); notify('geoStates'); }
+      } else if (name === 'geoCities' || name === 'cities') {
+        const res = await fetch(`${API_BASE}/api/geo/cities`);
+        if (res.ok) { collections.geoCities = await res.json(); notify('geoCities'); }
       }
     } catch (err) {
       console.warn(`[BackendStore] Error fetching ${name}:`, err);
@@ -139,6 +154,10 @@ function makeBackendStore() {
 
     socket.on('custom_cooking:slabs_updated', () => {
       fetchCollection('cookingSlabs');
+    });
+
+    socket.on('referrals:updated', () => {
+      fetchCollection('referralSources');
     });
 
     socket.on('alerts:created', (alert) => {
@@ -252,6 +271,22 @@ function makeBackendStore() {
         });
         if (!res.ok) throw new Error('Failed to add cooking slab');
         return await res.json();
+      } else if (col === 'referralSources' || col === 'referrals') {
+        const res = await fetch(`${API_BASE}/api/referral-sources`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(v)
+        });
+        if (!res.ok) throw new Error('Failed to add referral source');
+        return await res.json();
+      } else if (col === 'geoCities' || col === 'cities') {
+        const res = await fetch(`${API_BASE}/api/geo/cities`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(v)
+        });
+        if (!res.ok) throw new Error('Failed to add city');
+        return await res.json();
       } else if (col === 'settings') {
         const res = await fetch(`${API_BASE}/api/settings`, {
           method: 'PUT',
@@ -329,6 +364,14 @@ function makeBackendStore() {
         });
         if (!res.ok) throw new Error('Failed to update cooking slab');
         return await res.json();
+      } else if (col === 'referralSources' || col === 'referrals') {
+        const res = await fetch(`${API_BASE}/api/referral-sources/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(v)
+        });
+        if (!res.ok) throw new Error('Failed to update referral source');
+        return await res.json();
       } else if (col === 'settings') {
         const res = await fetch(`${API_BASE}/api/settings`, {
           method: 'PUT',
@@ -349,12 +392,19 @@ function makeBackendStore() {
       else if (col === 'guests') endpoint = `${API_BASE}/api/guests/${id}`;
       else if (col === 'customCooking' || col === 'custom_cooking') endpoint = `${API_BASE}/api/custom-cooking/${id}`;
       else if (col === 'cookingSlabs' || col === 'slabs') endpoint = `${API_BASE}/api/custom-cooking/slabs/${id}`;
+      else if (col === 'referralSources' || col === 'referrals') endpoint = `${API_BASE}/api/referral-sources/${id}`;
 
       if (endpoint) {
         const res = await fetch(endpoint, { method: 'DELETE' });
         if (!res.ok) throw new Error(`Failed to delete ${col} item`);
         return await res.json();
       }
+    },
+
+    async lookupPincode(pincode) {
+      const res = await fetch(`${API_BASE}/api/geo/pincode/${pincode}`);
+      if (!res.ok) throw new Error('Pincode lookup failed');
+      return await res.json();
     }
   };
 }

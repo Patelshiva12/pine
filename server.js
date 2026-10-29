@@ -17,7 +17,12 @@ const guestRoutes = require('./routes/guests');
 const locationRoutes = require('./routes/locations');
 const serviceRoutes = require('./routes/services');
 const customCookingRoutes = require('./routes/custom_cooking');
+const referralRoutes = require('./routes/referrals');
+const geoRoutes = require('./routes/geo');
 const migrateV2 = require('./migrate_v2');
+const migrateV3 = require('./migrate_v3');
+const migrateV5 = require('./migrate_v5_room_tariff');
+const migrateV6 = require('./migrate_v6_guest_locations_and_referral');
 
 const app = express();
 const server = http.createServer(app);
@@ -50,6 +55,8 @@ app.use('/api/guests', guestRoutes);
 app.use('/api/locations', locationRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/custom-cooking', customCookingRoutes);
+app.use('/api/referral-sources', referralRoutes);
+app.use('/api/geo', geoRoutes);
 
 // No-cache middleware so client browser always gets latest updates immediately
 app.use((req, res, next) => {
@@ -85,7 +92,7 @@ const guestHtmlPath = path.join(guestPath, 'index.html');
 const kitchenHtmlPath = path.join(adminPath, 'kitchen.html');
 const serviceHtmlPath = path.join(adminPath, 'service.html');
 
-const adminRoutes = ['kitchen', 'service', 'orders', 'menu', 'guests', 'locations', 'services', 'custom-cooking', 'custom_cooking', 'folio', 'taxes', 'charges', 'qr'];
+const adminRoutes = ['kitchen', 'service', 'orders', 'menu', 'guests', 'locations', 'services', 'custom-cooking', 'custom_cooking', 'folio', 'taxes', 'charges', 'qr', 'referrals', 'geo'];
 adminRoutes.forEach(r => {
   app.get(`/admin/${r}`, (req, res) => res.sendFile(adminHtmlPath));
 });
@@ -131,8 +138,11 @@ async function startServer() {
       await seed();
     }
     
-    // Auto-verify Phase 2 tables (guests, locations, extra_services, custom_cooking_items)
+    // Auto-verify all database schemas & migrations (idempotent)
     await migrateV2();
+    await migrateV3();
+    await migrateV5();
+    await migrateV6();
 
     server.listen(PORT, '0.0.0.0', () => {
       console.log('===============================================================');

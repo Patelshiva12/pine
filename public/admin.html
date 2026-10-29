@@ -1,6 +1,18 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+/* Enable full smooth window scrolling when on Kitchen or Service route */
+html.staff-scroll, body.staff-scroll {
+  height: auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+html.staff-scroll #app, body.staff-scroll #app {
+  height: auto !important;
+  min-height: 100vh !important;
+  overflow: visible !important;
+}
+</style>
 </head><body>
 <title>Pines Exotica Admin CMS</title>
 <style>
@@ -101,7 +113,7 @@ input,select,textarea{font:inherit;color:var(--ink)}
 .num,.tab-nums{font-variant-numeric:tabular-nums}
 .mono{font-family:var(--f-mono)}
 .muted{color:var(--muted)}
-.wrap{max-width:1180px;margin:0 auto;padding-inline:16px}
+.wrap{max-width:100%!important;width:100%!important;margin:0!important;padding-inline:20px!important;box-sizing:border-box!important}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 14px;font-weight:600;font-size:14px;min-height:38px;white-space:nowrap}
 .btn:hover{border-color:var(--muted)}
 .btn.primary{background:var(--pine);color:var(--pine-ink);border-color:var(--pine)}
@@ -241,7 +253,7 @@ textarea.input{min-height:70px;resize:vertical}
 .badge{position:absolute;top:-5px;right:-5px;background:var(--danger);color:#fff;border-radius:999px;font-size:10.5px;font-weight:700;min-width:18px;height:18px;display:grid;place-items:center;padding:0 4px}
 .mode-pill{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:3px 9px;background:rgba(255,255,255,.14)}
 .mode-pill.live::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#6EE7A0;margin-right:6px;vertical-align:1px}
-.staff-main{padding-block:18px 60px;display:grid;gap:18px}
+.staff-main{padding-block:12px 30px;display:grid;gap:12px}
 .page-title{display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .page-title h2{font-family:var(--f-display);font-weight:400;font-size:28px}
 .tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:thin}
@@ -259,8 +271,8 @@ textarea.input{min-height:70px;resize:vertical}
 .tbl::-webkit-scrollbar-track{background:var(--surface-2);border-radius:4px}
 .tbl::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px}
 .tbl::-webkit-scrollbar-thumb:hover{background:#94A3B8}
-.tr{display:grid;grid-template-columns:145px 140px 110px minmax(240px,1fr) 120px 85px;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);position:relative;min-width:880px}
-.tr.th{border-top:0;background:#F4F6F4;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#385044;padding-block:11px;border-bottom:1px solid var(--line)}
+.tr{display:grid;grid-template-columns:145px 140px 110px minmax(240px,1fr) 120px 85px;gap:8px;align-items:center;padding:7px 12px;border-top:1px solid var(--line);position:relative;min-width:880px}
+.tr.th{border-top:0;background:#F4F6F4;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#385044;padding-block:8px;border-bottom:1px solid var(--line)}
 .tr.row{cursor:pointer}
 .tr.row:hover{background:var(--surface-2)}
 .tr.row.sel{background:color-mix(in srgb,var(--teak) 10%,var(--surface))}
@@ -326,8 +338,8 @@ textarea.input{min-height:70px;resize:vertical}
 .feed-item.reprepare{background:var(--danger-soft)}
 .feed-item.serve{background:var(--teak-soft)}
 .feed-item time{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.olist{display:grid;gap:8px}
-.orow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:8px}
+.olist{display:grid;gap:6px}
+.orow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center;padding:7px 10px;border:1px solid var(--line);border-radius:8px}
 .orow select{max-width:150px}
 .select{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 8px;min-height:34px;font-size:13.5px;font-weight:600}
 /* CMS */
@@ -395,8 +407,74 @@ textarea.input{min-height:70px;resize:vertical}
 .badge-room{background:#EAF1F8;color:#1F5F8B;border:1px solid #BFD9ED}
 .badge-table{background:#F8EFE4;color:#9A5B2A;border:1px solid #E6D0BA}
 
+/* Badges for Referral Sources & Occupancy */
+.badge-source{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:12px;font-size:12px;font-weight:700;white-space:nowrap}
+.badge-source.staff{background:#E0F2FE;color:#0369A1;border:1px solid #BAE6FD}
+.badge-source.ota{background:#F3E8FF;color:#7E22CE;border:1px solid #E9D5FF}
+.badge-source.agent{background:#FEF3C7;color:#92400E;border:1px solid #FDE68A}
+.badge-source.direct{background:#DCFCE7;color:#166534;border:1px solid #BBF7D0}
+.badge-source.social{background:#FCE7F3;color:#9D174D;border:1px solid #FBCFE8}
+.pax-badge{display:inline-flex;align-items:center;gap:4px;background:#F1F5F9;border:1px solid #CBD5E1;border-radius:6px;padding:2px 7px;font-size:12px;font-weight:700;color:#1E293B;white-space:nowrap}
+
+/* Left Sidebar Dashboard Layout */
+/* --- FULL-BLEED ADMIN LAYOUT (FIXED SIDEBAR & ULTRA-FAST INDEPENDENT SCROLL) --- */
+html,body{height:100%;margin:0;padding:0;overflow:hidden}
+#app{height:100%;display:flex;flex-direction:column;overflow:hidden}
+
+.staff-top.admin-full-top{height:54px;min-height:54px;width:100%;background:#17362A;z-index:1000!important;box-shadow:0 2px 10px rgba(0,0,0,0.18);border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0}
+.admin-top-content{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:100%;height:54px;padding:0 20px;box-sizing:border-box}
+.admin-top-content .top-nav-group{display:flex;align-items:center;gap:14px}
+
+.admin-main-full{flex:1;height:calc(100vh - 54px);width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;overflow:hidden;display:flex}
+.admin-shell{display:flex;width:100%;height:100%;background:#F8FAFC;margin:0;padding:0;position:relative;overflow:hidden}
+
+/* Fixed Sidebar that stays 100% locked on left while page content scrolls */
+.admin-sidebar{width:250px;min-width:250px;height:100%;background:linear-gradient(180deg,#17362A 0%,#0F241C 100%);color:#E2E8F0;display:flex;flex-direction:column;flex-shrink:0;transition:width .15s ease,min-width .15s ease;overflow-y:auto;overflow-x:hidden;z-index:50;box-shadow:2px 0 10px rgba(0,0,0,0.08);margin:0;left:0;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.18) transparent}
+.admin-sidebar::-webkit-scrollbar{width:5px}
+.admin-sidebar::-webkit-scrollbar-track{background:transparent}
+.admin-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.18);border-radius:4px}
+.admin-sidebar::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.3)}
+.admin-sidebar.collapsed{width:68px;min-width:68px}
+.admin-sidebar.collapsed .sidebar-text,
+.admin-sidebar.collapsed .sidebar-cat-title,
+.admin-sidebar.collapsed .sidebar-badge,
+.admin-sidebar.collapsed .brand-sub{display:none!important}
+.admin-sidebar.collapsed .sidebar-brand{padding:14px 8px;justify-content:center}
+.admin-sidebar.collapsed .sidebar-item{justify-content:center;padding:12px 0}
+
+.sidebar-brand{display:flex;align-items:center;gap:12px;padding:14px 14px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0}
+.sidebar-brand .logo-icon{width:36px;height:36px;border-radius:8px;background:#234E3D;display:flex;align-items:center;justify-content:center;font-size:20px;color:#FBBF24;box-shadow:0 2px 5px rgba(0,0,0,0.2);flex-shrink:0}
+.sidebar-brand b{font-family:var(--f-display);font-size:17px;color:#FFFFFF;letter-spacing:.02em;line-height:1.1}
+.sidebar-brand small{display:block;font-size:10px;color:#6EE7A0;text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-top:2px}
+
+.sidebar-nav{padding:8px 8px;display:flex;flex-direction:column;gap:2.5px;flex:1;overflow-y:auto}
+.sidebar-cat-title{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#94A3B8;font-weight:800;padding:12px 10px 3px}
+.sidebar-item{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:8px;font-size:13.5px;font-weight:500;color:#CBD5E1;text-decoration:none;border:0;background:transparent;cursor:pointer;transition:background .12s ease;width:100%;text-align:left}
+.sidebar-item:hover{background:rgba(255,255,255,0.08);color:#FFFFFF}
+.sidebar-item.active{background:#234E3D;color:#FFFFFF;font-weight:700;box-shadow:inset 3.5px 0 0 #F59E0B}
+.sidebar-item .item-icon{font-size:16px;flex-shrink:0;display:inline-block;width:20px;text-align:center}
+.sidebar-badge{margin-left:auto;font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;background:rgba(255,255,255,0.14);color:#FFFFFF}
+.sidebar-badge.alert{background:#EF4444;color:#FFFFFF}
+.sidebar-badge.green{background:#10B981;color:#FFFFFF}
+
+/* The ONLY element that scrolls smoothly up & down when user scrolls */
+.admin-workspace{flex:1;display:flex;flex-direction:column;min-width:0;height:100%;overflow-y:auto;overflow-x:hidden;background:#F8FAFC;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+.admin-topbar{background:#FFFFFF;border-bottom:1px solid var(--line);height:54px;min-height:54px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40;flex-shrink:0}
+.admin-main-content{padding:20px 24px 60px;flex:1;display:flex;flex-direction:column;gap:16px;min-width:0}
+
+.tbl-scroll-card{width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;background:#FFFFFF;border:1px solid var(--line);border-radius:var(--r);box-shadow:0 1px 3px rgba(0,0,0,0.03);margin-top:14px}
+.tbl-scroll-card .tbl{border:0;border-radius:0}
+.filter-toolbar{background:#FFFFFF;border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
+.filter-toolbar .top-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.filter-toolbar .bottom-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding-top:10px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+
+.guest-tbl .tr{display:grid;grid-template-columns:minmax(190px,1.2fr) 150px 180px 140px 130px 145px 135px 105px 105px 230px;gap:10px;align-items:center;min-width:1540px}
+
+.ref-tbl .tr{display:grid;grid-template-columns:minmax(200px,1.5fr) 130px 140px 100px 100px 140px;gap:10px;align-items:center;min-width:810px}
+.geo-tbl .tr{display:grid;grid-template-columns:minmax(180px,1.2fr) 180px 130px 100px;gap:10px;align-items:center;min-width:590px}
+
 .id-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);border:1px solid var(--line);padding:3px 8px;border-radius:4px;letter-spacing:.05em;white-space:nowrap}
-.guest-tbl .tr{display:grid;grid-template-columns:minmax(190px,1.2fr) 130px 175px 155px 140px 115px 110px 240px;gap:10px;align-items:center;min-width:1320px}
+/* Removed old 8-col duplicate rule */
 .loc-tbl .tr{display:grid;grid-template-columns:110px 120px minmax(180px,1.2fr) 280px 75px 100px 95px;gap:10px;align-items:center;min-width:1020px}
 .slab-tbl .tr{display:grid;grid-template-columns:70px minmax(200px,1.4fr) 100px 100px 140px 95px 90px;gap:10px;align-items:center;min-width:855px}
 .raw-tbl .tr{display:grid;grid-template-columns:70px minmax(160px,1.1fr) minmax(220px,1.8fr) 240px 125px 100px 95px 85px;gap:10px;align-items:center;min-width:1165px}
@@ -577,9 +655,60 @@ textarea.input{min-height:70px;resize:vertical}
 @media print {
   @page { size: auto; margin: 12mm; }
   *, *::before, *::after { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  body{background:#fff!important;color:#000!important}
-  .staff-top, .tabs, .page-title, .stats, .no-print, .btn, .icon-btn, .cms-bar, .filters, #toasts, [data-act="folio-refresh"], [data-act="folio-print"]{display:none!important}
-  .resort-print-invoice { display: block !important; width: 100% !important; background: #fff !important; color: #000 !important; }
+
+  /* Reset document viewport & scrolling for multi-page print */
+  html, body, #app, .admin-shell, .admin-main-full, .admin-workspace {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* Completely hide all admin UI, navigation, sidebars, headers, toolbars, buttons */
+  .admin-sidebar,
+  .admin-topbar,
+  .staff-top,
+  .tabs,
+  .page-title,
+  .stats,
+  .no-print,
+  .btn,
+  .icon-btn,
+  .cms-bar,
+  .filters,
+  .filter-toolbar,
+  .sidebar-brand,
+  .sidebar-nav,
+  .tbl-scroll-card,
+  #toasts,
+  [data-act="folio-refresh"],
+  [data-act="folio-print"] {
+    display: none !important;
+  }
+
+  .folio-container {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .resort-print-invoice {
+    display: block !important;
+    width: 100% !important;
+    background: #fff !important;
+    color: #000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
   .folio-hero{background:#f8f9fa!important;color:#000!important;border:1px solid #ccc!important;box-shadow:none!important}
   .folio-hero .stay-loc{color:#15201A!important}
   .folio-hero .guest-meta, .folio-hero .guest-meta b{color:#333!important}
@@ -624,7 +753,6 @@ textarea.input{min-height:70px;resize:vertical}
     height: 270px !important;
   }
 }
-
 
 /* =================== GUEST MENU BOOK (deliberately single-look: dark lodge backdrop, ivory paper) =================== */
 .g-root img{-webkit-user-drag:none;user-select:none}
@@ -821,9 +949,9 @@ button.g-chip[aria-pressed="true"]{background:#EFE4C6;color:#1B3127}
 <div class="toasts" id="toasts" aria-live="polite"></div>
 
 <script id="default-menu" type="application/json">[{"id": "pahari-dham-pahari-dham-thali", "name": "Pahari Dham Thali", "section": "Pahari Dham", "sub": "", "veg": true, "egg": false, "price": 650, "desc": "Traditional Himachali feast: Rajma Madra, Chana Madra, Sepu Badi, Khatta, Mahni, Chana Dal, Aloo Palak, Steamed Rice, Pahari Raita, Mittha, Salad, Papad & Pickle. Pre-order recommended.", "signature": true, "available": true, "img": "photos/dham_thali.webp", "order": 10, "hero": "photos/dham_thali_big.webp"}, {"id": "pahari-dham-rajma-madra", "name": "Rajma Madra", "section": "Pahari Dham", "sub": "", "veg": true, "egg": false, "price": 260, "desc": "Kidney beans slow-cooked in spiced yoghurt gravy", "signature": false, "available": true, "img": "", "order": 20}, {"id": "pahari-dham-chana-madra", "name": "Chana Madra", "section": "Pahari Dham", "sub": "", "veg": true, "egg": false, "price": 240, "desc": "Chickpeas in a rich yoghurt and ghee gravy", "signature": false, "available": true, "img": "photos/chana_madra.webp", "order": 30}, {"id": "pahari-dham-sepu-badi", "name": "Sepu Badi", "section": "Pahari Dham", "sub": "", "veg": true, "egg": false, "price": 250, "desc": "Lentil dumplings with spinach, Mandi style", "signature": false, "available": true, "img": "photos/sepu_badi.webp", "order": 40}, {"id": "pahari-dham-khatta", "name": "Khatta", "section": "Pahari Dham", "sub": "", "veg": true, "egg": false, "price": 180, "desc": "Tangy tamarind and jaggery curry", "signature": false, "available": true, "img": "photos/khatta.webp", "order": 50}, {"id": "pahari-dham-mahni", "name": "Mahni", "section": "Pahari Dham", "sub": "", "veg": true, "egg": false, "price": 180, "desc": "Sweet-sour black chana curry", "signature": false, "available": true, "img": "photos/mahni.webp", "order": 60}, {"id": "pahari-dham-chana-dal", "name": "Chana Dal", "section": "Pahari Dham", "sub": "", "veg": true, "egg": false, "price": 200, "desc": "", "signature": false, "available": true, "img": "photos/chana_dal_own.webp", "order": 70}, {"id": "pahari-dham-aloo-palak", "name": "Aloo Palak", "section": "Pahari Dham", "sub": "", "veg": true, "egg": false, "price": 220, "desc": "", "signature": false, "available": true, "img": "", "order": 80}, {"id": "pahari-dham-steamed-rice", "name": "Steamed Rice", "section": "Pahari Dham", "sub": "", "veg": true, "egg": false, "price": 150, "desc": "", "signature": false, "available": true, "img": "photos/steamed_rice.webp", "order": 90}, {"id": "pahari-dham-pahari-raita", "name": "Pahari Raita", "section": "Pahari Dham", "sub": "", "veg": true, "egg": false, "price": 120, "desc": "", "signature": false, "available": true, "img": "", "order": 100}, {"id": "pahari-dham-mittha", "name": "Mittha", "section": "Pahari Dham", "sub": "", "veg": true, "egg": false, "price": 150, "desc": "Sweet rice with dry fruits and saffron", "signature": false, "available": true, "img": "", "order": 110}, {"id": "pahari-dham-salad-papad-pickle", "name": "Salad, Papad & Pickle", "section": "Pahari Dham", "sub": "", "veg": true, "egg": false, "price": 90, "desc": "", "signature": false, "available": true, "img": "", "order": 120}, {"id": "indian-vegetar-starte-paneer-tikka", "name": "Paneer Tikka", "section": "Indian Vegetarian", "sub": "Starters", "veg": true, "egg": false, "price": 340, "desc": "Clay-oven charred cottage cheese", "signature": false, "available": true, "img": "", "order": 130}, {"id": "indian-vegetar-starte-hara-bhara-kebab", "name": "Hara Bhara Kebab", "section": "Indian Vegetarian", "sub": "Starters", "veg": true, "egg": false, "price": 280, "desc": "Spinach and green pea patties", "signature": false, "available": true, "img": "", "order": 140}, {"id": "indian-vegetar-starte-crispy-corn", "name": "Crispy Corn", "section": "Indian Vegetarian", "sub": "Starters", "veg": true, "egg": false, "price": 260, "desc": "", "signature": false, "available": true, "img": "", "order": 150}, {"id": "indian-vegetar-starte-veg-seekh-kebab", "name": "Veg Seekh Kebab", "section": "Indian Vegetarian", "sub": "Starters", "veg": true, "egg": false, "price": 290, "desc": "", "signature": false, "available": true, "img": "", "order": 160}, {"id": "indian-vegetar-starte-tandoori-mushroom", "name": "Tandoori Mushroom", "section": "Indian Vegetarian", "sub": "Starters", "veg": true, "egg": false, "price": 310, "desc": "", "signature": false, "available": true, "img": "", "order": 170}, {"id": "indian-vegetar-main-c-shahi-paneer", "name": "Shahi Paneer", "section": "Indian Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 360, "desc": "Paneer in a royal cashew and cream gravy", "signature": true, "available": true, "img": "photos/shahi_paneer.webp", "order": 180}, {"id": "indian-vegetar-main-c-kadai-paneer", "name": "Kadai Paneer", "section": "Indian Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 340, "desc": "", "signature": false, "available": true, "img": "photos/kadai_paneer.webp", "order": 190}, {"id": "indian-vegetar-main-c-palak-paneer", "name": "Palak Paneer", "section": "Indian Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 330, "desc": "", "signature": false, "available": true, "img": "photos/palak_paneer.webp", "order": 200}, {"id": "indian-vegetar-main-c-paneer-butter-masala", "name": "Paneer Butter Masala", "section": "Indian Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 350, "desc": "", "signature": false, "available": true, "img": "photos/paneer_butter_masala.webp", "order": 210}, {"id": "indian-vegetar-main-c-dal-makhani", "name": "Dal Makhani", "section": "Indian Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 290, "desc": "Black lentils simmered overnight", "signature": false, "available": true, "img": "photos/dal_makhani.webp", "order": 220}, {"id": "indian-vegetar-main-c-dal-tadka", "name": "Dal Tadka", "section": "Indian Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 240, "desc": "", "signature": false, "available": true, "img": "photos/dal_tadka.webp", "order": 230}, {"id": "indian-vegetar-main-c-chana-masala", "name": "Chana Masala", "section": "Indian Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 250, "desc": "", "signature": false, "available": true, "img": "photos/chole_masala.webp", "order": 240}, {"id": "indian-vegetar-main-c-mix-vegetable", "name": "Mix Vegetable", "section": "Indian Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 260, "desc": "", "signature": false, "available": true, "img": "photos/mixed_veg.webp", "order": 250}, {"id": "indian-vegetar-main-c-aloo-jeera", "name": "Aloo Jeera", "section": "Indian Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 220, "desc": "", "signature": false, "available": true, "img": "", "order": 260}, {"id": "indian-vegetar-main-c-mushroom-masala", "name": "Mushroom Masala", "section": "Indian Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 300, "desc": "", "signature": false, "available": true, "img": "", "order": 270}, {"id": "indian-vegetar-breads-tandoori-roti", "name": "Tandoori Roti", "section": "Indian Vegetarian", "sub": "Breads", "veg": true, "egg": false, "price": 30, "desc": "", "signature": false, "available": true, "img": "photos/roti.webp", "order": 280}, {"id": "indian-vegetar-breads-butter-naan", "name": "Butter Naan", "section": "Indian Vegetarian", "sub": "Breads", "veg": true, "egg": false, "price": 60, "desc": "", "signature": false, "available": true, "img": "photos/butter_naan.webp", "order": 290}, {"id": "indian-vegetar-breads-garlic-naan", "name": "Garlic Naan", "section": "Indian Vegetarian", "sub": "Breads", "veg": true, "egg": false, "price": 80, "desc": "", "signature": false, "available": true, "img": "photos/garlic_naan.webp", "order": 300}, {"id": "indian-vegetar-breads-plain-naan", "name": "Plain Naan", "section": "Indian Vegetarian", "sub": "Breads", "veg": true, "egg": false, "price": 50, "desc": "", "signature": false, "available": true, "img": "photos/naan.webp", "order": 310}, {"id": "indian-vegetar-breads-lachha-paratha", "name": "Lachha Paratha", "section": "Indian Vegetarian", "sub": "Breads", "veg": true, "egg": false, "price": 70, "desc": "", "signature": false, "available": true, "img": "photos/lachha_paratha.webp", "order": 320}, {"id": "indian-vegetar-breads-aloo-pyaaz-paratha", "name": "Aloo/Pyaaz Paratha", "section": "Indian Vegetarian", "sub": "Breads", "veg": true, "egg": false, "price": 120, "desc": "", "signature": false, "available": true, "img": "photos/paneer_paratha.webp", "order": 330}, {"id": "indian-vegetar-rice-steamed-rice", "name": "Steamed Rice", "section": "Indian Vegetarian", "sub": "Rice", "veg": true, "egg": false, "price": 150, "desc": "", "signature": false, "available": true, "img": "photos/steamed_rice.webp", "order": 340}, {"id": "indian-vegetar-rice-jeera-rice", "name": "Jeera Rice", "section": "Indian Vegetarian", "sub": "Rice", "veg": true, "egg": false, "price": 180, "desc": "", "signature": false, "available": true, "img": "photos/jeera_rice.webp", "order": 350}, {"id": "indian-vegetar-rice-veg-pulao", "name": "Veg Pulao", "section": "Indian Vegetarian", "sub": "Rice", "veg": true, "egg": false, "price": 220, "desc": "", "signature": false, "available": true, "img": "photos/veg_pulao.webp", "order": 360}, {"id": "indian-vegetar-rice-veg-biryani", "name": "Veg Biryani", "section": "Indian Vegetarian", "sub": "Rice", "veg": true, "egg": false, "price": 290, "desc": "", "signature": false, "available": true, "img": "photos/vegetable_biryani.webp", "order": 370}, {"id": "indian-non-veg-starte-tandoori-chicken", "name": "Tandoori Chicken", "section": "Indian Non-Vegetarian", "sub": "Starters", "veg": false, "egg": false, "price": 480, "desc": "Half bird, marinated overnight, from the tandoor", "signature": true, "available": true, "img": "photos/tandoori_chicken.webp", "order": 380}, {"id": "indian-non-veg-starte-chicken-tikka", "name": "Chicken Tikka", "section": "Indian Non-Vegetarian", "sub": "Starters", "veg": false, "egg": false, "price": 420, "desc": "", "signature": false, "available": true, "img": "photos/chicken_tikka.webp", "order": 390}, {"id": "indian-non-veg-starte-chicken-malai-tikka", "name": "Chicken Malai Tikka", "section": "Indian Non-Vegetarian", "sub": "Starters", "veg": false, "egg": false, "price": 440, "desc": "", "signature": false, "available": true, "img": "", "order": 400}, {"id": "indian-non-veg-starte-chicken-seekh-kebab", "name": "Chicken Seekh Kebab", "section": "Indian Non-Vegetarian", "sub": "Starters", "veg": false, "egg": false, "price": 420, "desc": "", "signature": false, "available": true, "img": "", "order": 410}, {"id": "indian-non-veg-main-c-butter-chicken", "name": "Butter Chicken", "section": "Indian Non-Vegetarian", "sub": "Main Course", "veg": false, "egg": false, "price": 460, "desc": "", "signature": false, "available": true, "img": "photos/butter_chicken.webp", "order": 420}, {"id": "indian-non-veg-main-c-kadai-chicken", "name": "Kadai Chicken", "section": "Indian Non-Vegetarian", "sub": "Main Course", "veg": false, "egg": false, "price": 440, "desc": "", "signature": false, "available": true, "img": "photos/kadai_chicken.webp", "order": 430}, {"id": "indian-non-veg-main-c-chicken-curry", "name": "Chicken Curry", "section": "Indian Non-Vegetarian", "sub": "Main Course", "veg": false, "egg": false, "price": 400, "desc": "", "signature": false, "available": true, "img": "photos/chicken_curry.webp", "order": 440}, {"id": "indian-non-veg-main-c-chicken-tikka-masala", "name": "Chicken Tikka Masala", "section": "Indian Non-Vegetarian", "sub": "Main Course", "veg": false, "egg": false, "price": 460, "desc": "", "signature": false, "available": true, "img": "photos/chicken_tikka_masala.webp", "order": 450}, {"id": "indian-non-veg-main-c-mutton-rogan-josh", "name": "Mutton Rogan Josh", "section": "Indian Non-Vegetarian", "sub": "Main Course", "veg": false, "egg": false, "price": 560, "desc": "Slow-braised mutton in Kashmiri chilli gravy", "signature": true, "available": true, "img": "photos/mutton_rogan_josh.webp", "order": 460}, {"id": "indian-non-veg-main-c-mutton-curry", "name": "Mutton Curry", "section": "Indian Non-Vegetarian", "sub": "Main Course", "veg": false, "egg": false, "price": 520, "desc": "", "signature": false, "available": true, "img": "photos/mutton_curry.webp", "order": 470}, {"id": "indian-non-veg-main-c-mutton-rara", "name": "Mutton Rara", "section": "Indian Non-Vegetarian", "sub": "Main Course", "veg": false, "egg": false, "price": 580, "desc": "", "signature": false, "available": true, "img": "photos/keema.webp", "order": 480}, {"id": "indian-non-veg-rice-chicken-biryani", "name": "Chicken Biryani", "section": "Indian Non-Vegetarian", "sub": "Rice", "veg": false, "egg": false, "price": 420, "desc": "", "signature": false, "available": true, "img": "photos/chicken_biryani.webp", "order": 490}, {"id": "indian-non-veg-rice-mutton-biryani", "name": "Mutton Biryani", "section": "Indian Non-Vegetarian", "sub": "Rice", "veg": false, "egg": false, "price": 520, "desc": "", "signature": false, "available": true, "img": "", "order": 500}, {"id": "indian-non-veg-rice-jeera-rice", "name": "Jeera Rice", "section": "Indian Non-Vegetarian", "sub": "Rice", "veg": false, "egg": false, "price": 180, "desc": "", "signature": false, "available": true, "img": "photos/jeera_rice.webp", "order": 510}, {"id": "indo-chinese-v-starte-veg-spring-rolls", "name": "Veg Spring Rolls", "section": "Indo-Chinese Vegetarian", "sub": "Starters", "veg": true, "egg": false, "price": 240, "desc": "", "signature": false, "available": true, "img": "photos/spring_roll.webp", "order": 520}, {"id": "indo-chinese-v-starte-honey-chilli-potato", "name": "Honey Chilli Potato", "section": "Indo-Chinese Vegetarian", "sub": "Starters", "veg": true, "egg": false, "price": 260, "desc": "Crisp potato tossed in honey, chilli and sesame", "signature": true, "available": true, "img": "photos/honey_chilli_potato.webp", "order": 530}, {"id": "indo-chinese-v-starte-chilli-paneer", "name": "Chilli Paneer", "section": "Indo-Chinese Vegetarian", "sub": "Starters", "veg": true, "egg": false, "price": 320, "desc": "", "signature": false, "available": true, "img": "", "order": 540}, {"id": "indo-chinese-v-starte-chilli-mushroom", "name": "Chilli Mushroom", "section": "Indo-Chinese Vegetarian", "sub": "Starters", "veg": true, "egg": false, "price": 290, "desc": "", "signature": false, "available": true, "img": "", "order": 550}, {"id": "indo-chinese-v-starte-crispy-chilli-corn", "name": "Crispy Chilli Corn", "section": "Indo-Chinese Vegetarian", "sub": "Starters", "veg": true, "egg": false, "price": 260, "desc": "", "signature": false, "available": true, "img": "", "order": 560}, {"id": "indo-chinese-v-starte-veg-manchurian", "name": "Veg Manchurian", "section": "Indo-Chinese Vegetarian", "sub": "Starters", "veg": true, "egg": false, "price": 270, "desc": "", "signature": false, "available": true, "img": "photos/gobi_manchurian.webp", "order": 570}, {"id": "indo-chinese-v-main-c-veg-hakka-noodles", "name": "Veg Hakka Noodles", "section": "Indo-Chinese Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 250, "desc": "", "signature": false, "available": true, "img": "", "order": 580}, {"id": "indo-chinese-v-main-c-schezwan-noodles", "name": "Schezwan Noodles", "section": "Indo-Chinese Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 270, "desc": "", "signature": false, "available": true, "img": "", "order": 590}, {"id": "indo-chinese-v-main-c-veg-fried-rice", "name": "Veg Fried Rice", "section": "Indo-Chinese Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 240, "desc": "", "signature": false, "available": true, "img": "photos/fried_rice.webp", "order": 600}, {"id": "indo-chinese-v-main-c-schezwan-fried-rice", "name": "Schezwan Fried Rice", "section": "Indo-Chinese Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 260, "desc": "", "signature": false, "available": true, "img": "", "order": 610}, {"id": "indo-chinese-v-main-c-veg-manchurian-gravy", "name": "Veg Manchurian Gravy", "section": "Indo-Chinese Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 280, "desc": "", "signature": false, "available": true, "img": "", "order": 620}, {"id": "indo-chinese-v-main-c-chilli-paneer-gravy", "name": "Chilli Paneer Gravy", "section": "Indo-Chinese Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 330, "desc": "", "signature": false, "available": true, "img": "", "order": 630}, {"id": "indo-chinese-v-main-c-stir-fried-vegetables", "name": "Stir-Fried Vegetables", "section": "Indo-Chinese Vegetarian", "sub": "Main Course", "veg": true, "egg": false, "price": 270, "desc": "", "signature": false, "available": true, "img": "", "order": 640}, {"id": "indo-chinese-n-starte-chilli-chicken", "name": "Chilli Chicken", "section": "Indo-Chinese Non-Vegetarian", "sub": "Starters", "veg": false, "egg": false, "price": 380, "desc": "Wok-tossed chicken with peppers and green chilli", "signature": true, "available": true, "img": "photos/chilli_chicken.webp", "order": 650}, {"id": "indo-chinese-n-starte-chicken-65", "name": "Chicken 65", "section": "Indo-Chinese Non-Vegetarian", "sub": "Starters", "veg": false, "egg": false, "price": 360, "desc": "", "signature": false, "available": true, "img": "photos/chicken_65.webp", "order": 660}, {"id": "indo-chinese-n-starte-crispy-chicken", "name": "Crispy Chicken", "section": "Indo-Chinese Non-Vegetarian", "sub": "Starters", "veg": false, "egg": false, "price": 360, "desc": "", "signature": false, "available": true, "img": "", "order": 670}, {"id": "indo-chinese-n-starte-chicken-spring-rolls", "name": "Chicken Spring Rolls", "section": "Indo-Chinese Non-Vegetarian", "sub": "Starters", "veg": false, "egg": false, "price": 300, "desc": "", "signature": false, "available": true, "img": "photos/spring_roll.webp", "order": 680}, {"id": "indo-chinese-n-starte-drums-of-heaven", "name": "Drums of Heaven", "section": "Indo-Chinese Non-Vegetarian", "sub": "Starters", "veg": false, "egg": false, "price": 400, "desc": "", "signature": false, "available": true, "img": "", "order": 690}, {"id": "indo-chinese-n-starte-pepper-garlic-prawns", "name": "Pepper Garlic Prawns", "section": "Indo-Chinese Non-Vegetarian", "sub": "Starters", "veg": false, "egg": false, "price": 560, "desc": "", "signature": false, "available": true, "img": "photos/prawn_masala.webp", "order": 700}, {"id": "indo-chinese-n-main-c-chicken-hakka-noodles", "name": "Chicken Hakka Noodles", "section": "Indo-Chinese Non-Vegetarian", "sub": "Main Course", "veg": false, "egg": false, "price": 320, "desc": "", "signature": false, "available": true, "img": "", "order": 710}, {"id": "indo-chinese-n-main-c-chicken-schezwan-noodles", "name": "Chicken Schezwan Noodles", "section": "Indo-Chinese Non-Vegetarian", "sub": "Main Course", "veg": false, "egg": false, "price": 340, "desc": "", "signature": false, "available": true, "img": "", "order": 720}, {"id": "indo-chinese-n-main-c-chicken-fried-rice", "name": "Chicken Fried Rice", "section": "Indo-Chinese Non-Vegetarian", "sub": "Main Course", "veg": false, "egg": false, "price": 310, "desc": "", "signature": false, "available": true, "img": "photos/fried_rice.webp", "order": 730}, {"id": "indo-chinese-n-main-c-chicken-schezwan-fried-rice", "name": "Chicken Schezwan Fried Rice", "section": "Indo-Chinese Non-Vegetarian", "sub": "Main Course", "veg": false, "egg": false, "price": 330, "desc": "", "signature": false, "available": true, "img": "", "order": 740}, {"id": "indo-chinese-n-main-c-chilli-chicken-gravy", "name": "Chilli Chicken Gravy", "section": "Indo-Chinese Non-Vegetarian", "sub": "Main Course", "veg": false, "egg": false, "price": 390, "desc": "", "signature": false, "available": true, "img": "photos/chilli_chicken.webp", "order": 750}, {"id": "indo-chinese-n-main-c-hot-garlic-chicken", "name": "Hot Garlic Chicken", "section": "Indo-Chinese Non-Vegetarian", "sub": "Main Course", "veg": false, "egg": false, "price": 390, "desc": "", "signature": false, "available": true, "img": "", "order": 760}, {"id": "indo-chinese-n-main-c-chicken-manchurian", "name": "Chicken Manchurian", "section": "Indo-Chinese Non-Vegetarian", "sub": "Main Course", "veg": false, "egg": false, "price": 380, "desc": "", "signature": false, "available": true, "img": "", "order": 770}, {"id": "salads-accompa-green-salad", "name": "Green Salad", "section": "Salads & Accompaniments", "sub": "", "veg": true, "egg": false, "price": 120, "desc": "", "signature": false, "available": true, "img": "", "order": 780}, {"id": "salads-accompa-kachumber-salad", "name": "Kachumber Salad", "section": "Salads & Accompaniments", "sub": "", "veg": true, "egg": false, "price": 130, "desc": "", "signature": false, "available": true, "img": "photos/sprouts_salad.webp", "order": 790}, {"id": "salads-accompa-russian-salad", "name": "Russian Salad", "section": "Salads & Accompaniments", "sub": "", "veg": true, "egg": false, "price": 180, "desc": "", "signature": false, "available": true, "img": "", "order": 800}, {"id": "salads-accompa-cucumber-tomato-salad", "name": "Cucumber & Tomato Salad", "section": "Salads & Accompaniments", "sub": "", "veg": true, "egg": false, "price": 120, "desc": "", "signature": false, "available": true, "img": "", "order": 810}, {"id": "salads-accompa-boondi-raita", "name": "Boondi Raita", "section": "Salads & Accompaniments", "sub": "", "veg": true, "egg": false, "price": 110, "desc": "", "signature": false, "available": true, "img": "", "order": 820}, {"id": "salads-accompa-pineapple-raita", "name": "Pineapple Raita", "section": "Salads & Accompaniments", "sub": "", "veg": true, "egg": false, "price": 140, "desc": "", "signature": false, "available": true, "img": "", "order": 830}, {"id": "salads-accompa-plain-curd", "name": "Plain Curd", "section": "Salads & Accompaniments", "sub": "", "veg": true, "egg": false, "price": 90, "desc": "", "signature": false, "available": true, "img": "photos/curd.webp", "order": 840}, {"id": "salads-accompa-papad", "name": "Papad", "section": "Salads & Accompaniments", "sub": "", "veg": true, "egg": false, "price": 40, "desc": "", "signature": false, "available": true, "img": "photos/masala_papad.webp", "order": 850}, {"id": "salads-accompa-pickles-chutneys", "name": "Pickles & Chutneys", "section": "Salads & Accompaniments", "sub": "", "veg": true, "egg": false, "price": 50, "desc": "", "signature": false, "available": true, "img": "photos/chutneys.webp", "order": 860}, {"id": "desserts-himachali-mittha", "name": "Himachali Mittha", "section": "Desserts", "sub": "", "veg": true, "egg": false, "price": 160, "desc": "Festive sweet rice, a Dham favourite", "signature": true, "available": true, "img": "", "order": 870}, {"id": "desserts-gulab-jamun", "name": "Gulab Jamun", "section": "Desserts", "sub": "", "veg": true, "egg": false, "price": 120, "desc": "", "signature": false, "available": true, "img": "photos/gulab_jamun.webp", "order": 880}, {"id": "desserts-gajar-halwa", "name": "Gajar Halwa", "section": "Desserts", "sub": "", "veg": true, "egg": false, "price": 160, "desc": "", "signature": false, "available": true, "img": "photos/gajar_halwa.webp", "order": 890}, {"id": "desserts-rice-kheer", "name": "Rice Kheer", "section": "Desserts", "sub": "", "veg": true, "egg": false, "price": 140, "desc": "", "signature": false, "available": true, "img": "photos/kheer.webp", "order": 900}, {"id": "desserts-chocolate-brownie-with-ice-cre", "name": "Chocolate Brownie with Ice Cream", "section": "Desserts", "sub": "", "veg": true, "egg": false, "price": 220, "desc": "", "signature": false, "available": true, "img": "", "order": 910}, {"id": "desserts-fresh-fruit-platter", "name": "Fresh Fruit Platter", "section": "Desserts", "sub": "", "veg": true, "egg": false, "price": 200, "desc": "", "signature": false, "available": true, "img": "", "order": 920}, {"id": "desserts-ice-cream", "name": "Ice Cream", "section": "Desserts", "sub": "", "veg": true, "egg": false, "price": 120, "desc": "", "signature": false, "available": true, "img": "", "order": 930}, {"id": "breakfast-indian-aloo-pyaaz-paratha-with-curd", "name": "Aloo/Pyaaz Paratha with Curd", "section": "Breakfast", "sub": "Indian", "veg": true, "egg": false, "price": 160, "desc": "", "signature": false, "available": true, "img": "photos/paneer_paratha.webp", "order": 940}, {"id": "breakfast-indian-poha", "name": "Poha", "section": "Breakfast", "sub": "Indian", "veg": true, "egg": false, "price": 130, "desc": "", "signature": false, "available": true, "img": "", "order": 950}, {"id": "breakfast-indian-upma", "name": "Upma", "section": "Breakfast", "sub": "Indian", "veg": true, "egg": false, "price": 130, "desc": "", "signature": false, "available": true, "img": "photos/upma.webp", "order": 960}, {"id": "breakfast-indian-chole-bhature", "name": "Chole Bhature", "section": "Breakfast", "sub": "Indian", "veg": true, "egg": false, "price": 220, "desc": "", "signature": false, "available": true, "img": "photos/chole_bhature.webp", "order": 970}, {"id": "breakfast-indian-masala-dosa", "name": "Masala Dosa", "section": "Breakfast", "sub": "Indian", "veg": true, "egg": false, "price": 200, "desc": "", "signature": false, "available": true, "img": "photos/masala_dosa.webp", "order": 980}, {"id": "breakfast-indian-idli-sambar", "name": "Idli & Sambar", "section": "Breakfast", "sub": "Indian", "veg": true, "egg": false, "price": 170, "desc": "", "signature": false, "available": true, "img": "photos/idli.webp", "order": 990}, {"id": "breakfast-contin-toast-with-butter-jam", "name": "Toast with Butter/Jam", "section": "Breakfast", "sub": "Continental", "veg": true, "egg": false, "price": 100, "desc": "", "signature": false, "available": true, "img": "", "order": 1000}, {"id": "breakfast-contin-omelette", "name": "Omelette", "section": "Breakfast", "sub": "Continental", "veg": false, "egg": true, "price": 140, "desc": "", "signature": false, "available": true, "img": "photos/omelette.webp", "order": 1010}, {"id": "breakfast-contin-scrambled-eggs", "name": "Scrambled Eggs", "section": "Breakfast", "sub": "Continental", "veg": false, "egg": true, "price": 150, "desc": "", "signature": false, "available": true, "img": "photos/egg_bhurji.webp", "order": 1020}, {"id": "breakfast-contin-boiled-eggs", "name": "Boiled Eggs", "section": "Breakfast", "sub": "Continental", "veg": false, "egg": true, "price": 100, "desc": "", "signature": false, "available": true, "img": "", "order": 1030}, {"id": "breakfast-contin-eggs-to-order", "name": "Eggs to Order", "section": "Breakfast", "sub": "Continental", "veg": false, "egg": true, "price": 160, "desc": "", "signature": false, "available": true, "img": "", "order": 1040}, {"id": "breakfast-contin-pancakes", "name": "Pancakes", "section": "Breakfast", "sub": "Continental", "veg": true, "egg": false, "price": 200, "desc": "", "signature": false, "available": true, "img": "", "order": 1050}, {"id": "breakfast-contin-cornflakes-muesli", "name": "Cornflakes/Muesli", "section": "Breakfast", "sub": "Continental", "veg": true, "egg": false, "price": 150, "desc": "", "signature": false, "available": true, "img": "", "order": 1060}, {"id": "breakfast-bevera-masala-chai", "name": "Masala Chai", "section": "Breakfast", "sub": "Beverages", "veg": true, "egg": false, "price": 60, "desc": "Himachali-style chai brewed with ginger and cardamom", "signature": true, "available": true, "img": "photos/masala_chai.webp", "order": 1070}, {"id": "breakfast-bevera-tea", "name": "Tea", "section": "Breakfast", "sub": "Beverages", "veg": true, "egg": false, "price": 50, "desc": "", "signature": false, "available": true, "img": "photos/masala_chai.webp", "order": 1080}, {"id": "breakfast-bevera-green-tea", "name": "Green Tea", "section": "Breakfast", "sub": "Beverages", "veg": true, "egg": false, "price": 70, "desc": "", "signature": false, "available": true, "img": "", "order": 1090}, {"id": "breakfast-bevera-coffee", "name": "Coffee", "section": "Breakfast", "sub": "Beverages", "veg": true, "egg": false, "price": 90, "desc": "", "signature": false, "available": true, "img": "photos/filter_coffee.webp", "order": 1100}, {"id": "breakfast-bevera-fresh-juice", "name": "Fresh Juice", "section": "Breakfast", "sub": "Beverages", "veg": true, "egg": false, "price": 150, "desc": "", "signature": false, "available": true, "img": "", "order": 1110}, {"id": "breakfast-bevera-hot-chocolate", "name": "Hot Chocolate", "section": "Breakfast", "sub": "Beverages", "veg": true, "egg": false, "price": 160, "desc": "", "signature": false, "available": true, "img": "", "order": 1120}]</script>
-  <script src="/admin/qrcode.min.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/admin/api-store.js"></script>
+  <script src="qrcode.min.js"></script>
+  <script src="/socket.io/socket.io.js" onerror="this.onerror=null;this.src='https://cdn.socket.io/4.8.1/socket.io.min.js';"></script>
+  <script src="api-store.js"></script>
 
 <script>
 (function(){
@@ -999,6 +1127,22 @@ const S = {
   srvPage: 1,
   serviceDraftErr: '',
   folioState: { type: 'villa', num: '', guestId: '', data: null, loading: false, error: null },
+  sidebarCollapsed: ls.get('pe_sidebar_collapsed', false),
+  guestReferralFilter: 'all',
+  guestStateFilter: 'all',
+  guestVillaFilter: 'all',
+  referralSources: [],
+  geoStates: [],
+  geoCities: [],
+  refDraft: null,
+  refDraftErr: '',
+  refSearch: '',
+  refPage: 1,
+  cityDraft: null,
+  cityDraftErr: '',
+  geoSearch: '',
+  geoStateFilter: 'all',
+  geoPage: 1,
 };
 window.S = S;
 function paginateList(items, page, pageSize = 10){
@@ -1047,6 +1191,9 @@ function attach(store){
   unsubs.push(store.watchColl('services',{},arr=>{S.services=arr||[];render();}));
   unsubs.push(store.watchColl('customCooking',{},arr=>{S.customCooking=arr||[];render();}));
   unsubs.push(store.watchColl('cookingSlabs',{},arr=>{S.cookingSlabs=arr||[];render();}));
+  unsubs.push(store.watchColl('referralSources',{},arr=>{S.referralSources=arr||[];render();}));
+  unsubs.push(store.watchColl('geoStates',{},arr=>{S.geoStates=arr||[];render();}));
+  unsubs.push(store.watchColl('geoCities',{},arr=>{S.geoCities=arr||[];render();}));
   let first=true;
   unsubs.push(store.watchColl('alerts',{order:['at','desc'],limit:40},arr=>{
     const prev=new Set(S.alerts.map(a=>a.id));
@@ -1165,19 +1312,28 @@ let renderQueued=false;
 function render(){ if(renderQueued)return; renderQueued=true; requestAnimationFrame(()=>{renderQueued=false;doRender();}); }
 window.render = render;
 function doRender(){
+  if (S.route === 'kitchen' || S.route === 'service') {
+    document.documentElement.classList.add('staff-scroll');
+    document.body.classList.add('staff-scroll');
+  } else {
+    document.documentElement.classList.remove('staff-scroll');
+    document.body.classList.remove('staff-scroll');
+  }
   if(S.route==='guest'){ if(!G.mounted||!document.getElementById('g-root')) mountGuest(); guestUpdate(); return; }
   G.mounted=false;
   const app=$('#app');
   const keepScroll = document.activeElement && document.activeElement.id;
   const focusId = keepScroll; let selStart=null,selEnd=null;
   if(focusId && document.activeElement.setSelectionRange){try{selStart=document.activeElement.selectionStart;selEnd=document.activeElement.selectionEnd;}catch(e){}}
-  const detailScroll = $('.detail-body')?.scrollTop, sheetScroll=$('.sheet-body')?.scrollTop, pickScroll=$('.pick-list')?.scrollTop;
+  const detailScroll = $('.detail-body')?.scrollTop, sheetScroll=$('.sheet-body')?.scrollTop, pickScroll=$('.pick-list')?.scrollTop, sidebarScroll=$('.admin-sidebar')?.scrollTop, workspaceScroll=$('.admin-workspace')?.scrollTop;
   if(!S.staffUnlocked) app.innerHTML=gateView();
   else app.innerHTML=staffView();
   if(focusId){const el=document.getElementById(focusId);if(el){el.focus();if(selStart!=null&&el.setSelectionRange){try{el.setSelectionRange(selStart,selEnd);}catch(e){}}}}
   if(detailScroll!=null&&$('.detail-body'))$('.detail-body').scrollTop=detailScroll;
   if(sheetScroll!=null&&$('.sheet-body'))$('.sheet-body').scrollTop=sheetScroll;
   if(pickScroll!=null&&$('.pick-list'))$('.pick-list').scrollTop=pickScroll;
+  if(sidebarScroll!=null&&$('.admin-sidebar'))$('.admin-sidebar').scrollTop=sidebarScroll;
+  if(workspaceScroll!=null&&$('.admin-workspace'))$('.admin-workspace').scrollTop=workspaceScroll;
   if(S.route==='admin'&&S.adminTab==='qr')drawQRs();
 }
 /* =================== DISH ILLUSTRATIONS (top-down, flat painted style) =================== */
@@ -1931,11 +2087,43 @@ function gateView(){
 /* =================== STAFF SHELL =================== */
 function unseenAlerts(){return S.alerts.filter(a=>a.at>S.seenAlertsAt).length;}
 function staffView(){
-  const r=S.route;
-  const modeTxt = S.mode==='live'?(S.writable?'Live':'View only'):S.mode==='local'?'Demo · this device':'Connecting';
-  let main='';
-  if(r==='kitchen') main=kitchenPage(); else if(r==='service') main=servicePage(); else main=adminPage();
-  const n=unseenAlerts();
+  const r = S.route;
+  const modeTxt = S.mode==='live' ? (S.writable?'Live':'View only') : S.mode==='local' ? 'Demo · this device' : 'Connecting';
+  let main = '';
+  if (r === 'kitchen') main = kitchenPage();
+  else if (r === 'service') main = servicePage();
+  else main = adminPage();
+  const n = unseenAlerts();
+
+  if (r === 'admin') {
+    return `<header class="staff-top admin-full-top">
+      <div class="admin-top-content">
+        <div class="brand">
+          <svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 7 16h4l-5 7h7v5h6v-5h7l-5-7h4z" fill="currentColor" opacity=".95"/></svg>
+          <div><b>Pines Exotica</b><small>Resort Management CMS</small></div>
+        </div>
+        <div class="top-nav-group">
+          <nav class="role-tabs" aria-label="Staff pages">
+            <button data-act="go" data-to="service">Service</button>
+            <button data-act="go" data-to="kitchen">Kitchen</button>
+            <button data-act="go" data-to="admin" aria-current="page">Admin</button>
+          </nav>
+          <div class="top-actions">
+            <span class="mode-pill ${S.mode==='live'&&S.writable?'live':''} hide-sm">${modeTxt}</span>
+            <button class="icon-btn" data-act="feed" aria-label="Notifications (${n} new)">${bellIcon()}${n?`<span class="badge">${n>9?'9+':n}</span>`:''}</button>
+            <button class="icon-btn" data-act="lock" aria-label="Lock staff pages" title="Lock">${lockIcon()}</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="admin-main-full">
+      ${S.mode==='live'&&!S.writable?`<div class="notice warn" style="margin:10px 20px;">You are viewing with read-only access, so changes won’t save. The owner can give you Editor access from the Share menu.</div>`:''}
+      ${main}
+    </main>
+    ${S.feedOpen?feedSheet():''}
+    ${S.composer?composerSheet():''}`;
+  }
+
   return `<header class="staff-top"><div class="wrap row">
       <div class="brand"><svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 7 16h4l-5 7h7v5h6v-5h7l-5-7h4z" fill="currentColor" opacity=".95"/></svg><div><b>Pines Exotica</b><small>${r==='kitchen'?'Kitchen display':r==='service'?'Room service & restaurant':'Admin panel'}</small></div></div>
       <nav class="role-tabs" aria-label="Staff pages">
@@ -1955,6 +2143,7 @@ function staffView(){
     ${S.feedOpen?feedSheet():''}
     ${S.composer?composerSheet():''}`;
 }
+
 function feedSheet(){
   return `<div class="overlay" data-act="overlay-close-feed"><div class="sheet" role="dialog" aria-modal="true" aria-label="Notifications">
     <div class="sheet-head"><h3>Notifications</h3><button class="icon-btn" data-act="feed-close" aria-label="Close">✕</button></div>
@@ -2020,7 +2209,7 @@ function boardHTML(role){
     );
   }
 
-  const paged = role==='admin' ? paginateList(list, S.ordPage, 10) : { items: list, total: list.length };
+  const paged = paginateList(list, role==='admin' ? S.ordPage : (S.kPage || 1), 10);
   const sel=bs.sel&&S.orders.find(o=>o.id===bs.sel);
   const rows=paged.items.map(o=>{
     const st=orderStage(o);const p=PRI_BY[o.priority]||PRI_BY.normal;const mins=(Date.now()-o.createdAt)/60000;
@@ -2043,7 +2232,7 @@ function boardHTML(role){
       <div class="tbl">
         <div class="tr th"><div>Order</div><div>Room / table</div><div>Priority</div><div>Items</div><div>Status</div><div>Waiting</div></div>
         ${rows||`<div class="empty-state">${act.length?'No orders match this filter or search.':'No open orders. New orders appear here the moment a guest or waiter places them.'}</div>`}
-        ${role==='admin' ? paginationBar(paged, 'ord') : ''}
+        ${paginationBar(paged, role==='admin' ? 'ord' : 'k')}
       </div>
       ${sel?`<div class="detail-wrap" data-act="detail-bg" data-role="${role}">${detailHTML(sel,role)}</div>`:''}
     </div>`;
@@ -2151,7 +2340,8 @@ function servicePage(){
       <div class="h"><span class="loc">${esc(locLabel(o.loc))}</span><span class="code">#${esc(o.code)}</span></div>
       <ul>${o.items.filter(i=>i.status==='ready').map(i=>`<li><span>${i.qty} × ${esc(i.name)}</span><span style="display:flex;gap:6px"><button class="btn sm" style="color:var(--danger)" data-act="istat" data-v="reprepare" data-order="${esc(o.id)}" data-k="${esc(i.k)}" title="Send back to kitchen">Re-prepare</button><button class="btn sm primary" data-act="istat" data-v="served" data-order="${esc(o.id)}" data-k="${esc(i.k)}">Served</button></span></li>`).join('')}</ul></div>`;}).join('')}</div>`
     :`<div class="panel"><div class="empty-state" style="padding:18px">Nothing waiting at the pass. When the kitchen taps “Serve dish”, it shows up here with a chime.</div></div>`;
-  const openRows=act.map(o=>{const st=orderStage(o);return `<div class="orow">
+  const sPaged = paginateList(act, S.sPage || 1, 10);
+  const openRows=sPaged.items.map(o=>{const st=orderStage(o);return `<div class="orow">
       <div><div class="loc">${esc(locLabel(o.loc))}</div><div class="code muted" style="font-size:12px">#${esc(o.code)} · ${ago(o.createdAt)}</div></div>
       <div style="min-width:0"><div class="items-sum">${esc(o.items.map(i=>i.qty+'× '+i.name).join(', '))}</div><div class="prog">${o.items.map(i=>`<i class="${i.status}"></i>`).join('')}</div></div>
       <div style="display:grid;gap:4px;justify-items:end">${st==='new'?`<select class="select" id="spri-${esc(o.id)}" data-change="priority" data-order="${esc(o.id)}" aria-label="Priority">${PRI.map(p=>`<option value="${p.k}" ${o.priority===p.k?'selected':''}>${p.l}</option>`).join('')}</select>`:ppill(o.priority)}<span class="st ${STAGE_C[st]}">${STAGE_L[st]}</span></div>
@@ -2215,43 +2405,118 @@ async function composerSend(){
 
 /* ---------- admin ---------- */
 function todayOrders(){const k=dayKey(Date.now());return S.orders.filter(o=>dayKey(o.createdAt)===k);}
+
 function adminPage(){
-  const t=todayOrders();
-  const completed=t.filter(o=>o.status==='completed');
-  const rev=completed.reduce((s,o)=>s+(o.bill?.total||0),0);
-  const inHouseCount = (S.guests||[]).filter(g=>g.status==='checked_in').length;
-  const tab=(k,l)=>`<button role="tab" aria-selected="${S.adminTab===k}" data-act="atab" data-v="${k}">${l}</button>`;
-  let content='';
-  if(S.adminTab==='orders')content=adminOrders();
-  else if(S.adminTab==='menu')content=cmsView();
-  else if(S.adminTab==='guests')content=guestsView();
-  else if(S.adminTab==='locations')content=locationsView();
-  else if(S.adminTab==='custom_cooking'||S.adminTab==='custom-cooking')content=customCookingView();
-  else if(S.adminTab==='services')content=servicesView();
-  else if(S.adminTab==='folio')content=folioView();
-  else if(S.adminTab==='taxes')content=rateEditor('taxes');
-  else if(S.adminTab==='charges')content=rateEditor('charges');
-  else content=qrView();
-  return `<div class="page-title"><h2>Pines Exotica Admin</h2><span class="muted">${new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'})}</span></div>
-    <div class="stats">
-      <div class="stat"><div class="eyebrow">Orders received</div><div class="v">${t.length}</div><div class="s">today</div></div>
-      <div class="stat"><div class="eyebrow">Orders completed</div><div class="v">${completed.length}</div><div class="s">today</div></div>
-      <div class="stat"><div class="eyebrow">In-House Guests</div><div class="v">${inHouseCount}</div><div class="s">checked-in now</div></div>
-      <div class="stat"><div class="eyebrow">Billed today</div><div class="v">${inr(rev)}</div><div class="s">completed orders, incl. taxes</div></div>
+  const t = todayOrders();
+  const completed = t.filter(o => o.status === 'completed');
+  const rev = completed.reduce((s, o) => s + (o.bill?.total || 0), 0);
+  const inHouseCount = (S.guests || []).filter(g => g.status === 'checked_in').length;
+  const isCollapsed = !!S.sidebarCollapsed;
+
+  const item = (tabKey, icon, label, badge, badgeCls = '') => {
+    const isActive = S.adminTab === tabKey;
+    return `<button class="sidebar-item ${isActive ? 'active' : ''}" data-act="atab" data-v="${tabKey}" title="${esc(label)}">
+      <span class="item-icon">${icon}</span>
+      <span class="sidebar-text">${esc(label)}</span>
+      ${badge != null ? `<span class="sidebar-badge ${badgeCls}">${badge}</span>` : ''}
+    </button>`;
+  };
+
+  let content = '';
+  let viewTitle = 'Overview';
+  if (S.adminTab === 'orders') { content = adminOrders(); viewTitle = 'Live Kitchen & Dining Orders'; }
+  else if (S.adminTab === 'menu') { content = cmsView(); viewTitle = 'À la Carte Menu CMS'; }
+  else if (S.adminTab === 'guests') { content = guestsView(); viewTitle = 'Guests & In-House Register'; }
+  else if (S.adminTab === 'locations') { content = locationsView(); viewTitle = 'Villas & Rooms Directory'; }
+  else if (S.adminTab === 'custom_cooking' || S.adminTab === 'custom-cooking') { content = customCookingView(); viewTitle = 'Custom Cooking & Pax Slabs'; }
+  else if (S.adminTab === 'services') { content = servicesView(); viewTitle = 'Extra Services (Spa & BBQ)'; }
+  else if (S.adminTab === 'folio') { content = folioView(); viewTitle = 'Stay Billing & Invoices'; }
+  else if (S.adminTab === 'referrals') { content = referralsView(); viewTitle = 'Referral Sources Master'; }
+  else if (S.adminTab === 'geo') { content = geoView(); viewTitle = 'City & State Master'; }
+  else if (S.adminTab === 'taxes') { content = rateEditor('taxes'); viewTitle = 'Taxes & GST Setup'; }
+  else if (S.adminTab === 'charges') { content = rateEditor('charges'); viewTitle = 'Service Charges Setup'; }
+  else { content = qrView(); viewTitle = 'Master QR Standee & Links'; }
+
+  return `<div class="admin-shell">
+    <!-- LEFT SIDEBAR -->
+    <aside class="admin-sidebar ${isCollapsed ? 'collapsed' : ''}" id="admin-sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-icon">🌲</div>
+        <div>
+          <b>Pines Exotica</b>
+          <small class="brand-sub">Resort Management</small>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="sidebar-cat-title">🛎️ Front Desk &amp; Ops</div>
+        ${item('orders', '📋', 'Live Orders', t.length, t.length > 0 ? 'alert' : '')}
+        ${item('guests', '👥', 'Guests & Check-in', inHouseCount, 'green')}
+        ${item('folio', '🧾', 'Stay Billing (Folio)', null)}
+
+        <div class="sidebar-cat-title">👨‍🍳 Kitchen &amp; Dining</div>
+        ${item('kitchen', '🔥', 'Kitchen KDS', null)}
+        ${item('menu', '🍽️', 'Dishes CMS', (S.menu||[]).length)}
+        ${item('custom_cooking', '🍳', 'Custom Cooking Slabs', null)}
+
+        <div class="sidebar-cat-title">🏨 Masters &amp; Directory</div>
+        ${item('locations', '🏡', 'Villas & Rooms', (S.locations||[]).length)}
+        ${item('referrals', '🤝', 'Referral Sources (Aman..)', (S.referralSources||[]).length)}
+        ${item('geo', '📍', 'City & State Master', (S.geoCities||[]).length)}
+        ${item('services', '✨', 'Extra Services', (S.services||[]).length)}
+
+        <div class="sidebar-cat-title">⚙️ Configuration</div>
+        ${item('taxes', '🏷️', 'Taxes & GST', null)}
+        ${item('charges', '💳', 'Service Charges', null)}
+        ${item('qr', '📱', 'Standee & QR Links', null)}
+      </nav>
+
+      <div style="padding:10px;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:center;">
+        <button class="sidebar-item" data-act="toggle-sidebar" style="justify-content:center;font-size:12px;color:#94A3B8;" title="Toggle Fullscreen Sidebar">
+          <span class="item-icon">${isCollapsed ? '➡️' : '⬅️'}</span>
+          <span class="sidebar-text">${isCollapsed ? '' : 'Collapse Sidebar'}</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN WORKSPACE -->
+    <div class="admin-workspace">
+      <!-- Admin Topbar -->
+      <header class="admin-topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="icon-btn" data-act="toggle-sidebar" title="Toggle Fullscreen Sidebar" style="background:#F1F5F9;border:1px solid var(--line);">☰</button>
+          <div>
+            <h3 style="font-size:16px;font-weight:700;color:var(--ink);margin:0;line-height:1.2;">${esc(viewTitle)}</h3>
+            <span class="muted" style="font-size:11.5px;">${new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="btn sm" data-act="go" data-to="service" title="Open Room Service View">🛎️ Room Service</button>
+          <button class="btn sm" data-act="go" data-to="kitchen" title="Open Kitchen View">👨‍🍳 Kitchen</button>
+          <button class="icon-btn" data-act="feed" aria-label="Notifications" title="Alerts" style="position:relative">
+            ${bellIcon()}${unseenAlerts() ? `<span class="badge">${unseenAlerts()}</span>` : ''}
+          </button>
+          <button class="icon-btn" data-act="lock" title="Lock Admin">${lockIcon()}</button>
+        </div>
+      </header>
+
+      <!-- Main Content Container -->
+      <div class="admin-main-content">
+        <!-- 4 KPI Stat Cards -->
+        <div class="stats" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+          <div class="stat"><div class="eyebrow">Orders received</div><div class="v">${t.length}</div><div class="s">today</div></div>
+          <div class="stat"><div class="eyebrow">Orders completed</div><div class="v">${completed.length}</div><div class="s">today</div></div>
+          <div class="stat"><div class="eyebrow">In-House Guests</div><div class="v" style="color:#065F46">${inHouseCount}</div><div class="s">checked-in now</div></div>
+          <div class="stat"><div class="eyebrow">Billed today</div><div class="v" style="color:var(--pine);font-family:var(--f-mono)">${inr(rev)}</div><div class="s">completed orders, incl. taxes</div></div>
+        </div>
+
+        ${content}
+      </div>
     </div>
-    <div class="tabs" role="tablist">
-      ${tab('orders','📋 Orders')}
-      ${tab('menu','🍽️ À la carte Dishes')}
-      ${tab('guests','👥 Guests & Aadhaar')}
-      ${tab('locations','📍 Villas & Rooms')}
-      ${tab('custom_cooking','🍳 Custom Kitchen & Raw Material')}
-      ${tab('services','✨ Extra Services')}
-      ${tab('folio','🧾 Stay Billing (Folio)')}
-      ${tab('taxes','Taxes')}
-      ${tab('charges','Service charges')}
-      ${tab('qr','📱 Master QR Standee & Links')}
-    </div>
-    ${content}`;
+  </div>
+  ${S.refDraft ? referralEditor() : ''}
+  ${S.cityDraft ? cityEditor() : ''}`;
 }
 
 /* ---------- 1. GUESTS & AADHAAR REGISTER ---------- */
@@ -2274,67 +2539,211 @@ function locBadgeText(type, num) {
   return `${t} ${n.toUpperCase()}`;
 }
 
-function guestsView(){
-  const q = (S.guestSearch||'').toLowerCase().trim();
-  const f = S.guestFilter || 'all';
-  let list = S.guests || [];
-  if(f === 'checked_in') list = list.filter(g => g.status === 'checked_in');
-  else if(f === 'checked_out') list = list.filter(g => g.status === 'checked_out');
+function getSourceClass(src) {
+  const s = String(src || '').toLowerCase();
+  if (s.includes('aman') || s.includes('staff')) return 'staff';
+  if (s.includes('makemytrip') || s.includes('agoda') || s.includes('booking') || s.includes('ota')) return 'ota';
+  if (s.includes('agent') || s.includes('corporate')) return 'agent';
+  if (s.includes('direct') || s.includes('walk-in') || s.includes('website')) return 'direct';
+  if (s.includes('instagram') || s.includes('social')) return 'social';
+  return 'staff';
+}
 
-  if(q){
+function guestsView(){
+  const q = (S.guestSearch || '').toLowerCase().trim();
+  const fStatus = S.guestFilter || 'all';
+  const fRef = S.guestReferralFilter || 'all';
+  const fLoc = S.guestVillaFilter || 'all';
+  const fState = S.guestStateFilter || 'all';
+
+  let list = S.guests || [];
+
+  // Filter Status
+  if (fStatus === 'checked_in') list = list.filter(g => g.status === 'checked_in');
+  else if (fStatus === 'checked_out') list = list.filter(g => g.status === 'checked_out');
+
+  // Filter Referral Source
+  if (fRef !== 'all') {
+    list = list.filter(g => String(g.referredBy || '').toLowerCase().includes(fRef.toLowerCase()));
+  }
+
+  // Filter Stay Location / Villa
+  if (fLoc !== 'all') {
+    list = list.filter(g => {
+      const v = String(g.assignedVilla || '').toLowerCase();
+      const n = String(g.assignedLocationNumber || '').toLowerCase();
+      return v.includes(fLoc.toLowerCase()) || n.includes(fLoc.toLowerCase());
+    });
+  }
+
+  // Filter State / Region
+  if (fState !== 'all') {
+    list = list.filter(g => {
+      const st = String(g.state || g.address || '').toLowerCase();
+      return st.includes(fState.toLowerCase());
+    });
+  }
+
+  // Multi-Field Search (Name, Phone, Aadhaar, City, State, Pincode, Street, Room, Referral)
+  if (q) {
     list = list.filter(g =>
-      (g.name||'').toLowerCase().includes(q) ||
-      (g.phone||'').includes(q) ||
-      (g.aadhaarNumber||'').includes(q) ||
-      (g.assignedLocationNumber||'').toLowerCase().includes(q) ||
-      (g.address||'').toLowerCase().includes(q) ||
-      (g.referredBy||'').toLowerCase().includes(q)
+      (g.name || '').toLowerCase().includes(q) ||
+      (g.phone || '').includes(q) ||
+      (g.aadhaarNumber || '').includes(q) ||
+      (g.assignedLocationNumber || '').toLowerCase().includes(q) ||
+      (g.assignedVilla || '').toLowerCase().includes(q) ||
+      (g.city || '').toLowerCase().includes(q) ||
+      (g.state || '').toLowerCase().includes(q) ||
+      (g.pincode || '').includes(q) ||
+      (g.street || '').toLowerCase().includes(q) ||
+      (g.address || '').toLowerCase().includes(q) ||
+      (g.referredBy || '').toLowerCase().includes(q)
     );
   }
 
   list = list.slice().sort((a,b) => (Number(b.checkInDate)||0) - (Number(a.checkInDate)||0));
   const paged = paginateList(list, S.guestPage, 10);
 
-  const inHouseCount = (S.guests||[]).filter(g=>g.status==='checked_in').length;
-  const totalCount = (S.guests||[]).length;
-  const sub = (k,l) => `<button class="chip" data-act="g-filter" data-v="${k}" aria-pressed="${f===k}">${l}</button>`;
+  const inHouseCount = (S.guests || []).filter(g => g.status === 'checked_in').length;
+  const totalCount = (S.guests || []).length;
+  const hasActiveFilters = (fStatus !== 'all' || fRef !== 'all' || fLoc !== 'all' || fState !== 'all' || q !== '');
 
-  return `<div class="cms-bar" style="margin-bottom:12px">
-      <label class="search">${searchIcon()}<input class="input" id="g-search" type="search" placeholder="Search by name, phone, Aadhaar, room..." value="${esc(S.guestSearch||'')}" data-input="g-search" aria-label="Search guests"></label>
-      <div class="filters" style="margin-left:auto">${sub('all','All Guests ('+totalCount+')')}${sub('checked_in','In-House ('+inHouseCount+')')}${sub('checked_out','Checked-out')}</div>
-      <button class="btn primary" data-act="guest-new">+ Check-in New Guest</button>
+  // Extract unique referral sources, locations and states for dropdowns
+  const refSources = (S.referralSources && S.referralSources.length)
+    ? S.referralSources.map(s => s.name)
+    : ['Aman (Staff)', 'Direct Walk-in', 'MakeMyTrip', 'Agoda', 'Booking.com', 'Resort Website / Direct Call', 'Instagram / Social Media', 'Corporate / Travel Agent'];
+  
+  const statesList = (S.geoStates && S.geoStates.length)
+    ? S.geoStates.map(s => s.state_name || s.name)
+    : ['Himachal Pradesh', 'Delhi', 'Punjab', 'Haryana', 'Chandigarh', 'Maharashtra', 'Karnataka', 'Gujarat', 'Uttar Pradesh'];
+
+  return `<!-- Smart Multi-Field Search & Filter Toolbar -->
+    <div class="filter-toolbar">
+      <div class="top-row">
+        <!-- Live Search Input -->
+        <div style="flex:1;min-width:260px;position:relative;">
+          <label class="search" style="width:100%">
+            ${searchIcon()}
+            <input class="input" id="g-search" type="search" placeholder="Search by name, phone, city, state, pincode, room, Aadhaar..." value="${esc(S.guestSearch||'')}" data-input="g-search" aria-label="Search guests">
+          </label>
+        </div>
+
+        <!-- Filter: Status -->
+        <select class="input" style="width:auto;min-width:140px;font-weight:600" data-change="g-filter-status">
+          <option value="all" ${fStatus==='all'?'selected':''}>Status: All Guests (${totalCount})</option>
+          <option value="checked_in" ${fStatus==='checked_in'?'selected':''}>Status: In-House (${inHouseCount})</option>
+          <option value="checked_out" ${fStatus==='checked_out'?'selected':''}>Status: Checked-Out</option>
+        </select>
+
+        <!-- Filter: Referral Source -->
+        <select class="input" style="width:auto;min-width:165px;font-weight:600" data-change="g-filter-ref">
+          <option value="all" ${fRef==='all'?'selected':''}>Referral: All Sources</option>
+          ${refSources.map(r => `<option value="${esc(r)}" ${fRef.toLowerCase()===r.toLowerCase()?'selected':''}>${esc(r)}</option>`).join('')}
+        </select>
+
+        <!-- Filter: Stay Location / Villa -->
+        <select class="input" style="width:auto;min-width:140px;font-weight:600" data-change="g-filter-loc">
+          <option value="all" ${fLoc==='all'?'selected':''}>Villa: All Locations</option>
+          <option value="villa 1" ${fLoc.toLowerCase()==='villa 1'?'selected':''}>Villa 1</option>
+          <option value="villa 2" ${fLoc.toLowerCase()==='villa 2'?'selected':''}>Villa 2</option>
+        </select>
+
+        <!-- Filter: State / Region -->
+        <select class="input" style="width:auto;min-width:145px;font-weight:600" data-change="g-filter-state">
+          <option value="all" ${fState==='all'?'selected':''}>State: All States</option>
+          ${statesList.slice(0, 15).map(st => `<option value="${esc(st)}" ${fState.toLowerCase()===st.toLowerCase()?'selected':''}>${esc(st)}</option>`).join('')}
+        </select>
+
+        ${hasActiveFilters ? `<button class="btn sm danger" data-act="g-filter-reset" title="Reset All Filters">✕ Reset</button>` : ''}
+
+        <div style="margin-left:auto;display:flex;gap:8px;">
+          <button class="btn sm" data-act="export-guests-csv" title="Download Excel/CSV Spreadsheet">📥 Export CSV</button>
+          <button class="btn sm" data-act="print-guests-register" title="Print Official Guest & Police Register">🖨️ Print Register</button>
+          <button class="btn primary" data-act="guest-new">+ Check-in New Guest</button>
+        </div>
+      </div>
+
+      <div class="bottom-row">
+        <div>Showing <b style="color:var(--ink)">${list.length}</b> guests matching criteria • Sorted by latest check-in date</div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          ${fStatus!=='all'?`<span class="chip sm" style="background:#E2E8F0">Status: ${fStatus==='checked_in'?'In-House':'Checked-out'}</span>`:''}
+          ${fRef!=='all'?`<span class="chip sm" style="background:#E0F2FE;color:#0369A1">Source: ${esc(fRef)}</span>`:''}
+          ${fState!=='all'?`<span class="chip sm" style="background:#FEF3C7;color:#92400E">State: ${esc(fState)}</span>`:''}
+          ${fLoc!=='all'?`<span class="chip sm" style="background:#DCFCE7;color:#166534">Location: ${esc(fLoc)}</span>`:''}
+        </div>
+      </div>
     </div>
+
+    <!-- 10-Column Guests Register Table -->
+    <div class="tbl-scroll-card">
     <div class="tbl guest-tbl">
       <div class="tr th">
-        <span>Guest Name &amp; Hometown</span>
-        <span>Phone</span>
-        <span>Aadhaar Number</span>
+        <span>Guest Information</span>
+        <span>Contact &amp; Aadhaar</span>
+        <span>Origin / Hometown</span>
         <span>Stay Location</span>
+        <span style="text-align:center">Occupancy (Pax)</span>
         <span>Referred by / via</span>
-        <span>Check-in</span>
-        <span>Status</span>
+        <span>Stay Duration</span>
+        <span style="text-align:right">Tariff / Night</span>
+        <span style="text-align:center">Status</span>
         <span style="text-align:right">Actions</span>
       </div>
       ${paged.items.length ? paged.items.map(g => {
         const isIn = g.status === 'checked_in';
         const locBadge = g.assignedLocationType === 'villa' ? 'badge-villa' : (g.assignedLocationType === 'table' ? 'badge-table' : 'badge-room');
         const locIcon = g.assignedLocationType === 'villa' ? '🏡' : (g.assignedLocationType === 'table' ? '🍽️' : '🛏️');
-        const inDate = g.checkInDate ? new Date(Number(g.checkInDate)).toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'}) : '-';
+        const inDate = g.checkInDate ? new Date(Number(g.checkInDate)).toLocaleDateString('en-IN', {day:'numeric',month:'short'}) : '-';
         const expDate = g.expectedCheckOutDate ? new Date(Number(g.expectedCheckOutDate)).toLocaleDateString('en-IN', {day:'numeric',month:'short'}) : '';
+        const sourceCls = getSourceClass(g.referredBy);
+        
+        // Location text
+        const villaText = g.assignedVilla ? g.assignedVilla : (g.assignedLocationType === 'villa' ? g.assignedLocationNumber : 'Villa 1');
+        const roomText = g.assignedLocationType === 'room' ? `Room ${g.assignedLocationNumber}` : (g.assignedLocationType === 'villa' ? 'Full Villa' : `Table ${g.assignedLocationNumber}`);
+        
+        // Origin text
+        const originCity = [g.city, g.state].filter(Boolean).join(', ') || g.address || '—';
+        const originSub = [g.street, g.pincode ? ('PIN: ' + g.pincode) : ''].filter(Boolean).join(' • ');
+
+        // Pax text
+        const totalPersons = g.numberOfPersons || ((g.adultsCount || 1) + (g.kidsCount || 0));
+        const numRooms = g.numberOfRooms || 1;
+
         return `<div class="tr row" style="cursor:default">
-          <div><b style="font-size:14px;word-break:break-word">${esc(g.name)}</b>${g.address ? `<small style="display:block;color:var(--muted);font-size:12px;word-break:break-word">${esc(g.address)}</small>` : ''}</div>
-          <div><a href="tel:${esc(g.phone)}" style="color:var(--ink);text-decoration:none;font-weight:600;white-space:nowrap">${esc(g.phone)}</a></div>
-          <div><span class="id-badge">🪪 ${esc(formatAadhaar(g.aadhaarNumber))}</span></div>
           <div>
-            <span class="badge-loc ${locBadge}">${locIcon} ${esc(locBadgeText(g.assignedLocationType, g.assignedLocationNumber))}</span>
-            ${g.roomTariff ? `<small style="display:block;color:var(--muted);font-size:11px;font-family:var(--f-mono);margin-top:2px;">@ ₹${Number(g.roomTariff).toLocaleString('en-IN')}/night</small>` : ''}
+            <b style="font-size:14px;word-break:break-word;color:var(--ink)">${esc(g.name)}</b>
+            <small style="display:block;color:var(--muted);font-size:11.5px;">Primary Guest</small>
           </div>
-          <div><span style="font-size:13px;font-weight:600;color:var(--brand,#1E4033);white-space:nowrap">${esc(g.referredBy || '—')}</span></div>
           <div>
-            <span class="num" style="font-size:13px;white-space:nowrap">${inDate}</span>
-            ${expDate ? `<small style="display:block;color:var(--muted);font-size:11px;">To: ${expDate}</small>` : ''}
+            <a href="tel:${esc(g.phone)}" style="color:var(--ink);text-decoration:none;font-weight:700;font-family:var(--f-mono);font-size:13px;white-space:nowrap">${esc(g.phone)}</a>
+            <small style="display:block;color:var(--muted);font-family:var(--f-mono);font-size:11.5px;letter-spacing:0.04em;">🪪 ${esc(formatAadhaar(g.aadhaarNumber))}</small>
           </div>
-          <div><span class="st ${isIn ? 'completed' : 'cancelled'}" style="white-space:nowrap">${isIn ? 'In-House' : 'Departed'}</span></div>
+          <div>
+            <b style="font-size:13px;color:var(--ink);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${esc(originCity)}">${esc(originCity)}</b>
+            <small style="display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${esc(originSub)}">${esc(originSub || 'India')}</small>
+          </div>
+          <div>
+            <span class="badge-loc ${locBadge}">${locIcon} ${esc(villaText)}</span>
+            <small style="display:block;color:var(--muted);font-weight:600;font-size:11.5px;margin-top:2px;">${esc(roomText)}</small>
+          </div>
+          <div style="text-align:center">
+            <span class="pax-badge">${totalPersons} Pax</span>
+            <small style="display:block;color:var(--muted);font-size:10.5px;margin-top:2px;">${numRooms} Room${numRooms > 1 ? 's' : ''} (${g.adultsCount||1}A${g.kidsCount ? ', ' + g.kidsCount + 'C' : ''})</small>
+          </div>
+          <div>
+            <span class="badge-source ${sourceCls}">${esc(g.referredBy || 'Direct')}</span>
+          </div>
+          <div>
+            <span class="num" style="font-size:12.5px;font-weight:600;white-space:nowrap">${inDate}</span>
+            <small style="display:block;color:var(--muted);font-size:11px;">To: ${expDate || 'Open'}</small>
+          </div>
+          <div style="text-align:right">
+            <b style="font-family:var(--f-mono);font-size:13.5px;color:var(--ink)">${g.roomTariff ? '₹' + Number(g.roomTariff).toLocaleString('en-IN') : '₹0'}</b>
+            <small style="display:block;color:var(--muted);font-size:10.5px;">/ night</small>
+          </div>
+          <div style="text-align:center">
+            <span class="st ${isIn ? 'completed' : 'cancelled'}" style="white-space:nowrap">${isIn ? 'In-House' : 'Departed'}</span>
+          </div>
           <div style="display:flex;gap:6px;justify-content:flex-end;align-items:center;white-space:nowrap;flex-shrink:0">
             <button class="btn sm teak" data-act="folio-from-guest" data-type="${esc(g.assignedLocationType)}" data-num="${esc(g.assignedLocationNumber)}" data-gid="${esc(g.id)}" title="View Stay Billing Folio">🧾 Folio</button>
             <button class="icon-btn" data-act="guest-edit" data-id="${esc(g.id)}" title="Edit Guest Details">✏️</button>
@@ -2342,7 +2751,7 @@ function guestsView(){
             <button class="icon-btn" data-act="guest-del" data-id="${esc(g.id)}" title="Delete Guest Record" style="color:var(--danger)">🗑️</button>
           </div>
         </div>`;
-      }).join('') : `<div class="empty-state">${list.length ? 'No guests on this page.' : (q ? 'No guests match your search “' + esc(q) + '”.' : 'No guests registered yet. Click “+ Check-in New Guest” to register a guest with Aadhaar number and assigned Villa/Room.')}</div>`}
+      }).join('') : `<div class="empty-state">${list.length ? 'No guests on this page.' : 'No guests match the search and filter criteria.'}</div>`}
       ${paginationBar(paged, 'guest')}
     </div>
     ${S.guestDraft ? guestEditor() : ''}`;
@@ -2352,49 +2761,186 @@ function guestEditor(){
   const g = S.guestDraft;
   const locType = g.assignedLocationType || 'room';
   const locationsOfType = (S.locations || []).filter(l => l.type === locType && l.isActive !== false);
-  const expDateVal = g.expectedCheckOutDate ? (typeof g.expectedCheckOutDate === 'number' || !isNaN(Number(g.expectedCheckOutDate)) ? new Date(Number(g.expectedCheckOutDate)).toISOString().split('T')[0] : g.expectedCheckOutDate) : '';
 
-  return `<div class="overlay" data-act="overlay-close-guest"><div class="sheet" role="dialog" aria-modal="true" aria-label="Guest Check-in">
-    <div class="sheet-head"><h3>${g._new ? 'Guest Registration &amp; Check-in' : 'Edit Guest Details'}</h3><button class="icon-btn" data-act="guest-close" aria-label="Close">✕</button></div>
-    <div class="sheet-body">
-      <p class="muted" style="font-size:13px">Register guest identity with government ID (Aadhaar Number), stay duration, room tariff, and assigned villa/room.</p>
-      <div class="field"><label for="g-name">Guest Full Name *</label><input class="input" id="g-name" data-input="g.name" value="${esc(g.name || '')}" placeholder="Enter guest name"></div>
-      <div class="form-grid">
-        <div class="field"><label for="g-phone">Phone Number (10 Digits) *</label><input class="input" id="g-phone" type="tel" maxlength="15" data-input="g.phone" value="${esc(g.phone || '')}" placeholder="e.g. 9876543210"></div>
-        <div class="field"><label for="g-aadhaar">Aadhaar Card Number (12 Digits) *</label><input class="input mono" id="g-aadhaar" maxlength="14" data-input="g.aadhaar" value="${esc(g.aadhaarNumber || '')}" placeholder="1234 5678 9012"></div>
-      </div>
-      <div class="form-grid">
-        <div class="field"><label for="g-tariff">Room Tariff (₹ / Night)</label><input class="input mono" id="g-tariff" type="number" min="0" step="100" data-input="g.tariff" value="${esc(g.roomTariff !== undefined ? g.roomTariff : 4500)}" placeholder="e.g. 4500"></div>
-        <div class="field"><label for="g-checkout-exp">Expected Check-out Date</label><input class="input" id="g-checkout-exp" type="date" data-input="g.expcheckout" value="${esc(expDateVal)}"></div>
-      </div>
-      <div class="form-grid">
-        <div class="field"><label for="g-addr">Address / Hometown</label><input class="input" id="g-addr" data-input="g.address" value="${esc(g.address || '')}" placeholder="City, State"></div>
-        <div class="field"><label for="g-ref">Referred by / via</label><input class="input" id="g-ref" data-input="g.ref" value="${esc(g.referredBy || '')}" placeholder="e.g. MakeMyTrip, Travel Agent, Direct"></div>
-      </div>
+  const nowTs = Date.now();
+  const inDateVal = g.checkInDate 
+    ? (typeof g.checkInDate === 'number' || !isNaN(Number(g.checkInDate)) ? new Date(Number(g.checkInDate)).toISOString().split('T')[0] : g.checkInDate)
+    : new Date(nowTs).toISOString().split('T')[0];
+
+  const expDateVal = g.expectedCheckOutDate 
+    ? (typeof g.expectedCheckOutDate === 'number' || !isNaN(Number(g.expectedCheckOutDate)) ? new Date(Number(g.expectedCheckOutDate)).toISOString().split('T')[0] : g.expectedCheckOutDate)
+    : '';
+
+  const selectedLocs = String(g.assignedLocationNumber || '')
+    .split(',')
+    .map(s => s.trim().toUpperCase())
+    .filter(Boolean);
+
+  const refSources = (S.referralSources && S.referralSources.length) 
+    ? S.referralSources.map(s => s.name)
+    : ['Aman (Staff)', 'Direct Walk-in', 'MakeMyTrip', 'Agoda', 'Booking.com', 'Resort Website / Direct Call', 'Instagram / Social Media', 'Corporate / Travel Agent'];
+
+  const statesList = (S.geoStates && S.geoStates.length)
+    ? S.geoStates.map(s => s.state_name || s.name)
+    : ['Himachal Pradesh', 'Delhi', 'Punjab', 'Haryana', 'Chandigarh', 'Maharashtra', 'Karnataka', 'Gujarat', 'Uttar Pradesh', 'Rajasthan', 'Uttarakhand'];
+
+  return `<div class="overlay" data-act="overlay-close-guest"><div class="sheet" role="dialog" aria-modal="true" aria-label="Guest Check-in" style="max-width:680px">
+    <div class="sheet-head">
+      <h3>${g._new ? 'Guest Registration &amp; Check-in' : 'Edit Guest Details'}</h3>
+      <button class="icon-btn" data-act="guest-close" aria-label="Close">✕</button>
+    </div>
+    <div class="sheet-body" style="gap:16px">
       
-      <div class="field" style="margin-top:6px">
-        <label>Assigned Stay Location *</label>
-        <div class="seg" style="margin-bottom:8px">
-          <button data-act="g-loctype" data-v="villa" aria-pressed="${locType === 'villa'}">🏡 Villa</button>
-          <button data-act="g-loctype" data-v="room" aria-pressed="${locType === 'room'}">🛏️ Room</button>
-          <button data-act="g-loctype" data-v="table" aria-pressed="${locType === 'table'}">🍽️ Dining Table</button>
+      <!-- 1. Primary Guest Identity -->
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--pine);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--line);padding-bottom:4px;margin-bottom:10px">
+          1. Primary Identity &amp; Government Proof
         </div>
-        <select class="input" id="g-locnum" data-change="g.locnum">
-          <option value="">-- Select ${(locType||'').toUpperCase()} --</option>
-          ${locationsOfType.map(l => `<option value="${esc(l.number)}" ${String(g.assignedLocationNumber || '').toUpperCase() === String(l.number).toUpperCase() ? 'selected' : ''}>${esc(l.number)} — ${esc(l.name)} ${l.parentVilla ? `(${esc(l.parentVilla)})` : ''}</option>`).join('')}
-        </select>
+        <div class="field"><label for="g-name">Guest Full Name *</label><input class="input" id="g-name" data-input="g.name" value="${esc(g.name || '')}" placeholder="e.g. Amit Sharma"></div>
+        <div class="form-grid" style="margin-top:8px">
+          <div class="field"><label for="g-phone">Phone Number (10 Digits) *</label><input class="input" id="g-phone" type="tel" maxlength="15" data-input="g.phone" value="${esc(g.phone || '')}" placeholder="e.g. 9816012345"></div>
+          <div class="field"><label for="g-aadhaar">Aadhaar Card Number (12 Digits) *</label><input class="input mono" id="g-aadhaar" maxlength="14" data-input="g.aadhaar" value="${esc(g.aadhaarNumber || '')}" placeholder="1234 5678 9012"></div>
+        </div>
       </div>
 
-      ${S.guestDraftErr ? `<div class="notice bad">${esc(S.guestDraftErr)}</div>` : ''}
+      <!-- 2. Stay, Rooms & Occupancy (Assigned Room Dropdown with Multi-select) -->
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--pine);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--line);padding-bottom:4px;margin-bottom:10px">
+          2. Stay, Rooms &amp; Occupancy
+        </div>
+        
+        <div class="field">
+          <label>Location Type *</label>
+          <div class="seg" style="width:100%">
+            <button data-act="g-loctype" data-v="villa" aria-pressed="${locType === 'villa'}">🏡 Villa</button>
+            <button data-act="g-loctype" data-v="room" aria-pressed="${locType === 'room'}">🛏️ Room</button>
+            <button data-act="g-loctype" data-v="table" aria-pressed="${locType === 'table'}">🍽️ Table</button>
+          </div>
+        </div>
+
+        <!-- Assigned Room(s) Multi-Select Dropdown -->
+        <div class="field" style="position:relative;margin-top:10px">
+          <label style="display:flex;justify-content:space-between;align-items:center;">
+            <span>Assigned ${locType === 'room' ? 'Room(s)' : (locType === 'villa' ? 'Villa(s)' : 'Table(s)')} *</span>
+            <span style="font-size:12px;color:var(--pine);font-weight:700;">Selected: ${selectedLocs.length ? selectedLocs.join(', ') : 'None'} (${selectedLocs.length})</span>
+          </label>
+          <button type="button" class="input" data-act="toggle-room-dd" style="display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left;cursor:pointer;background:#FFFFFF;font-weight:600;min-height:42px;">
+            <span style="${selectedLocs.length ? 'color:var(--ink)' : 'color:var(--muted)'};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+              ${selectedLocs.length ? selectedLocs.map(n => (locType === 'room' ? 'Room ' : (locType === 'villa' ? 'Villa ' : 'Table ')) + n).join(', ') + ` (${selectedLocs.length} ${locType}${selectedLocs.length > 1 ? 's' : ''})` : `-- Select ${(locType||'').toUpperCase()}(s) --`}
+            </span>
+            <span style="font-size:11px;color:var(--muted);margin-left:8px;flex-shrink:0;">${S.roomDropdownOpen ? '▲' : '▼'}</span>
+          </button>
+
+          ${S.roomDropdownOpen ? `
+            <div style="position:absolute;top:100%;left:0;right:0;z-index:100;background:#FFFFFF;border:1.5px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.14);max-height:220px;overflow-y:auto;margin-top:4px;padding:4px 0;">
+              <div style="padding:7px 12px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;background:#F8FAFC;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;">
+                <span>Click to Select / Unselect ${locType.toUpperCase()}s</span>
+                <button type="button" data-act="toggle-room-dd" style="background:#17362A;color:#FFFFFF;border:none;padding:3px 10px;border-radius:4px;font-weight:700;cursor:pointer;font-size:11px;">Done ✓</button>
+              </div>
+              ${locationsOfType.length ? locationsOfType.map(l => {
+                const isSelected = selectedLocs.includes(String(l.number).toUpperCase());
+                return `<div data-act="toggle-loc-select" data-num="${esc(l.number)}" style="display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:pointer;transition:background .12s;background:${isSelected ? '#F0FDF4' : 'transparent'};border-bottom:1px solid #F8FAFC;">
+                  <input type="checkbox" style="pointer-events:none;width:16px;height:16px;accent-color:#17362A;" ${isSelected ? 'checked' : ''}>
+                  <div style="flex:1;">
+                    <b style="font-size:13px;color:${isSelected ? '#166534' : 'var(--ink)'};">${esc(l.number)} — ${esc(l.name)}</b>
+                    ${l.parentVilla ? `<small style="display:block;font-size:11px;color:var(--muted);">${esc(l.parentVilla)}</small>` : ''}
+                  </div>
+                  ${isSelected ? '<span style="font-size:11px;color:#166534;font-weight:700;">Selected</span>' : ''}
+                </div>`;
+              }).join('') : `<div class="muted" style="padding:12px;font-size:12px;">No active ${locType}s found.</div>`}
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- Check-in Date & Expected Check-out Date -->
+        <div class="form-grid" style="margin-top:10px">
+          <div class="field">
+            <label for="g-checkin-date">Check-in Date *</label>
+            <input class="input" id="g-checkin-date" type="date" data-input="g.checkin" value="${inDateVal}">
+          </div>
+          <div class="field">
+            <label for="g-checkout-exp">Expected Check-out Date</label>
+            <input class="input" id="g-checkout-exp" type="date" data-input="g.expcheckout" value="${expDateVal}">
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-top:8px">
+          <div class="field"><label for="g-rooms">Number of Rooms</label><input class="input" id="g-rooms" type="number" min="1" max="20" data-input="g.rooms" value="${esc(g.numberOfRooms || (selectedLocs.length || 1))}"></div>
+          <div class="field"><label for="g-adults">Adults</label><input class="input" id="g-adults" type="number" min="1" max="50" data-input="g.adults" value="${esc(g.adultsCount || 1)}"></div>
+          <div class="field"><label for="g-kids">Children</label><input class="input" id="g-kids" type="number" min="0" max="30" data-input="g.kids" value="${esc(g.kidsCount || 0)}"></div>
+          <div class="field"><label for="g-tariff">Room Tariff (₹ / Night)</label><input class="input mono" id="g-tariff" type="number" min="0" step="100" data-input="g.tariff" value="${esc(g.roomTariff !== undefined ? g.roomTariff : 4500)}" placeholder="e.g. 4500"></div>
+        </div>
+      </div>
+
+      <!-- 3. Address & Location Details (Auto-fills City & State without button) -->
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--pine);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--line);padding-bottom:4px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+          <span>3. Complete Address &amp; Origin</span>
+          <span class="muted" style="font-size:11px;font-weight:500;text-transform:none;">6-digit Pincode automatically detects City &amp; State</span>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="g-pincode">Pincode (6 Digits)</label>
+            <input class="input mono" id="g-pincode" maxlength="6" data-input="g.pincode" value="${esc(g.pincode || '')}" placeholder="e.g. 175131">
+          </div>
+          <div class="field">
+            <label for="g-country">Country</label>
+            <select class="input" id="g-country" data-change="g.country">
+              <option value="India" ${(!g.country || g.country==='India')?'selected':''}>India</option>
+              <option value="United States" ${g.country==='United States'?'selected':''}>United States</option>
+              <option value="United Kingdom" ${g.country==='United Kingdom'?'selected':''}>United Kingdom</option>
+              <option value="United Arab Emirates" ${g.country==='United Arab Emirates'?'selected':''}>United Arab Emirates</option>
+              <option value="Canada" ${g.country==='Canada'?'selected':''}>Canada</option>
+              <option value="Australia" ${g.country==='Australia'?'selected':''}>Australia</option>
+              <option value="Other" ${g.country==='Other'?'selected':''}>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-top:8px">
+          <div class="field">
+            <label for="g-state">State / Province</label>
+            <input class="input" id="g-state" list="states-datalist" data-input="g.state" value="${esc(g.state || '')}" placeholder="e.g. Himachal Pradesh, Delhi">
+            <datalist id="states-datalist">
+              ${statesList.map(s => `<option value="${esc(s)}">`).join('')}
+            </datalist>
+          </div>
+          <div class="field">
+            <label for="g-city">City / District</label>
+            <input class="input" id="g-city" data-input="g.city" value="${esc(g.city || '')}" placeholder="e.g. Manali, New Delhi">
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:8px">
+          <label for="g-street">Street Address / House / Locality</label>
+          <input class="input" id="g-street" data-input="g.street" value="${esc(g.street || '')}" placeholder="e.g. Flat 402, Pine Wood Heights, Mall Road">
+        </div>
+      </div>
+
+      <!-- 4. Referral / Booking Source (Clean Single Master Dropdown) -->
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--pine);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--line);padding-bottom:4px;margin-bottom:10px">
+          4. Referral &amp; Booking Source
+        </div>
+        <div class="field">
+          <label for="g-ref-select">Referred By / Via *</label>
+          <select class="input" id="g-ref-select" data-change="g.ref-select">
+            <option value="">-- Choose Referral Source (Aman, MakeMyTrip, etc.) --</option>
+            ${refSources.map(r => `<option value="${esc(r)}" ${(g.referredBy||'').toLowerCase()===r.toLowerCase()?'selected':''}>${esc(r)}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+
+      ${S.guestDraftErr ? `<div class="notice bad" style="margin:0">${esc(S.guestDraftErr)}</div>` : ''}
     </div>
     <div class="sheet-foot">
       <button class="btn" data-act="guest-close">Cancel</button>
-      <button class="btn primary" data-act="guest-save">${g._new ? 'Complete Check-in &amp; Register' : 'Save Changes'}</button>
+      <button class="btn primary" data-act="guest-save">${g._new ? 'Confirm Check-in &amp; Register Guest' : 'Save Guest Details'}</button>
     </div>
   </div></div>`;
 }
 
-/* ---------- 2. LOCATIONS (VILLAS, ROOMS, TABLES) ---------- */
 function locationsView(){
   const q = (S.locSearch||'').toLowerCase().trim();
   const f = S.locFilter || 'all';
@@ -2420,7 +2966,7 @@ function locationsView(){
   return `<div class="cms-bar" style="margin-bottom:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
       <label class="search">${searchIcon()}<input class="input" id="loc-search" type="search" placeholder="Search by name, number, or category..." value="${esc(S.locSearch||'')}" data-input="loc-search" aria-label="Search locations"></label>
       <div class="filters">${sub('all', 'All Locations (' + (S.locations || []).length + ')')}${sub('villa', '🏡 Villas (' + villasCount + ')')}${sub('room', '🛏️ Rooms (' + roomsCount + ')')}${sub('table', '🍽️ Dining Tables (' + tablesCount + ')')}</div>
-      <button class="btn primary" data-act="loc-new" style="margin-left:auto">+ Add Location</button>
+      <button class="btn primary" data-act="loc-new" style="margin-left:auto">+ Add Dining or Room</button>
     </div>
     <p class="muted" style="font-size:13px;margin-bottom:14px">Locations defined here automatically populate cascading dropdowns for guests and staff. Rooms and Dining Tables are mapped directly under their parent Villa.</p>
     <div class="tbl loc-tbl">
@@ -2453,7 +2999,7 @@ function locationsView(){
             <button class="icon-btn" data-act="loc-del" data-id="${esc(l.id)}" style="color:var(--danger)" title="Delete Location">🗑️</button>
           </div>
         </div>`;
-      }).join('') : `<div class="empty-state" style="grid-column:1/-1">${list.length ? 'No locations on this page.' : (q ? 'No locations match your search “' + esc(q) + '”.' : 'No locations configured yet. Click “+ Add Location” to add villas, rooms, or dining tables.')}</div>`}
+      }).join('') : `<div class="empty-state" style="grid-column:1/-1">${list.length ? 'No locations on this page.' : (q ? 'No locations match your search “' + esc(q) + '”.' : 'No locations configured yet. Click “+ Add Dining or Room” to add villas, rooms, or dining tables.')}</div>`}
       ${paginationBar(paged, 'loc')}
     </div>
     ${S.locDraft ? locationEditor() : ''}`;
@@ -2462,8 +3008,8 @@ function locationsView(){
 function locationEditor(){
   const l = S.locDraft;
   const villas = (S.locations || []).filter(v => v.type === 'villa');
-  return `<div class="overlay" data-act="overlay-close-loc"><div class="sheet" role="dialog" aria-modal="true" aria-label="Add Location">
-    <div class="sheet-head"><h3>${l.id ? 'Edit' : 'Add'} Dining or Stay Location</h3><button class="icon-btn" data-act="loc-close" aria-label="Close">✕</button></div>
+  return `<div class="overlay" data-act="overlay-close-loc"><div class="sheet" role="dialog" aria-modal="true" aria-label="Add Dining or Room">
+    <div class="sheet-head"><h3>${l.id ? 'Edit' : 'Add'} Dining or Room</h3><button class="icon-btn" data-act="loc-close" aria-label="Close">✕</button></div>
     <div class="sheet-body">
       <div class="field"><label>Location Category *</label>
         <div class="seg">
@@ -3158,8 +3704,8 @@ function renderFolioData(d){
           <div><b>Guest Name:</b> ${esc(g?.name || 'Walk-in / In-House Guest')}</div>
           <div><b>Mobile Number:</b> ${esc(g?.phone || 'Not Provided')}</div>
           <div><b>Aadhaar / Govt. ID:</b> <span style="font-family:monospace;font-weight:700;">${esc(formatAadhaar(g?.aadhaar_number || g?.aadhaarNumber))}</span></div>
-          <div><b>Address / Hometown:</b> ${esc(g?.address || '—')}</div>
-          ${g?.referred_by ? `<div><b>Referred By / Booking Via:</b> ${esc(g.referred_by)}</div>` : ''}
+          <div><b>Address / Hometown:</b> ${esc(g?.address || [g?.street, g?.city, g?.state].filter(Boolean).join(', ') || '—')}</div>
+          ${(g?.referred_by || g?.referredBy) ? `<div><b>Referred By / Booking Via:</b> ${esc(g.referred_by || g.referredBy)}</div>` : ''}
         </div>
         <div>
           <div style="font-size:13px;font-weight:800;color:#17362A;border-bottom:1px solid #E5E7EB;padding-bottom:3px;margin-bottom:6px;text-transform:uppercase;">Stay Location &amp; Dates</div>
@@ -3384,20 +3930,54 @@ async function saveGuest(){
   const locType = g.assignedLocationType || 'room';
   const locNum = String(g.assignedLocationNumber||'').trim().toUpperCase();
   const roomTariff = parseFloat(g.roomTariff !== undefined ? g.roomTariff : 4500) || 0;
+  
+  const checkInVal = g.checkInDate 
+    ? (typeof g.checkInDate === 'string' ? new Date(g.checkInDate).getTime() : Number(g.checkInDate))
+    : Date.now();
   const expectedCheckOut = g.expectedCheckOutDate ? new Date(g.expectedCheckOutDate).getTime() : null;
+
+  const street = String(g.street || '').trim();
+  const city = String(g.city || '').trim();
+  const state = String(g.state || 'Himachal Pradesh').trim();
+  const country = String(g.country || 'India').trim();
+  const pincode = String(g.pincode || '').replace(/\D/g, '').slice(0, 6);
+  const numberOfRooms = Math.max(1, parseInt(g.numberOfRooms || 1, 10));
+  const adultsCount = Math.max(1, parseInt(g.adultsCount || 1, 10));
+  const kidsCount = Math.max(0, parseInt(g.kidsCount || 0, 10));
+  const numberOfPersons = Math.max(1, parseInt(g.numberOfPersons || (adultsCount + kidsCount), 10));
+  let referralSourceId = null;
+  if (g.referralSourceId && !isNaN(Number(g.referralSourceId))) {
+    referralSourceId = Number(g.referralSourceId);
+  }
+  const referredBy = String(g.referredBy || 'Direct Walk-in').trim();
+
+  // Auto-compose address if not explicitly set
+  let address = String(g.address || '').trim();
+  if (!address && (street || city || state)) {
+    const parts = [street, city, state ? (state + (pincode ? ' - ' + pincode : '')) : pincode, country].filter(Boolean);
+    address = parts.join(', ');
+  }
 
   if(!name){ S.guestDraftErr = 'Enter guest full name.'; render(); return; }
   if(phone.length < 10){ S.guestDraftErr = 'Enter a valid 10-digit mobile number.'; render(); return; }
   if(aadhaar.length !== 12){ S.guestDraftErr = 'Enter a valid 12-digit Aadhaar Card number.'; render(); return; }
-  if(!locNum){ S.guestDraftErr = `Select an assigned ${locType}.`; render(); return; }
+  if(!locNum){ S.guestDraftErr = `Select at least one assigned ${locType}.`; render(); return; }
 
+  // Resolve assigned villas across multiple selected rooms
+  const selectedNums = locNum.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
   let assignedVilla = (g.assignedVilla || '').trim();
   if (!assignedVilla) {
     if (locType === 'villa') {
       assignedVilla = locNum;
     } else {
-      const locObj = (S.locations || []).find(l => String(l.number).toUpperCase() === locNum.toUpperCase());
-      if (locObj && locObj.parentVilla) assignedVilla = locObj.parentVilla;
+      const villas = [];
+      selectedNums.forEach(num => {
+        const locObj = (S.locations || []).find(l => String(l.number).toUpperCase() === num);
+        if (locObj && locObj.parentVilla && !villas.includes(locObj.parentVilla)) {
+          villas.push(locObj.parentVilla);
+        }
+      });
+      assignedVilla = villas.length ? villas.join(', ') : 'Villa 1';
     }
   }
 
@@ -3406,14 +3986,24 @@ async function saveGuest(){
     name,
     phone,
     aadhaarNumber: aadhaar,
-    address: String(g.address||'').trim(),
-    referredBy: String(g.referredBy||'').trim(),
+    address,
+    street,
+    city,
+    state,
+    country,
+    pincode,
+    numberOfRooms: Math.max(numberOfRooms, selectedNums.length || 1),
+    numberOfPersons,
+    adultsCount,
+    kidsCount,
+    referralSourceId,
+    referredBy,
     assignedLocationType: locType,
     assignedLocationNumber: locNum,
     assignedVilla: assignedVilla || 'Villa 1',
     roomTariff,
     expectedCheckOutDate: expectedCheckOut,
-    checkInDate: g.checkInDate || Date.now(),
+    checkInDate: checkInVal,
     status: g.status || 'checked_in'
   };
 
@@ -3463,6 +4053,153 @@ async function saveLocation(){
     S.locDraftErr = '';
     render();
   }
+}
+
+/* ---------- REFERRAL SOURCES MASTER (CRUD) ---------- */
+function referralsView(){
+  const q = (S.refSearch || '').toLowerCase().trim();
+  let list = S.referralSources || [];
+  if (q) {
+    list = list.filter(r => (r.name||'').toLowerCase().includes(q) || (r.source_type||'').toLowerCase().includes(q) || (r.phone||'').includes(q));
+  }
+  const paged = paginateList(list, S.refPage, 10);
+
+  return `<div class="cms-bar" style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
+    <label class="search" style="max-width:320px">${searchIcon()}<input class="input" id="ref-search" type="search" placeholder="Search referral partners, agents, OTAs..." value="${esc(S.refSearch||'')}" data-input="ref-search" aria-label="Search referral sources"></label>
+    <button class="btn primary" data-act="ref-new">+ Add Referral Partner / Source</button>
+  </div>
+  <p class="muted" style="font-size:13px;margin-bottom:12px">Manage booking sources, staff referrals (e.g. Aman), travel agents, and OTA partners. These automatically appear in the Check-In dropdown.</p>
+  <div class="tbl ref-tbl">
+    <div class="tr th">
+      <span>Partner / Source Name</span>
+      <span>Category / Type</span>
+      <span>Contact Phone</span>
+      <span>Display Order</span>
+      <span>Active Status</span>
+      <span style="text-align:right">Actions</span>
+    </div>
+    ${paged.items.length ? paged.items.map(r => {
+      const cls = getSourceClass(r.name);
+      return `<div class="tr row" style="cursor:default">
+        <div><b style="font-size:14px;color:var(--ink)">${esc(r.name)}</b></div>
+        <div><span class="badge-source ${cls}">${esc(r.source_type || 'staff')}</span></div>
+        <div><span style="font-family:var(--f-mono);font-size:12.5px">${esc(r.phone || '—')}</span></div>
+        <div><span class="num">#${r.display_order || 10}</span></div>
+        <div>
+          <label class="toggle" style="display:inline-flex;align-items:center;cursor:pointer">
+            <input type="checkbox" data-act="ref-toggle" data-id="${r.id}" ${r.is_active !== false ? 'checked' : ''}>
+            <span style="font-size:12px;margin-left:6px;${r.is_active!==false?'color:#166534;font-weight:700':'color:#991B1B'}">${r.is_active !== false ? 'Active' : 'Disabled'}</span>
+          </label>
+        </div>
+        <div style="display:flex;gap:6px;justify-content:flex-end">
+          <button class="icon-btn" data-act="ref-edit" data-id="${r.id}" title="Edit Source">✏️</button>
+          <button class="icon-btn" data-act="ref-del" data-id="${r.id}" title="Delete Source" style="color:var(--danger)">🗑️</button>
+        </div>
+      </div>`;
+    }).join('') : `<div class="empty-state">No referral partners found. Click "+ Add Referral Partner" to create one.</div>`}
+    ${paginationBar(paged, 'ref')}
+  </div>`;
+}
+
+function referralEditor(){
+  const r = S.refDraft;
+  return `<div class="overlay" data-act="overlay-close-ref"><div class="sheet" role="dialog" aria-modal="true" aria-label="Referral Source" style="max-width:480px">
+    <div class="sheet-head"><h3>${r._new ? 'Add Referral Partner / Source' : 'Edit Referral Partner'}</h3><button class="icon-btn" data-act="ref-close" aria-label="Close">✕</button></div>
+    <div class="sheet-body">
+      <div class="field"><label for="ref-name">Partner / Source Name *</label><input class="input" id="ref-name" data-input="ref.name" value="${esc(r.name||'')}" placeholder="e.g. Aman (Staff), MakeMyTrip, Agoda"></div>
+      <div class="form-grid">
+        <div class="field">
+          <label for="ref-type">Partner Category</label>
+          <select class="input" id="ref-type" data-change="ref.type">
+            <option value="staff" ${r.source_type==='staff'?'selected':''}>Staff Member (Internal)</option>
+            <option value="ota" ${r.source_type==='ota'?'selected':''}>Online Travel Agent (OTA)</option>
+            <option value="agent" ${r.source_type==='agent'?'selected':''}>Offline Travel Agent / Corporate</option>
+            <option value="direct" ${r.source_type==='direct'?'selected':''}>Direct Walk-in / Website</option>
+            <option value="social" ${r.source_type==='social'?'selected':''}>Social Media / Influencer</option>
+          </select>
+        </div>
+        <div class="field"><label for="ref-phone">Contact Phone (Optional)</label><input class="input" id="ref-phone" type="tel" data-input="ref.phone" value="${esc(r.phone||'')}" placeholder="e.g. 9816012345"></div>
+      </div>
+      <div class="field"><label for="ref-order">Display Sequence</label><input class="input" id="ref-order" type="number" min="1" max="100" data-input="ref.order" value="${esc(r.display_order||10)}"></div>
+      ${S.refDraftErr ? `<div class="notice bad">${esc(S.refDraftErr)}</div>` : ''}
+    </div>
+    <div class="sheet-foot">
+      <button class="btn" data-act="ref-close">Cancel</button>
+      <button class="btn primary" data-act="ref-save">${r._new ? 'Create Source' : 'Save Changes'}</button>
+    </div>
+  </div></div>`;
+}
+
+/* ---------- CITY & STATE MASTER ---------- */
+function geoView(){
+  const q = (S.geoSearch || '').toLowerCase().trim();
+  const fState = S.geoStateFilter || 'all';
+  let list = S.geoCities || [];
+
+  if (fState !== 'all') {
+    list = list.filter(c => (c.state_name||'').toLowerCase() === fState.toLowerCase());
+  }
+  if (q) {
+    list = list.filter(c => (c.city_name||'').toLowerCase().includes(q) || (c.state_name||'').toLowerCase().includes(q) || (c.default_pincode||'').includes(q));
+  }
+
+  const paged = paginateList(list, S.geoPage, 10);
+  const statesList = (S.geoStates && S.geoStates.length) 
+    ? S.geoStates.map(s => s.state_name || s.name)
+    : ['Himachal Pradesh', 'Delhi', 'Punjab', 'Haryana', 'Chandigarh', 'Maharashtra', 'Karnataka', 'Gujarat', 'Uttar Pradesh'];
+
+  return `<div class="cms-bar" style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <label class="search" style="min-width:260px">${searchIcon()}<input class="input" id="geo-search" type="search" placeholder="Search cities, states, pincodes..." value="${esc(S.geoSearch||'')}" data-input="geo-search" aria-label="Search cities"></label>
+      <select class="input" style="width:auto;min-width:180px;font-weight:600" data-change="geo-state-filter">
+        <option value="all" ${fState==='all'?'selected':''}>All States (${statesList.length} States)</option>
+        ${statesList.map(s => `<option value="${esc(s)}" ${fState.toLowerCase()===s.toLowerCase()?'selected':''}>${esc(s)}</option>`).join('')}
+      </select>
+    </div>
+    <button class="btn primary" data-act="city-new">+ Add New City</button>
+  </div>
+  <p class="muted" style="font-size:13px;margin-bottom:12px">Pre-seeded Indian states and major tourist cities. You can add any custom town or city here for guest addresses.</p>
+  <div class="tbl geo-tbl">
+    <div class="tr th">
+      <span>City Name</span>
+      <span>State / Union Territory</span>
+      <span>Default Pincode</span>
+      <span>Status</span>
+    </div>
+    ${paged.items.length ? paged.items.map(c => `<div class="tr row" style="cursor:default">
+      <div><b style="font-size:14px;color:var(--ink)">${esc(c.city_name)}</b></div>
+      <div><span class="chip sm" style="font-weight:600">${esc(c.state_name)}</span></div>
+      <div><span style="font-family:var(--f-mono);font-size:13px;font-weight:600">${esc(c.default_pincode || '—')}</span></div>
+      <div><span style="color:#166534;font-weight:700;font-size:12px">● Active</span></div>
+    </div>`).join('') : `<div class="empty-state">No cities match the filter.</div>`}
+    ${paginationBar(paged, 'geo')}
+  </div>`;
+}
+
+function cityEditor(){
+  const c = S.cityDraft;
+  const statesList = (S.geoStates && S.geoStates.length) 
+    ? S.geoStates.map(s => s.state_name || s.name)
+    : ['Himachal Pradesh', 'Delhi', 'Punjab', 'Haryana', 'Chandigarh', 'Maharashtra', 'Karnataka', 'Gujarat', 'Uttar Pradesh'];
+
+  return `<div class="overlay" data-act="overlay-close-city"><div class="sheet" role="dialog" aria-modal="true" aria-label="Add City" style="max-width:440px">
+    <div class="sheet-head"><h3>Add Custom City / Town</h3><button class="icon-btn" data-act="city-close" aria-label="Close">✕</button></div>
+    <div class="sheet-body">
+      <div class="field">
+        <label for="c-state">State / UT *</label>
+        <select class="input" id="c-state" data-change="city.state" style="font-weight:600">
+          ${statesList.map(s => `<option value="${esc(s)}" ${(c.state_name||'').toLowerCase()===s.toLowerCase()?'selected':''}>${esc(s)}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field"><label for="c-name">City / Town Name *</label><input class="input" id="c-name" data-input="city.name" value="${esc(c.city_name||'')}" placeholder="e.g. Kasol, Dharamshala, Shimla"></div>
+      <div class="field"><label for="c-pin">Default Pincode (Optional)</label><input class="input mono" id="c-pin" maxlength="6" data-input="city.pincode" value="${esc(c.default_pincode||'')}" placeholder="e.g. 175105"></div>
+      ${S.cityDraftErr ? `<div class="notice bad">${esc(S.cityDraftErr)}</div>` : ''}
+    </div>
+    <div class="sheet-foot">
+      <button class="btn" data-act="city-close">Cancel</button>
+      <button class="btn primary" data-act="city-save">Add City</button>
+    </div>
+  </div></div>`;
 }
 
 async function saveCustomCooking() {
@@ -3904,11 +4641,137 @@ document.addEventListener('click',async e=>{
     case 'acc-save': {const d=S.accessDraft;if(await write(()=>S.store.set('settings/billing',{...S.settings,...d}))){S.settings={...S.settings,...d};S.accessDraft=null;toast('Saved','Menu link, locations and PIN updated','');}break;}
     case 'copy': {const v=t.dataset.v;try{await navigator.clipboard.writeText(v);toast('Copied',v,'');}catch(err){toast('Copy not available','Select the link text and copy it manually.','');}return;}
     case 'g-filter': S.guestFilter=t.dataset.v; S.guestPage=1; break;
+    case 'toggle-loc-select': {
+      const num = String(t.dataset.num || '').trim().toUpperCase();
+      if (!S.guestDraft) break;
+      let current = String(S.guestDraft.assignedLocationNumber || '').split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+      if (current.includes(num)) {
+        current = current.filter(x => x !== num);
+      } else {
+        current.push(num);
+      }
+      S.guestDraft.assignedLocationNumber = current.join(', ');
+      if (current.length > 0) {
+        S.guestDraft.numberOfRooms = current.length;
+      }
+      render();
+      break;
+    }
+    case 'toggle-room-dd': S.roomDropdownOpen = !S.roomDropdownOpen; render(); break;
     case 'guest-page': S.guestPage = Number(t.dataset.page) || 1; break;
-    case 'guest-new': S.guestDraft={_new:true,name:'',phone:'',aadhaarNumber:'',address:'',referredBy:'',assignedLocationType:'room',assignedLocationNumber:'',roomTariff:4500,expectedCheckOutDate:'',checkInDate:Date.now(),status:'checked_in'}; S.guestDraftErr=''; break;
-    case 'guest-edit': { const g = (S.guests||[]).find(x => x.id === id); if(g){ S.guestDraft = { ...g, _new:false, roomTariff: g.roomTariff !== undefined ? g.roomTariff : 4500 }; S.guestDraftErr=''; } break; }
-    case 'guest-close': case 'overlay-close-guest': S.guestDraft=null; break;
-    case 'g-loctype': S.guestDraft.assignedLocationType=t.dataset.v; break;
+    case 'toggle-sidebar': S.sidebarCollapsed = !S.sidebarCollapsed; render(); break;
+    case 'lookup-pin': if (S.guestDraft && S.guestDraft.pincode) lookupGuestPincode(S.guestDraft.pincode); break;
+    case 'g-filter-reset':
+      S.guestFilterStatus = 'all';
+      S.guestReferralFilter = 'all';
+      S.guestVillaFilter = 'all';
+      S.guestStateFilter = 'all';
+      S.guestSearch = '';
+      S.guestPage = 1;
+      render();
+      break;
+    case 'export-guests-csv': exportGuestsCsv(); break;
+    case 'print-guests-register': window.print(); break;
+
+    case 'ref-new':
+      S.refDraft = { _new: true, name: '', code: '', contactPerson: '', phone: '', commissionPct: 0, notes: '', displayOrder: 10, isActive: true };
+      S.refDraftErr = '';
+      render();
+      break;
+    case 'ref-edit': {
+      const r = (S.referralSources || []).find(x => String(x.id) === String(id));
+      if (r) { S.refDraft = { ...r, _new: false }; S.refDraftErr = ''; render(); }
+      break;
+    }
+    case 'ref-close': case 'overlay-close-ref':
+      S.refDraft = null; S.refDraftErr = ''; render(); break;
+    case 'ref-save': await saveReferral(); break;
+    case 'ref-del': {
+      if (confirm('Delete this referral source?')) {
+        await write(() => S.store.del('referralSources/' + id));
+        toast('Referral Source Deleted', '', '');
+      }
+      break;
+    }
+    case 'ref-toggle': {
+      await write(() => S.store.update('referralSources/' + id, { isActive: t.checked }));
+      toast('Referral status updated', '', '');
+      break;
+    }
+
+    case 'city-new':
+      S.cityDraft = { _new: true, name: '', state: (S.geoStates && S.geoStates[0]?.name) || 'Himachal Pradesh', stateCode: 'HP', pincode: '', tier: 'Tier-2', isActive: true };
+      S.cityDraftErr = '';
+      render();
+      break;
+    case 'city-edit': {
+      const c = (S.geoCities || []).find(x => String(x.id) === String(id));
+      if (c) { S.cityDraft = { ...c, _new: false }; S.cityDraftErr = ''; render(); }
+      break;
+    }
+    case 'city-close': case 'overlay-close-city':
+      S.cityDraft = null; S.cityDraftErr = ''; render(); break;
+    case 'city-save': await saveCity(); break;
+    case 'city-del': {
+      if (confirm('Delete this city from master directory?')) {
+        await write(() => S.store.del('geoCities/' + id));
+        toast('City Deleted', '', '');
+      }
+      break;
+    }
+
+    case 'guest-new':
+      S.guestDraft = {
+        _new: true,
+        name: '',
+        phone: '',
+        aadhaarNumber: '',
+        address: '',
+        street: '',
+        city: '',
+        state: 'Himachal Pradesh',
+        country: 'India',
+        pincode: '',
+        numberOfRooms: 1,
+        numberOfPersons: 2,
+        adultsCount: 2,
+        kidsCount: 0,
+        referralSourceId: '',
+        referredBy: 'Direct Walk-in',
+        assignedLocationType: 'room',
+        assignedLocationNumber: '',
+        roomTariff: 4500,
+        expectedCheckOutDate: '',
+        checkInDate: Date.now(),
+        status: 'checked_in'
+      };
+      S.guestDraftErr = '';
+      break;
+    case 'guest-edit': {
+      const g = (S.guests || []).find(x => x.id === id);
+      if (g) {
+        S.guestDraft = {
+          ...g,
+          _new: false,
+          street: g.street || '',
+          city: g.city || '',
+          state: g.state || 'Himachal Pradesh',
+          country: g.country || 'India',
+          pincode: g.pincode || '',
+          numberOfRooms: g.numberOfRooms || 1,
+          numberOfPersons: g.numberOfPersons || ((g.adultsCount || 1) + (g.kidsCount || 0)),
+          adultsCount: g.adultsCount || 1,
+          kidsCount: g.kidsCount || 0,
+          referralSourceId: g.referralSourceId || '',
+          referredBy: g.referredBy || '',
+          roomTariff: g.roomTariff !== undefined ? g.roomTariff : 4500
+        };
+        S.guestDraftErr = '';
+      }
+      break;
+    }
+    case 'guest-close': case 'overlay-close-guest': S.guestDraft=null; S.roomDropdownOpen=false; break;
+    case 'g-loctype': S.guestDraft.assignedLocationType=t.dataset.v; S.guestDraft.assignedLocationNumber=''; render(); break;
     case 'guest-save': await saveGuest(); break;
     case 'guest-checkout': { if(confirm('Check out this guest?')){ await write(()=>S.store.update('guests/'+id,{status:'checked_out',checkOutDate:Date.now()})); toast('Guest Checked-out','Status updated to departed',''); } break; }
     case 'guest-del': { if(confirm('Delete this guest record?')){ await write(()=>S.store.del('guests/'+id)); toast('Guest Deleted','',''); } break; }
@@ -3964,6 +4827,8 @@ document.addEventListener('click',async e=>{
     case 'raw-del': { if(confirm('Delete this custom cooking item?')){ await write(()=>S.store.del('customCooking/'+id)); toast('Item Deleted','',''); } break; }
 
     case 'ord-page': S.ordPage = Number(t.dataset.page) || 1; break;
+    case 'k-page': S.kPage = Number(t.dataset.page) || 1; break;
+    case 's-page': S.sPage = Number(t.dataset.page) || 1; break;
     case 'hist-page': S.histPage = Number(t.dataset.page) || 1; break;
     case 'cms-page': S.cmsPage = Number(t.dataset.page) || 1; break;
     case 'srv-page': S.srvPage = Number(t.dataset.page) || 1; break;
@@ -4030,23 +4895,61 @@ document.addEventListener('input',e=>{
   else if(k==='cq'){S.composer.q=t.value;render();}
   else if(k==='cnum'){S.composer.loc.num=t.value.replace(/[^A-Za-z0-9-]/g,'').slice(0,8);S.composer.confirm=false;render();}
   else if(k==='cnote'){S.composer.note=t.value;}
-  else if(k==='cmsq'){S.cms.q=t.value; S.cmsPage=1; render();}
+  else if(k==='cmsq'){S.cms.q=t.value; S.cmsPage=1; clearTimeout(window.__sT); window.__sT=setTimeout(render,50);}
   else if(k.startsWith('e.')){S.cms.edit[k.slice(2)]=t.value;}
   else if(k==='rate'){const d=S[t.dataset.kind==='taxes'?'taxDraft':'chargeDraft'];d[+t.dataset.i][t.dataset.f]=t.dataset.f==='rate'?(t.value===''?'':+t.value):t.value;render();}
   else if(k==='acc'){S.accessDraft[t.dataset.f]=t.dataset.f==='pin'?t.value.replace(/\D/g,'').slice(0,4):t.value;clearTimeout(window.__accT);window.__accT=setTimeout(render,t.dataset.f==='menuLink'||t.dataset.f==='rooms'||t.dataset.f==='tables'?500:0);}
-  else if(k==='g-search'){S.guestSearch=t.value; S.guestPage=1; render();}
-  else if(k==='loc-search'){S.locSearch=t.value; S.locPage=1; render();}
-  else if(k==='raw-search'){S.rawSearch=t.value; S.rawPage=1; render();}
-  else if(k==='ord-search'){S.ordSearch=t.value; S.ordPage=1; render();}
+  else if(k==='g-search'){S.guestSearch=t.value; S.guestPage=1; clearTimeout(window.__sT); window.__sT=setTimeout(render,50);}
+  else if(k==='loc-search'){S.locSearch=t.value; S.locPage=1; clearTimeout(window.__sT); window.__sT=setTimeout(render,50);}
+  else if(k==='raw-search'){S.rawSearch=t.value; S.rawPage=1; clearTimeout(window.__sT); window.__sT=setTimeout(render,50);}
+  else if(k==='ord-search'){S.ordSearch=t.value; S.ordPage=1; clearTimeout(window.__sT); window.__sT=setTimeout(render,50);}
   else if(k==='hist-search'){S.histSearch=t.value; S.histPage=1; render();}
   else if(k==='srv-search'){S.srvSearch=t.value; S.srvPage=1; render();}
   else if(k==='g.name'){if(S.guestDraft)S.guestDraft.name=t.value;}
   else if(k==='g.phone'){if(S.guestDraft)S.guestDraft.phone=t.value.replace(/\D/g,'').slice(0,10);}
   else if(k==='g.aadhaar'){if(S.guestDraft)S.guestDraft.aadhaarNumber=t.value.replace(/\D/g,'').slice(0,12);}
   else if(k==='g.address'){if(S.guestDraft)S.guestDraft.address=t.value;}
+  else if(k==='g.street'){if(S.guestDraft)S.guestDraft.street=t.value;}
+  else if(k==='g.city'){if(S.guestDraft)S.guestDraft.city=t.value;}
+  else if(k==='g.state'){if(S.guestDraft)S.guestDraft.state=t.value;}
+  else if(k==='g.country'){if(S.guestDraft)S.guestDraft.country=t.value;}
+  else if(k==='g.pincode'){
+    if(S.guestDraft){
+      S.guestDraft.pincode = t.value.replace(/\D/g, '').slice(0, 6);
+      if(S.guestDraft.pincode.length === 6){
+        lookupGuestPincode(S.guestDraft.pincode);
+      }
+    }
+  }
+  else if(k==='g.rooms'){if(S.guestDraft)S.guestDraft.numberOfRooms=Math.max(1, parseInt(t.value, 10)||1);}
+  else if(k==='g.adults'){
+    if(S.guestDraft){
+      S.guestDraft.adultsCount = Math.max(1, parseInt(t.value, 10)||1);
+      S.guestDraft.numberOfPersons = (S.guestDraft.adultsCount||1) + (S.guestDraft.kidsCount||0);
+    }
+  }
+  else if(k==='g.kids'){
+    if(S.guestDraft){
+      S.guestDraft.kidsCount = Math.max(0, parseInt(t.value, 10)||0);
+      S.guestDraft.numberOfPersons = (S.guestDraft.adultsCount||1) + (S.guestDraft.kidsCount||0);
+    }
+  }
   else if(k==='g.ref'){if(S.guestDraft)S.guestDraft.referredBy=t.value;}
+  else if(k==='g.checkin'){if(S.guestDraft)S.guestDraft.checkInDate=t.value ? new Date(t.value).getTime() : Date.now();}
   else if(k==='g.tariff'){if(S.guestDraft)S.guestDraft.roomTariff=t.value;}
   else if(k==='g.expcheckout'){if(S.guestDraft)S.guestDraft.expectedCheckOutDate=t.value;}
+  else if(k==='ref-search'){S.refSearch=t.value; clearTimeout(window.__sT); window.__sT=setTimeout(render,50);}
+  else if(k==='geo-search'){S.geoSearch=t.value; clearTimeout(window.__sT); window.__sT=setTimeout(render,50);}
+  else if(k==='ref.name'){if(S.refDraft)S.refDraft.name=t.value;}
+  else if(k==='ref.code'){if(S.refDraft)S.refDraft.code=t.value;}
+  else if(k==='ref.person'){if(S.refDraft)S.refDraft.contactPerson=t.value;}
+  else if(k==='ref.phone'){if(S.refDraft)S.refDraft.phone=t.value.replace(/\D/g,'').slice(0,10);}
+  else if(k==='ref.comm'){if(S.refDraft)S.refDraft.commissionPct=parseFloat(t.value)||0;}
+  else if(k==='ref.notes'){if(S.refDraft)S.refDraft.notes=t.value;}
+  else if(k==='ref.order'){if(S.refDraft)S.refDraft.displayOrder=parseInt(t.value,10)||10;}
+  else if(k==='city.name'){if(S.cityDraft)S.cityDraft.name=t.value;}
+  else if(k==='city.pincode'){if(S.cityDraft)S.cityDraft.pincode=t.value.replace(/\D/g,'').slice(0,6);}
+  else if(k==='city.tier'){if(S.cityDraft)S.cityDraft.tier=t.value;}
   else if(k==='l.num'){if(S.locDraft)S.locDraft.number=t.value;}
   else if(k==='l.name'){if(S.locDraft)S.locDraft.name=t.value;}
   else if(k==='l.parentVilla'){if(S.locDraft)S.locDraft.parentVilla=t.value;}
@@ -4086,6 +4989,44 @@ document.addEventListener('change',async e=>{
   else if(k==='ediet'){S.cms.edit.veg=t.value==='veg';S.cms.edit.egg=t.value==='egg';}
   else if(k==='photo'){const f=t.files&&t.files[0];if(!f)return;try{S.cms.edit.img=await resizeImage(f);S.cms.err='';}catch(err){S.cms.err='That file could not be read as an image. Try a JPG or PNG.';}}
   else if(k==='g.locnum'){if(S.guestDraft)S.guestDraft.assignedLocationNumber=t.value;}
+  else if(k==='g-filter-status'){S.guestFilterStatus=t.value; S.guestPage=1; render();}
+  else if(k==='g-filter-ref'){S.guestReferralFilter=t.value; S.guestPage=1; render();}
+  else if(k==='g-filter-loc'){S.guestVillaFilter=t.value; S.guestPage=1; render();}
+  else if(k==='g-filter-state'){S.guestStateFilter=t.value; S.guestPage=1; render();}
+  else if(k==='geo-state-filter'){S.geoStateFilter=t.value; render();}
+  else if(k==='g.ref-select'){
+    if(S.guestDraft){
+      const val = t.value;
+      const so = (S.referralSources||[]).find(x => String(x.id) === String(val) || String(x.name).toLowerCase() === String(val).toLowerCase());
+      if(so){
+        S.guestDraft.referralSourceId = so.id;
+        S.guestDraft.referredBy = so.name;
+      } else {
+        S.guestDraft.referralSourceId = null;
+        S.guestDraft.referredBy = val || 'Direct Walk-in';
+      }
+      render();
+    }
+  }
+  else if(k==='g.state-select'){
+    if(S.guestDraft){
+      S.guestDraft.state=t.value;
+      render();
+    }
+  }
+  else if(k==='g.country'){
+    if(S.guestDraft){
+      S.guestDraft.country=t.value;
+      render();
+    }
+  }
+  else if(k==='city.state'){
+    if(S.cityDraft){
+      S.cityDraft.state=t.value;
+      const st=(S.geoStates||[]).find(x=>x.name===t.value);
+      if(st) S.cityDraft.stateCode=st.code;
+    }
+  }
   else if(k==='flocnum'){S.folioState.num=t.value;S.folioState.room='';S.folioState.guestId='';render();}
   else if(k==='flocroom'){S.folioState.room=t.value;render();}
   else if(k==='fguest'){S.folioState.guestId=t.value;if(t.value){const g=(S.guests||[]).find(x=>x.id===t.value);if(g){S.folioState.type=g.assignedLocationType;S.folioState.num=g.assignedLocationNumber;S.folioState.room='';}}render();}
